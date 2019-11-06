@@ -1,0 +1,49 @@
+/*通用 */
+view{
+	font-size:28upx;
+	line-height:1.8;
+}
+progress, checkbox-group{
+	width: 100%;
+}
+form {
+	width: 100%;
+}
+.uni-flex {
+	display: flex;
+	flex-direction: row;
+}
+.uni-flex-item {
+	flex: 1;
+}
+.uni-row {
+	flex-direction: row;
+}
+.uni-column {
+	flex-direction: column;
+}
+.uni-link{
+	color:#576B95;
+	font-size:26upx;
+}
+.uni-center{
+	text-align:center;
+}
+.uni-inline-item{
+	display: flex;
+	flex-direction: row;
+	align-items:center;
+}
+.uni-inline-item text{
+	margin-right: 20upx;
+}
+.uni-inline-item text:last-child{
+	margin-right: 0upx;
+	margin-left: 20upx;
+}
+
+.page {
+	width: 750px;
+	height: 100vh;
+	background-color: #f2f2f2;
+}

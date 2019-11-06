@@ -23,7 +23,6 @@ class CacheStorage {      //数据存储
 			uni.getStorage({
 			    key: this.dataKey,
 			    success: function (res) {
-					console.log(res)
 			        resolve(JSON.parse(res.data || '{}'))
 			    },
 				fail: function (e) {

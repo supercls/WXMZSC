@@ -1,14 +1,46 @@
 {
   "pages": [
-    "pages/index/index"
+    "pages/Mine/Mine",
+    "pages/Home/Home",
+    "pages/Find/Find",
+    "pages/User/index",
+    "pages/User/rejister",
+    "pages/User/reset",
+    "pages/Web/index",
+    "pages/brief/brief",
+    "pages/Mine/userInfo"
   ],
   "subPackages": [],
   "window": {
     "navigationBarTextStyle": "black",
-    "navigationBarTitleText": "uni-app",
-    "navigationBarBackgroundColor": "#F8F8F8",
-    "backgroundColor": "#F8F8F8"
+    "navigationBarTitleText": "母子手册",
+    "navigationBarBackgroundColor": "#f2f2f2",
+    "backgroundColor": "#f00"
   },
-  "usingComponents": {},
-  "sitemapLocation": "sitemap.json"
+  "tabBar": {
+    "color": "#999999",
+    "selectedColor": "#FF70B5",
+    "backgroundColor": "#fff",
+    "list": [
+      {
+        "pagePath": "pages/Home/Home",
+        "iconPath": "static/tab/Home.png",
+        "selectedIconPath": "static/tab/Home@highlight.png",
+        "text": "首页"
+      },
+      {
+        "pagePath": "pages/Find/Find",
+        "iconPath": "static/tab/Find.png",
+        "selectedIconPath": "static/tab/Find@highlight.png",
+        "text": "发现"
+      },
+      {
+        "pagePath": "pages/Mine/Mine",
+        "iconPath": "static/tab/Mine.png",
+        "selectedIconPath": "static/tab/Mine@highlight.png",
+        "text": "我的"
+      }
+    ]
+  },
+  "usingComponents": {}
 }
