@@ -6,11 +6,11 @@
 		<view class="user-center">
 			<view class="item">
 				<image src="../../static/user/user_1.png" mode="" class="uni-img"></image>
-				<input class="uni-input" type="number" placeholder-class="placeholder"  placeholder="请输入手机号" maxlength="11" v-model="userCode"/>
+				<input class="uni-input" type="number" placeholder-class="placeholder"  placeholder="请输入手机号" maxlength="11" v-model="userObj.mobileTel"/>
 			</view>
 			<view class="item">
 				<image src="../../static/user/user_2.png" mode="" class="uni-img"></image>
-				<input class="uni-input" placeholder-class="placeholder"  placeholder="请输入密码"  password v-model="userPassword"/>
+				<input class="uni-input" placeholder-class="placeholder"  placeholder="请输入密码"  password v-model="userObj.passWord"/>
 			</view>
 		</view>
 		<view class="user-bottom">
@@ -21,36 +21,55 @@
 			 </view>
 		</view>
 		<view class="user-fixed">
-			<navigator hover-class="none" url="/pages/User/rejister"><text>关于我们</text></navigator>
+			<navigator hover-class="none" url="/pages/User/aboutUs"><text>关于我们</text></navigator>
 			<text class="t1">|</text>
-			<navigator hover-class="none" url="/pages/User/rejister"><text>游客访问</text></navigator>
+			<navigator hover-class="none" url="/pages/User/visitor"><text>游客访问</text></navigator>
 		</view>
 	</view>
 </template>
 
 <script>
 	import {login} from '../../utils/api.js'
+	import md5 from '../../utils/md5.js'
 	export default {
 		data() {
 			return {
 				loading:false,
-				userCode:'',
-				userPassword:''
+				userObj:{
+					mobileTel:'',
+					passWord:'',
+					openId:''
+				},
 			}
 		},
 		onLoad() {
-			
 		},
 		methods: {
 			submit(){
-				console.log(this.userCode)
-				login({
-					period:1,
-					periodDays:0
-				}).then(res =>{
+				if(this.userObj.mobileTel == '' || this.userObj.mobileTel.length != 11){
+					uni.showToast({
+						title: '请输入正确的手机号',
+						icon:'none',
+						duration: 2000
+					})
+					return false
+				}
+				if(this.userObj.passWord == ''){
+					uni.showToast({
+						title: '请输入账号密码',
+						icon:'none',
+						duration: 2000
+					})
+					return false
+				}
+				this.loading = true
+				this.userObj.passWord = md5.hex_md5(this.userObj.passWord).toUpperCase()   //md5加密转大写
+				this.userObj.openId = this.$store.state.openID;
+				login({...this.userObj}).then(res =>{
 					console.log(res)
+					this.loading = false
 				}).catch(err =>{
-					
+					this.loading = false
 				})
 			}
 		}

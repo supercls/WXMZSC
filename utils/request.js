@@ -23,12 +23,21 @@ class RequestMn extends Configs {
 				method:models.method,   //注意大小写
 			    data: models.data,
 			    success: (res) => {
-					if(res.statusCode == 200 && JSON.parse(res.data).isSuccess){
+					let data = JSON.parse(res.data)
+					if(res.statusCode == 200 && data.isSuccess){
 						resolve(JSON.parse(res.data))
+					}
+					else if(res.statusCode == 200 && !data.isSuccess){
+						uni.showToast({
+						    title: data.msg ||'',
+							icon:'none',
+						    duration: 2000
+						});
+						reject(res)
 					}
 			        else{
 						uni.showToast({
-						    title: JSON.stringify(res.data.Message || JSON.parse(res.data).msg),
+						    title: `${res.statusCode}+JSON.stringify(res.data.Message)`,
 							icon:'none',
 						    duration: 2000
 						});

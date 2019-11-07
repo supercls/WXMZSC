@@ -5,11 +5,12 @@
   },
   "setting": {
     "urlCheck": false,
-    "postcss": true
+    "postcss": true,
+    "minified": true
   },
   "compileType": "miniprogram",
   "libVersion": "2.7.0",
-  "appid": "wx10511039a2e2c38e",
+  "appid": "wxa24db98cadfc5870",
   "projectname": "MZSC",
   "condition": {
     "search": {
@@ -31,12 +32,12 @@
           "name": "swiper",
           "query": "interval=4000&autoplay=false",
           "id": 0,
-          "pathName": "pages/Mine/userInfo"
+          "pathName": "pages/User/index"
         },
         {
           "name": "test",
           "id": 1,
-          "pathName": "pages/User/index"
+          "pathName": "pages/Mine/setting"
         }
       ]
     }

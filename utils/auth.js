@@ -1,35 +1,22 @@
 
-class CacheStorage {      //数据存储
+class CacheStorage {      //数据存储,避免异步
 	constructor(dataKey) {
 	    this.dataKey = dataKey
 	}
 	setInfo(info){
-		return new Promise((resolve,reject) => {
-			uni.setStorage({              //本身为异步
-			    key: this.dataKey,
-			    data:JSON.stringify(info),
-			    success: function () {
-			        console.log('success');
-					resolve()
-			    },
-				fail: function (e) {
-					reject(e)
-				}
+		try {
+			uni.setStorageSync(this.dataKey, JSON.stringify(info));  //同步
+		} catch (e) {
+			uni.showToast({
+				title: JSON.stringify(e),
+				icon:'none',
+				duration: 1000
 			});
-		})
+			console.log(e)
+		}
 	}
 	getInfo(){
-		return new Promise((resolve,reject) => {
-			uni.getStorage({
-			    key: this.dataKey,
-			    success: function (res) {
-			        resolve(JSON.parse(res.data || '{}'))
-			    },
-				fail: function (e) {
-					reject(e)
-				}
-			});
-		})
+		return (JSON.parse(uni.getStorageSync(this.dataKey) || '{}'))
 	}
 }
 

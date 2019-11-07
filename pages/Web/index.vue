@@ -1,6 +1,6 @@
 <template>
 	<view>
-	        <web-view :webview-styles="webviewStyles" :src="url"></web-view>
+	        <web-view :webview-styles="webviewStyles" :src="urlHttps"></web-view>
 	</view>
 </template>
 
@@ -13,13 +13,12 @@
 						color: '#FF70B5'
 					}
 				},
-				url:''
+				urlHttps:''
 			}
 		},
 		onLoad(option) { 
-			const item = JSON.parse(decodeURIComponent(option.url));
-			console.log(item)
-			this.url=item
+			const item = JSON.parse(decodeURIComponent(option.url ||'{}'));
+			this.urlHttps=item
 		},
 		methods: {
 			

@@ -57,7 +57,7 @@
 				switch(num){
 					case  '1':
 					    uni.navigateTo({
-					       url: '../../pages/Web/index?url=http://mzjksc.yystars.com:5603/YYQ.Web/V5.2.9/Area/agreement/agreement.html'
+					       // url: '../../pages/Web/index?url=http://mzjksc.yystars.com:5603/YYQ.Web/V5.2.9/Area/agreement/agreement.html'
 					    })
 						break;
 					case  '2':

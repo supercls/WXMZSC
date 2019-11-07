@@ -3,16 +3,16 @@
 		<view class="user-center">
 			<view class="item">
 				<image src="../../static/user/user_1.png" mode="" class="uni-img"></image>
-				<input class="uni-input" type="number" placeholder-class="placeholder"  placeholder="请输入手机号" maxlength="11" v-model="userCode"/>
+				<input class="uni-input" type="number" placeholder-class="placeholder"  placeholder="请输入手机号" maxlength="11" v-model="userObj.userCode"/>
 			</view>
 			<view class="item">
 				<image src="../../static/user/user_3.png" mode="" class="uni-img"></image>
-				<input class="uni-input" placeholder-class="placeholder"  placeholder="请输入短信验证码"  type="number" v-model="userMessage"/>
+				<input class="uni-input" placeholder-class="placeholder"  placeholder="请输入短信验证码"  type="number" v-model="userObj.verCode"/>
 				<text class="timeSpan" :class="{active:isSend}"  @tap="sendCode" :disabled="isSend">{{times}}</text>
 			</view>
 			<view class="item">
 				<image src="../../static/user/user_2.png" mode="" class="uni-img"></image>
-				<input class="uni-input" placeholder-class="placeholder"  placeholder="请输入新登录密码"  password v-model="userPassword"/>
+				<input class="uni-input" placeholder-class="placeholder"  placeholder="请输入新登录密码"  password v-model="userObj.passWord"/>
 			</view>
 		</view>
 		<view class="user-bottom">
@@ -22,15 +22,18 @@
 </template>
 
 <script>
-	import {login} from '../../utils/api.js'
+	import {resetPassword} from '../../utils/api.js'
+	import md5 from '../../utils/md5.js'
 	export default {
 		data() {
 			return {
 				loading:false,
-				userCode:'',
-				userPassword:'',
-				userDw:'',
-				userMessage:'',
+				userObj:{
+					type:'1',
+					userCode:'',
+					verCode:'',
+					passWord:''
+				},
 				times:'发送验证码',
 				isSend:false,
 				seconds:null,
@@ -41,7 +44,43 @@
 		},
 		methods: {
 			submit(){
-				console.log(this.userCode)
+				if(this.userObj.userCode == '' || this.userObj.userCode.length!=11){
+					uni.showToast({
+						title: '请输入正确的手机号',
+						icon:'none',
+						duration: 2000
+					})
+					return false
+				}
+				if(this.userObj.verCode == ''){
+					uni.showToast({
+						title: '请输入短信验证码',
+						icon:'none',
+						duration: 2000
+					})
+					return false
+				}
+				if(this.userObj.passWord == ''){
+					uni.showToast({
+						title: '请输入账号密码',
+						icon:'none',
+						duration: 2000
+					})
+					return false
+				}
+				this.userObj.openId = this.openID
+				this.userObj.passWord = md5.hex_md5(this.userObj.passWord).toUpperCase()   //md5加密转大写
+				this.loading = true
+				resetPassword({...this.userObj}).then(res =>{
+					this.loading = false
+					uni.showToast({
+					    title: '修改成功',
+					    duration: 2000
+					});
+				}).catch(err =>{
+					this.loading = false
+					console.log(err)
+				})
 			},
 			sendCode(){
 				if(this.isSend) return false

@@ -1,11 +1,14 @@
 {
   "pages": [
-    "pages/Mine/Mine",
-    "pages/Home/Home",
-    "pages/Find/Find",
     "pages/User/index",
     "pages/User/rejister",
     "pages/User/reset",
+    "pages/User/visitor",
+    "pages/User/aboutUs",
+    "pages/Home/Home",
+    "pages/Find/Find",
+    "pages/Mine/Mine",
+    "pages/Mine/setting",
     "pages/Web/index",
     "pages/brief/brief",
     "pages/Mine/userInfo"
@@ -42,5 +45,6 @@
       }
     ]
   },
-  "usingComponents": {}
+  "usingComponents": {},
+  "sitemapLocation": "sitemap2.json"
 }

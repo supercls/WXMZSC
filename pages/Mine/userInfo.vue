@@ -34,6 +34,7 @@
 
 <script>
 	import lotusAddress from '../../components/picker-address/lotusAddress.vue'
+	import {mapGetters} from 'vuex'
 	export default{
 		data(){
 			return{
@@ -48,11 +49,21 @@
 				},
 			}
 		},
+		computed:{
+			...mapGetters([
+				'openID'
+			])
+		},
+		watch:{
+			openID(val){
+				console.log(val)
+			}
+		},
 		components:{
 			lotusAddress
 		},
 		onLoad() {
-			
+			console.log(this.$store.state.openID)
 		},
 		methods:{
 			uploadImg(){   //修改头像

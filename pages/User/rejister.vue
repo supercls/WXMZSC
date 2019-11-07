@@ -6,20 +6,20 @@
 		<view class="user-center">
 			<view class="item">
 				<image src="../../static/user/user_1.png" mode="" class="uni-img"></image>
-				<input class="uni-input" type="number" placeholder-class="placeholder"  placeholder="请输入手机号" maxlength="11" v-model="userCode"/>
+				<input class="uni-input" type="number" placeholder-class="placeholder"  placeholder="请输入手机号" maxlength="11" v-model="userObj.mobileTel"/>
 			</view>
 			<view class="item">
 				<image src="../../static/user/user_3.png" mode="" class="uni-img"></image>
-				<input class="uni-input" placeholder-class="placeholder"  placeholder="请输入短信验证码"  type="number" v-model="userMessage"/>
+				<input class="uni-input" placeholder-class="placeholder"  placeholder="请输入短信验证码"  type="number" v-model="userObj.verCode"/>
 				<text class="timeSpan" :class="{active:isSend}"  @tap="sendCode" :disabled="isSend">{{times}}</text>
 			</view>
 			<view class="item">
 				<image src="../../static/user/user_2.png" mode="" class="uni-img"></image>
-				<input class="uni-input" placeholder-class="placeholder"  placeholder="请输入登录密码"  password v-model="userPassword"/>
+				<input class="uni-input" placeholder-class="placeholder"  placeholder="请输入登录密码"  password v-model="userObj.passWord"/>
 			</view>
 			<view class="item">
 				<image src="../../static/user/user_4.png" mode="" class="uni-img"></image>
-				<input class="uni-input" placeholder-class="placeholder"  placeholder="请选择所在区域" disabled  v-model="userDw" @tap="openPicker"/>
+				<input class="uni-input" placeholder-class="placeholder"  placeholder="请选择所在区域" disabled  v-model="userObj.districtFullName" @tap="openPicker"/>
 			</view>
 		</view>
 		<view class="user-tc">
@@ -37,16 +37,22 @@
 </template>
 
 <script>
-	import {login} from '../../utils/api.js'
+	import {register} from '../../utils/api.js'
 	import lotusAddress from '../../components/picker-address/lotusAddress.vue'
+	import {mapGetters} from 'vuex'
+	import md5 from '../../utils/md5.js'
 	export default {
 		data() {
 			return {
 				loading:false,
-				userCode:'',
-				userPassword:'',
-				userDw:'',
-				userMessage:'',
+				userObj:{
+					openId:'',
+					mobileTel:'',
+					verCode:'',
+					passWord:'',
+					districtNo:'',
+					districtFullName:''
+				},
 				times:'发送验证码',
 				isSend:false,
 				seconds:null,
@@ -61,6 +67,11 @@
 		},
 		components:{
 			lotusAddress
+		},
+		computed:{
+			...mapGetters([
+				'openID'
+			])
 		},
 		onLoad() {
 
@@ -82,10 +93,60 @@
 				//#endif
 			},
 			submit(){
-				console.log(this.userCode)
-				
+				if(this.userObj.mobileTel == '' || this.userObj.mobileTel.length!=11){
+					uni.showToast({
+						title: '请输入正确的手机号',
+						icon:'none',
+						duration: 2000
+					})
+					return false
+				}
+				if(this.userObj.verCode == ''){
+					uni.showToast({
+						title: '请输入短信验证码',
+						icon:'none',
+						duration: 2000
+					})
+					return false
+				}
+				if(this.userObj.passWord == ''){
+					uni.showToast({
+						title: '请输入账号密码',
+						icon:'none',
+						duration: 2000
+					})
+					return false
+				}
+				if(this.userObj.districtFullName == ''){
+					uni.showToast({
+						title: '请选择所在区域',
+						icon:'none',
+						duration: 2000
+					})
+					return false
+				}
+				this.userObj.openId = this.openID
+				this.userObj.passWord = md5.hex_md5(this.userObj.passWord).toUpperCase()   //md5加密转大写
+				this.loading = true
+				register({...this.userObj}).then(res =>{
+					this.loading = false
+					uni.redirectTo({
+					    url: '/pages/User/index'
+					});
+				}).catch(err =>{
+					this.loading = false
+					console.log(err)
+				})
 			},
 			sendCode(){
+				if(this.userObj.mobileTel == '' || this.userObj.mobileTel.length!=11){
+					uni.showToast({
+						title: '请输入正确的手机号',
+						icon:'none',
+						duration: 2000
+					})
+					return false
+				}
 				if(this.isSend) return false
 				this.seconds = 60
 				let timeOut = setInterval(() =>{
@@ -108,7 +169,8 @@
 				this.lotusAddressData.provinceName = res.province;
 				this.lotusAddressData.cityName = res.city;
 				this.lotusAddressData.townName = res.town;
-				this.userDw = `${res.province} ${res.city} ${res.town}`; 
+				this.userObj.districtFullName = `${res.province} ${res.city} ${res.town}`; 
+				this.userObj.districtNo = res.districtNo
 			}
 		},
 		
