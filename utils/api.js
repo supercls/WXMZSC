@@ -8,6 +8,14 @@ export function getOpenId(data){   //获取openId
 	})
 }
 
+export function getUserInfo(data){   //获取用户注册信息
+	return new RequestMn().get({
+		url:'Woman/GetWoman',
+		method:'GET',            
+		data:data
+	})
+}
+
 export function register(data){   //注册
 	return new RequestMn().get({
 		url:'Woman/Register',

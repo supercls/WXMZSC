@@ -2,7 +2,7 @@
 	<view class= "page">
 		<view class= "top" >
 			<image src="../../static/mine/background.png" class= "bgImg"></image>
-			<view class= "header">
+			<view class= "header" @click= "pageJump('7')">
 				<view class= "flex avatar">
 					<image src="../../static/mine/icon-avatar.png" class= "avatarImg"></image>
 				</view>	
@@ -34,6 +34,10 @@
 </template>
 
 <script>
+	
+	import { Ceshi } from '../../utils/ceshi'
+	const ceshi = new Ceshi()
+	
 	export default {
 		data() {
 			return {
@@ -51,38 +55,69 @@
 				
 			}
 		},
+		
+		onLoad() {
+			uni.login({                  //异步回调太多，全部同步，等openId获取成功后再执行入口页面的请求
+			  provider: 'weixin',
+			  success: (data)=>{
+				 let obj = {
+					code: data.code
+				 }
+				 ceshi.getOpenId(obj).then(res=>{
+					 console.log(res)
+				 })
+				 
+				 
+			  },
+			})
+		},
+		
+		
 		methods: {
 			pageJump( num ){
 				// console.log(num)
 				switch(num){
 					case  '1':
+					const ManageHandbooks= 'https://mzjksc.yystars.com/xcx.mzsc/Area/MyHandbook/ManageHandbooks.html?deviceType=5&name=&idCard=&districtNo=410101&districtName=%E6%B2%B3%E5%8D%97%E7%9C%81%20%E9%83%91%E5%B7%9E%E5%B8%82%20%E5%B8%82%E8%BE%96%E5%8C%BA&machineCode=50f99df5730a4335ba3e951d4f7bbb49&WomanId=2000363&APPType=mzsc'
+					const ManageHandbooksData = encodeURIComponent(JSON.stringify(ManageHandbooks))
 					    uni.navigateTo({
-					       // url: '../../pages/Web/index?url=http://mzjksc.yystars.com:5603/YYQ.Web/V5.2.9/Area/agreement/agreement.html'
+					       url: `../../pages/Web/index?url= ${ManageHandbooksData}`
 					    })
 						break;
 					case  '2':
+						const MaternalMessenger= 'https://mzjksc.yystars.com/xcx.web/Area/Slidebar/MaternalMessenger/Main.html?deviceType=5&currentChapter=%E5%AD%95%E4%BA%A7%E6%9C%9F%E7%AF%87&subsidiaryParams=&machineCode=50f99df5730a4335ba3e951d4f7bbb49&WomanId=2000363'
+						const MaternalMessengerData = encodeURIComponent(JSON.stringify(MaternalMessenger))
 					    uni.navigateTo({
-					       // url: '../../pages/view/index?id=2'
+					       url: `../../pages/Web/index?url= ${MaternalMessengerData}`
 					    })
 						break;
 					case  '3':
+						const Collection= 'https://mzjksc.yystars.com/xcx.web/Area/Slidebar/Collection/Main.html'
+						const CollectionData = encodeURIComponent(JSON.stringify(Collection))
 					    uni.navigateTo({
-					       // url: '../../pages/view/index?id=3'
+					        url: `../../pages/Web/index?url= ${CollectionData}`
 					    })
 						break;
 					case  '4':
-					    uni.navigateTo({
-					       // url: '../../pages/view/index?id=4'
+						const HelpAndFeedback = 'https://mzjksc.yystars.com/xcx.web/Area/Slidebar/HelpAndFeedback/FeedBack.html?deviceType=5&machineCode=50f99df5730a4335ba3e951d4f7bbb49&WomanId=2000363&APPType=mzsc'
+					    const HelpAndFeedbackData= encodeURIComponent(JSON.stringify(HelpAndFeedback))
+						uni.navigateTo({	
+					       url: `../../pages/Web/index?url= ${HelpAndFeedbackData}`
 					    })
 						break;
 					case  '5':
 					    uni.navigateTo({
-					       // url: '../../pages/view/index?id=5'
+					       url: '../../pages/Mine/setting'
 					    })
 						break;
 					case  '6':
 					    uni.navigateTo({
 					       url: '../../pages/brief/brief'
+					    })
+						break;
+					case  '7':
+					    uni.navigateTo({
+					       url: '../../pages/Mine/userInfo'
 					    })
 						break;
 				}

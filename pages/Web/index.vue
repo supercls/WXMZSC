@@ -1,6 +1,6 @@
 <template>
 	<view>
-	        <web-view :webview-styles="webviewStyles" :src="urlHttps"></web-view>
+		<web-view :src="urlHttps"></web-view>
 	</view>
 </template>
 
@@ -8,11 +8,6 @@
 	export default {
 		data() {
 			return {
-				webviewStyles:{
-					progress: {
-						color: '#FF70B5'
-					}
-				},
 				urlHttps:''
 			}
 		},

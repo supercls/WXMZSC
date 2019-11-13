@@ -7,22 +7,16 @@
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/* WEBPACK VAR INJECTION */(function(uni, createApp) {__webpack_require__(/*! uni-pages */ 4);__webpack_require__(/*! @dcloudio/uni-stat */ 5);
+/* WEBPACK VAR INJECTION */(function(createApp) {__webpack_require__(/*! uni-pages */ 4);__webpack_require__(/*! @dcloudio/uni-stat */ 5);
 var _vue = _interopRequireDefault(__webpack_require__(/*! vue */ 2));
 var _App = _interopRequireDefault(__webpack_require__(/*! ./App */ 9));
-var _index = _interopRequireDefault(__webpack_require__(/*! ./store/index */ 17));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function _objectSpread(target) {for (var i = 1; i < arguments.length; i++) {var source = arguments[i] != null ? arguments[i] : {};var ownKeys = Object.keys(source);if (typeof Object.getOwnPropertySymbols === 'function') {ownKeys = ownKeys.concat(Object.getOwnPropertySymbols(source).filter(function (sym) {return Object.getOwnPropertyDescriptor(source, sym).enumerable;}));}ownKeys.forEach(function (key) {_defineProperty(target, key, source[key]);});}return target;}function _defineProperty(obj, key, value) {if (key in obj) {Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true });} else {obj[key] = value;}return obj;}
-
-var apiServer = '';
-uni.getSystemInfo({ //同步
-  success: function success(res) {
-    res.brand == 'devtools' ? apiServer = 'http://localhost:1442/api/' : '';
-  } });
-
+var _index = _interopRequireDefault(__webpack_require__(/*! ./store/index */ 17));
+var _config = __webpack_require__(/*! ./config.js */ 97);function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function _objectSpread(target) {for (var i = 1; i < arguments.length; i++) {var source = arguments[i] != null ? arguments[i] : {};var ownKeys = Object.keys(source);if (typeof Object.getOwnPropertySymbols === 'function') {ownKeys = ownKeys.concat(Object.getOwnPropertySymbols(source).filter(function (sym) {return Object.getOwnPropertyDescriptor(source, sym).enumerable;}));}ownKeys.forEach(function (key) {_defineProperty(target, key, source[key]);});}return target;}function _defineProperty(obj, key, value) {if (key in obj) {Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true });} else {obj[key] = value;}return obj;}
 
 _vue.default.config.productionTip = false;
 _vue.default.prototype.$store = _index.default;
-_vue.default.prototype.$apiServer = apiServer;
-_vue.default.prototype.$WebServer = 'http://mzjksc.yystars.com:5603/';
+_vue.default.prototype.$apiServer = _config.apiServer;
+_vue.default.prototype.$WebServer = _config.webServer;
 
 _App.default.mpType = 'app';
 
@@ -31,7 +25,7 @@ var app = new _vue.default(_objectSpread({
 _App.default));
 
 createApp(app).$mount();
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"], __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["createApp"]))
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["createApp"]))
 
 /***/ }),
 /* 1 */,
@@ -103,34 +97,13 @@ __webpack_require__.r(__webpack_exports__);
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;
-var _api = __webpack_require__(/*! ./utils/api.js */ 12);var _default =
+Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var _default =
 {
-  onLaunch: function onLaunch() {var _this = this; //本身异步
-
-    uni.login({ //异步回调太多，全部同步，等openId获取成功后再执行入口页面的请求
-      provider: 'weixin',
-      success: function success(loginRes) {
-        (0, _api.getOpenId)({ code: loginRes.code }).then(function (res) {
-          _this.$store.commit('setOpenID', { openId: res.msg });
-        }).catch(function (err) {
-          console.log(err);
-        });
-      },
-      fail: function fail(err) {
-        uni.showToast({
-          title: JSON.stringify(err),
-          icon: 'none',
-          duration: 2000 });
-
-      } });
-
-
+  onLaunch: function onLaunch() {//本身异步
     console.log('App Launch');
   },
   globalData: {
     checkLoad: false } };exports.default = _default;
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))
 
 /***/ }),
 /* 12 */,

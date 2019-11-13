@@ -26,7 +26,7 @@
 			<view  @tap="aggreeBt" class="user-tc-v">
 				<image :src="imgSrc" mode=""></image>已阅读并同意
 			</view>
-			<text class="user-tc-t1" @tap="junmpUrl('/Area/agreement/agreement.html')">《用户协议及隐私条款》</text>
+			<text class="user-tc-t1" @tap="junmpUrl('Area/agreement/agreement.html')">《用户协议及隐私条款》</text>
 		</view>
 		<view class="user-bottom">
 			<button type="primary" :loading="loading" class="but" @tap="submit" 
@@ -70,11 +70,12 @@
 		},
 		computed:{
 			...mapGetters([
-				'openID'
+				'openID',
+				'userInfo'
 			])
 		},
 		onLoad() {
-
+			console.log(this.userInfo)
 		},
 		methods: {
 			aggreeBt(){
@@ -89,7 +90,7 @@
 				//#endif
 				
 				//#ifndef MP-WEIXIN
-				Window.open(urlHttps)
+				window.open(JSON.parse(decodeURIComponent(urlHttps)))  //跳转貌似有问题，先不管
 				//#endif
 			},
 			submit(){

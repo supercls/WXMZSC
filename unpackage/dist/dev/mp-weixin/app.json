@@ -1,5 +1,6 @@
 {
   "pages": [
+    "pages/User/home",
     "pages/User/index",
     "pages/User/rejister",
     "pages/User/reset",
@@ -10,6 +11,7 @@
     "pages/Mine/Mine",
     "pages/Mine/setting",
     "pages/Web/index",
+    "pages/Web/share",
     "pages/brief/brief",
     "pages/Mine/userInfo"
   ],
@@ -45,6 +47,5 @@
       }
     ]
   },
-  "usingComponents": {},
-  "sitemapLocation": "sitemap2.json"
+  "usingComponents": {}
 }
