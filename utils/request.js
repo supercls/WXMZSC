@@ -31,7 +31,7 @@ class RequestMn extends Configs {
 						uni.showToast({
 						    title: data.msg ||'',
 							icon:'none',
-						    duration: 2000
+						    duration: 1500
 						});
 						reject(res)
 					}
@@ -39,7 +39,7 @@ class RequestMn extends Configs {
 						uni.showToast({
 						    title: `${res.statusCode}+JSON.stringify(res.data.Message)`,
 							icon:'none',
-						    duration: 2000
+						    duration: 1500
 						});
 						reject(res)
 					}

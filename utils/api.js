@@ -39,3 +39,27 @@ export function resetPassword(data){   //忘记密码
 		data:data
 	})
 }
+
+export function getIndexPageData(data){  //获取首页数据
+	return new RequestMn().get({
+		url:'Woman/GetIndexPageData',
+		method:'GET',
+		data:data
+	})
+}
+
+export function refreshArticles(data){  //刷新孕育指导
+	return new RequestMn().get({
+		url:'Woman/RefreshArticles',
+		method:'GET',
+		data:data
+	})
+}
+
+export function updateBookPeriod(data){   //切换篇章
+	return new RequestMn().get({
+		url:'Woman/UpdateBookPeriod',
+		method:'GET',
+		data:data
+	})
+}

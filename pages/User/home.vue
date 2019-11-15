@@ -24,22 +24,19 @@
 		},
 		onLoad(){
 			//#ifdef MP-WEIXIN
-			uni.login({                  //，全部同步，等openId获取成功后再执行入口页面的请求
+			uni.login({                  //等openId获取成功后再执行入口页面的请求
 			  provider: 'weixin',
 			  success: (loginRes) => {
 				  getOpenId({code:loginRes.code}).then(res=> {
 					 this.$store.commit('setOpenID',{openId: res.msg})
 					 getUserInfo({openId:this.openID}).then(data =>{
 						 console.log(data)
-						 return 
 						 uni.switchTab({
 						     url: '/pages/Home/Home'
 						 });
-						 console.log(data)
 					 }).catch(err =>{
 						 console.log("获取用户信息失败")  //不作跳转，用户手动点击
 					 })
-					 
 				  }).catch(err =>{
 					  console.log(err)
 				  })
@@ -56,7 +53,6 @@
 		},
 		methods:{
 			getuserinfo(res){
-				console.log(res)
 				const isAu = res.detail.userInfo
 				if(isAu){
 					UserInfo.setInfo(JSON.stringify(isAu))
