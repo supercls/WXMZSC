@@ -19,8 +19,7 @@
   "window": {
     "navigationBarTextStyle": "black",
     "navigationBarTitleText": "母子手册",
-    "navigationBarBackgroundColor": "#f2f2f2",
-    "backgroundColor": "#f00"
+    "navigationBarBackgroundColor": "#f2f2f2"
   },
   "tabBar": {
     "color": "#999999",
@@ -47,6 +46,6 @@
       }
     ]
   },
-  "usingComponents": {},
-  "sitemapLocation": "sitemap88.json"
+  "permission": {},
+  "usingComponents": {}
 }

@@ -159,7 +159,7 @@ var _vuex = __webpack_require__(/*! vuex */ 16);function _objectSpread(target) {
               url: '/pages/Home/Home' });
 
           }).catch(function (err) {
-            console.log("获取用户信息失败"); //不作跳转，用户手动点击
+            console.log("获取用户信息失败" + JSON.stringify(err)); //不作跳转，用户手动点击
           });
         }).catch(function (err) {
           console.log(err);
@@ -183,7 +183,7 @@ var _vuex = __webpack_require__(/*! vuex */ 16);function _objectSpread(target) {
         this.$store.commit('setUserInfo', JSON.stringify(isAu));
       }
       uni.navigateTo({
-        url: '/pages/User/rejister' });
+        url: '/pages/User/index' });
 
     },
     jumpOther: function jumpOther() {

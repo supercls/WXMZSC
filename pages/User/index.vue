@@ -66,7 +66,9 @@
 				this.userObj.passWord = md5.hex_md5(this.userObj.passWord).toUpperCase()   //md5加密转大写
 				this.userObj.openId = this.$store.state.openID;
 				login({...this.userObj}).then(res =>{
-					console.log(res)
+					uni.switchTab({
+						url: '/pages/Home/Home'
+					})
 					this.loading = false
 				}).catch(err =>{
 					this.loading = false

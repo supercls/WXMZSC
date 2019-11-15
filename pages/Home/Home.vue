@@ -1,7 +1,7 @@
 <template>
 	<view class="home_wrapper">
 		<view class="hea-top-bg">
-			<image src="../../static/home/head_bg@2X.png" mode="" class="hea-top-bgimg"></image>
+			<image src="../../static/home/banner.png" mode="" class="hea-top-bgimg"></image>
 			<view class="hea-top">
 				<image class="image1" @click="jumpUrl('Area/MyHandbook/ChangeHandbook.html','MZSC')" src="../../static/home/navbar_switch@2x.png" alt=""></image>
 				<view class="hea-top-center">
@@ -26,36 +26,36 @@
 						  <image src="../../static/home/icon_mom@2x.png" alt="" class="img_n1"></image>
 						  <text>{{userName ||'未填姓名'}}</text>
 						</view>
-						<view>{{adviceName}}</view>
+						<view class="adviceName">{{adviceName}}</view>
 					</view>
 					  <!--孕产期-->
-					<view v-else-if="period=='2'"  @click="jumpUrl('Area/Home/BasicSituation/main.html','YYQ.Web')">
+					<view class="uli" v-else-if="period=='2'"  @click="jumpUrl('Area/Home/BasicSituation/main.html','YYQ.Web')">
 					  <view style="margin-top: 0;">
 						  <image src="../../static/home/icon_mom@2x.png" alt="" class="img_n1"></image>
 						  <text>{{userName||'未填姓名'}}</text>
 					  </view>
-					  <view>
+					  <view style="margin-top: 0.5em;">
 						  <image src="../../static/home/icon_clock@2x.png" alt="" class="img_n2"></image>
 						  <text v-if="PreExpectedDate!=''">预产期:{{PreExpectedDate}}</text>
 						  <text v-else>未填预产期</text>
 					  </view>
-					  <view>
+					  <view style="margin-top: 0.5em;">
 						  <image src="../../static/home/icon_rili@2x.png" alt="" class="img_n3"></image>
 						  <text>{{Timetext}}</text>
 					  </view>
 					</view>
 					   <!--儿童期-->
-					<view v-else-if="period=='3'"  @click="jumpUrl('Area/Home/BasicSituation/main.html','YYQ.Web')">
+					<view  class="uli" v-else-if="period=='3'"  @click="jumpUrl('Area/Home/BasicSituation/main.html','YYQ.Web')">
 					  <view style="margin-top: 0rem;">
-						  <image src="../../static/home/icon_mom@2x.png" alt=""></image>
+						  <image src="../../static/home/icon_mom@2x.png" alt="" class="img_n1"></image>
 						  <text>{{userName}}</text>
 					  </view>
-					  <view>
-						  <image src="../../static/home/icon_baby@2x.png" alt=""></image>
+					  <view style="margin-top: 0.5em;">
+						  <image src="../../static/home/icon_baby@2x.png" alt="" class="img_n2"></image>
 						  <text>{{ChildName||'未填姓名'}}</text>
 					  </view>
-					  <view>
-						  <image src="../../static/home/icon_rili@2x.png" alt=""></image>
+					  <view style="margin-top: 0.5em;">
+						  <image src="../../static/home/icon_rili@2x.png" alt="" class="img_n3"></image>
 						  <text>{{Timetext||'未填出生日期'}}</text>
 					  </view>
 					</view>
@@ -69,6 +69,27 @@
 		    <image src="../../static/home/btn_basic@2x.png"  v-else-if="period=='3'" alt=""  @click="jumpUrl('Area/Home/BasicSituation/main.html','YYQ.Web')"></image>
 		    <image src="../../static/home/btn_scan@2x.png" alt="" @click="jumpUrl('Area/View/Home/Home.html','MZSC')"></image>
 		</view>
+		<!--母婴信使-->
+		<view class="myxs-view">
+			<view class="uni-padding-wrap">
+					<view class="page-section swiper">
+						<view class="page-section-spacing">
+							<swiper class="swiper" :indicator-dots="indicatorDots" :circular="circular" :autoplay="autoplay" :interval="interval" :duration="duration">
+								<swiper-item>
+									<view class="swiper-item uni-bg-red">A</view>
+								</swiper-item>
+								<swiper-item>
+									<view class="swiper-item uni-bg-green">B</view>
+								</swiper-item>
+								<swiper-item>
+									<view class="swiper-item uni-bg-blue">C</view>
+								</swiper-item>
+							</swiper>
+						</view>
+					</view>
+				</view>
+		</view>
+		<!--母婴信使-->
 		<!--孕前记录信息-->
 		<view class="yq-view1" v-if="period=='1'">
 		    <view class="yq-ul">
@@ -114,25 +135,25 @@
 		<!--孕产期健康监测-->
 		<view class="ycjc-view1" v-if="period=='2'">
 		  <view class="yyzd-top">
-		      <view><text></text>康监测<text></text></view>
+		      <view><text></text>健康监测<text></text></view>
 		  </view>
-		  <view>
-		    <view  @click="jumpUrl('Area/Record/Maternal/WeightSelfRecord/RecordList.html','MZSC')">
+		  <view class="ul-n">
+		    <view class="li-n"  @click="jumpUrl('Area/Record/Maternal/WeightSelfRecord/RecordList.html','MZSC')">
 		      <image class="image1" src="../../static/home/icon_tizhongjiance@2x.png" alt=""></image>
 		        <view>体重监测(孕5-40周)</view>
 		      <image class="image2" src="../../static/home/icon_go@2x.png" alt=""></image>
 		    </view>
-		    <view  @click="jumpUrl('Area/Record/Maternal/MoveMentRecord/Record.html','MZSC')">
+		    <view class="li-n"  @click="jumpUrl('Area/Record/Maternal/MoveMentRecord/Record.html','MZSC')">
 		      <image class="image1" src="../../static/home/icon_shutaidong@2x.png" alt=""></image>
 		        <view>数胎动(孕28-41周)</view>
 		      <image class="image2" src="../../static/home/icon_go@2x.png" alt=""></image>
 		    </view>
-		    <view  @click="jumpUrl('Area/Information/PregnancyCheck/List.html','YYQ.Web')">
+		    <view class="li-n" @click="jumpUrl('Area/Information/PregnancyCheck/List.html','YYQ.Web')">
 		      <image class="image1" src="../../static/home/icon_wodebaogao@2x.png" alt=""></image>
 		       <view >孕期产检和提醒</view>
 		      <image class="image2" src="../../static/home/icon_go@2x.png" alt=""></image>
 		    </view>
-		    <view  @click="jumpUrl('Area/Record/Maternal/LessonRecord/RecordList.html','MZSC')">
+		    <view class="li-n"  @click="jumpUrl('Area/Record/Maternal/LessonRecord/RecordList.html','MZSC')">
 		      <image class="image1" src="../../static/home/icon_yunfuxuexiao@2x.png" alt=""></image>
 		      <view>
 		        <view class="p1">孕妇学校</view>
@@ -151,7 +172,7 @@
 		        <view class="p1">预防接种</view>
 		        <view class="p2">儿童疫苗接种时间表</view>
 		      </view>
-		      <image class="image2" src="../..static/home/icon_go@2x.png" alt=""></image>
+		      <image class="image2" src="../../static/home/icon_go@2x.png" alt=""></image>
 		    </view>
 		  </view>
 		</view>
@@ -188,7 +209,7 @@
 		    </view>
 		    <view class="yyzd-center" v-for="(item,index) in yyqList" :key="index" 
 		    @click="jumpUrl('Area/Information/Encyclopedias/Detail.html','YYQ.Web','&ArticleId='+item.ArticleId )">
-		        <image :src="'../../static/home/'+imageList[parseInt(period)-1][index]" alt=""></image>
+		        <image :src="'../../static/home/'+imageList[parseInt(period)-1][index]"></image>
 		        <view class="content">
 		          <view class="p1">{{item.ArticleTitle}}</view>
 		          <view class="p2">{{item.ArticleSubject}}</view>
@@ -208,10 +229,16 @@
 	export default {
 		data() {
 			return {
+				background: ['color1', 'color2', 'color3'],
+				indicatorDots: true,
+				autoplay: true,
+				interval: 2000,
+				duration: 500,
+				circular:true,
 				show:false,
 				topList:[{name:'孕前篇',isActive:true},{name:'孕产期篇',isActive:false},{name:'儿童篇',isActive:false}],
 				showToplist:false,
-				period:'1',
+				period:'2',
 				Mathlist:['保持最佳的体重','孕前开始吃叶酸','坚持健康的生活方式','口腔健康不容忽视','适龄生育有利母婴健康'],
 				periodName:'',
 				periodNameList:['','孕前篇','孕产期篇','儿童篇'],
@@ -236,11 +263,9 @@
 				'<text>晚孕阶段:</text>胎儿发育增快，腹部明显增大','<text>足月分娩:</text>早计划，早住院'],
 				solo:'<text>早孕阶段:</text>出现停经，恶心呕吐，食欲不振，乳房胀痛',
 				userName:'',
-				imageList:[['baike_image_yunqian_1.png','baike_image_yunqian_2.png','baike_image_yunqian_3.png'],
-				['baike_image_yunchanqi_3.png','baike_image_yunchanqi_4.png','baike_image_yunchanqi_5.png'],
-				['baike_image_ertong_2.png','baike_image_ertong_3.png','baike_image_ertong_5.png']],
+				imageList:[['yq1.png','yq2.png','yq3.png'],['yc1.png','yc2.png','yc3.png'],['ye1.png','ye2.png','ye3.png']],
 				topNameList:['备孕指导','孕育指导','养育指导'],
-				tabRecord:[{name:'自我记录',isActive:true}],
+				tabRecord:[{name:'自我记录',isActive:true},{name:'检查记录',isActive:false}],
 				version:'',
 				List:[   //自我检查记录(包括孕前和孕产期的不tong)
 					[
@@ -313,12 +338,12 @@
 		},
 		methods: {
 			changeTabRecord(index) {
-				var that=this;
+				let that=this;
 				this.tabRecord.map(item => {item.isActive=false})
 				this.tabRecord[index].isActive=true;
 				this.recordList=this.List[parseInt(this.period)-2][index]
 				if(this.period=='2' && this.PeriodDays){
-					var num= Math.floor(this.PeriodDays/7)
+					let num= Math.floor(this.PeriodDays/7)
 					if(index==0){
 						if(num<12){
 							this.recordList[2].isActive=true
@@ -349,7 +374,7 @@
 					}
 				}
 				if(this.period=='3' && this.PeriodDays){
-					var num= Math.floor(this.PeriodDays/30)
+					let num= Math.floor(this.PeriodDays/30)
 					if(index==0){
 						if (num<1 && num>0){
 							that.recordList[2].isActive=true
@@ -439,7 +464,6 @@
 				this.showToplist=true;
 			},
 			handleClick(index) {  //选择时期
-				nativeCacheObj.showLoading();
 				this.period=index+1+'';
 				this.periodName=this.topList[index].name
 				this.show=false
@@ -457,25 +481,26 @@
 					title:'切换中'
 				})
 				updateBookPeriod({
-					bookId:'',
+					bookId:this.BOOK_ID,
 					period:index
 				}).then(res =>{
-					this.yyqList=dataList.dtData.dtKnowledge||[];
+				
+					this.yyqList=res.dtData.dtKnowledge||[];
 					this.period!='1'?this.recordList=this.List[parseInt(this.period)-2][0]:''
 					this.topName=this.topNameList[parseInt(this.period)-1];
 					this.periodName=this.periodNameList[parseInt(this.period)];
-					this.BOOK_ID=dataList.dtData.dtUserInfo[0].BookId;
-					this.BOOK_NO=dataList.dtData.dtUserInfo[0].BookNo;
+					this.BOOK_ID=res.dtData.dtUserInfo[0]?res.dtData.dtUserInfo[0].BookId ||'':'';
+					this.BOOK_NO=res.dtData.dtUserInfo[0]?res.dtData.dtUserInfo[0].BookNo ||'':'';
 					this.WomanStatus=this.period;
-					this.ChildName=dataList.dtData.dtUserInfo[0].ChildName||''
-					this.PreExpectedDate=dataList.dtData.dtUserInfo[0].PreExpectedDate||''
-					this.ChildBirthday=dataList.dtData.dtUserInfo[0].ChildBirthday||''
-					this.TimeSpan=dataList.dtData.dtUserInfo[0].TimeSpan||''
-					this.PeriodDays=dataList.dtData.dtUserInfo[0].PeriodDays||''
-					this.realName=dataList.dtData.dtUserInfo[0].WomanName||''
-					this.childName=dataList.dtData.dtUserInfo[0].ChildName||''
-					this.childSex=dataList.dtData.dtUserInfo[0].ChildSex||''
-					this.LastMensesDate=dataList.dtData.dtUserInfo[0].LastMensesDate||''
+					this.ChildName=res.dtData.dtUserInfo[0]?res.dtData.dtUserInfo[0].ChildName ||'':''
+					this.PreExpectedDate=res.dtData.dtUserInfo[0]?res.dtData.dtUserInfo[0].PreExpectedDate ||'':''
+					this.ChildBirthday=res.dtData.dtUserInfo[0]?res.dtData.dtUserInfo[0].ChildBirthday ||'':''
+					this.TimeSpan=res.dtData.dtUserInfo[0]?res.dtData.dtUserInfo[0].TimeSpan ||'':''
+					this.PeriodDays=res.dtData.dtUserInfo[0]?res.dtData.dtUserInfo[0].PeriodDays ||'':''
+					this.realName=res.dtData.dtUserInfo[0]?res.dtData.dtUserInfo[0].WomanName ||'':''
+					this.childName=res.dtData.dtUserInfo[0]?res.dtData.dtUserInfo[0].ChildName ||'':''
+					this.childSex=res.dtData.dtUserInfo[0]?res.dtData.dtUserInfo[0].ChildSex ||'':''
+					this.LastMensesDate=res.dtData.dtUserInfo[0]?res.dtData.dtUserInfo[0].LastMensesDate ||'':''
 					this.topList.map(item =>{
 						item.isActive=false
 					})
@@ -487,18 +512,32 @@
 				})
 				
 			},
-			jumpUrl(url,type,item) {  //跳转页面
+			jumpUrl(url,type,item) {  //原生跳转H5页面
 				!item?item='':''
-				var womanLevel='';
-				this.recordList.map(function(val){
+				let womanLevel='';
+				this.recordList.map( val =>{
 					if(val.isActive){
 						womanLevel=val.name
 					}
 				})
-				var router=window.location.protocol+ '//' + window.location.host+'/'+type+'/'+url+'?'+'deviceType=5&WX=1&WomanId=&'+'APPType='
-				+type+'&machineCode='+this.machineCode+'&BOOK_ID='+this.BOOK_ID+'&BOOK_NO='+this.BOOK_NO+'&womanLevel='+womanLevel
+				console.log(item)
+				console.log(type)
+				let WxType = type =='MZSC'?'xcx.mzsc/':'xcx.web/'
+				const httpWeb = this.$WebServer + WxType +url +'?deviceType=5&WX=1&WomanId='+this.WomanId+'&APPType='+type+
+				'&machineCode='+this.machineCode+'&BOOK_ID='+this.BOOK_ID+'&BOOK_NO='+this.BOOK_NO+'&womanLevel='+womanLevel
 				+'&WomanStatus='+this.WomanStatus+'&childrenMonth='+parseInt(parseInt(this.PeriodDays||0)/30)
-				+'&preExpectedDate='+this.PreExpectedDate+'&realName='+this.realName+'&lastMensesDate='+this.LastMensesDate+'&childName='+this.childName+'&childSex='+this.childSex+'&childBirthday='+this.ChildBirthday+item||''
+				+'&preExpectedDate='+this.PreExpectedDate+'&realName='+this.realName+'&lastMensesDate='
+				+this.LastMensesDate+'&childName='+this.childName+'&childSex='
+				+this.childSex+'&childBirthday='+this.ChildBirthday+item||''
+				let urlHttps = encodeURIComponent(JSON.stringify(httpWeb))
+				//#ifdef MP-WEIXIN    
+				uni.navigateTo({
+				    url: `/pages/Web/index?url=${urlHttps}`,
+				});
+				//#endif    
+				//#ifndef MP-WEIXIN
+				window.open(JSON.parse(decodeURIComponent(urlHttps)))  //H5端跳转
+				//#endif
 			},
 			refreshYYQ(){  //孕育指导刷新
 				refreshArticles({
@@ -509,72 +548,70 @@
 				})
 			},
 			computeActive:function(){
-				var that=this;
-				if(that.period=='2' && that.PeriodDays){
-					var num= Math.floor(that.PeriodDays/7)
+				if(this.period=='2' && this.PeriodDays){
+					let num= Math.floor(this.PeriodDays/7)
 					if(num<12){
-						that.recordList[2].isActive=true
-						that.solo=that.soloList[0]
+						this.recordList[2].isActive=true
+						this.solo=this.soloList[0]
 					}
 					else if(12<num && num<28){
-						that.recordList[3].isActive=true
-						that.solo=that.soloList[1]
+						this.recordList[3].isActive=true
+						this.solo=this.soloList[1]
 					}
 					else if(28<=num && num<40){
-						that.recordList[4].isActive=true
+						this.recordList[4].isActive=true
 						
 					}
 					else{
-						that.recordList[5].isActive=true
+						this.recordList[5].isActive=true
 					}
 					if(28<=num && num<37){
-						that.solo=that.soloList[2]
+						this.solo=this.soloList[2]
 					}
 					if(num>37){
-						that.solo=that.soloList[3]
+						this.solo=this.soloList[3]
 					}
 				}
-				if(that.period=='3' && that.PeriodDays){
-				   
-					var num= Math.floor(that.PeriodDays/30)
+				if(this.period=='3' && this.PeriodDays){
+					let num= Math.floor(this.PeriodDays/30)
 					if (1>num){
-						that.recordList[2].isActive=true
+						this.recordList[2].isActive=true
 					}
 					else if(3>num && num>1){
-						that.recordList[3].isActive=true
+						this.recordList[3].isActive=true
 					}
 					else if (6>num&& num>=3){
-						that.recordList[4].isActive=true
+						this.recordList[4].isActive=true
 					}
 					else if (8>num && num>=6){
-						that.recordList[5].isActive=true
+						this.recordList[5].isActive=true
 					}
 					else if (12>num && num>=8){
-						that.recordList[6].isActive=true
+						this.recordList[6].isActive=true
 					}
 					else if (18>num && num>=12){
-						that.recordList[7].isActive=true
+						this.recordList[7].isActive=true
 					}
 					else if (24>num && num>=18){
-						that.recordList[8].isActive=true
+						this.recordList[8].isActive=true
 					}
 					else if (num>=24 && num<30){
-						that.recordList[9].isActive=true
+						this.recordList[9].isActive=true
 					}
 					else if (30<=num && num<36){
-						that.recordList[10].isActive=true
+						this.recordList[10].isActive=true
 					}
 					else if (36<=num && num<48){
-						that.recordList[11].isActive=true
+						this.recordList[11].isActive=true
 					}   
 					else if (48<=num && num<60){
-						that.recordList[12].isActive=true
+						this.recordList[12].isActive=true
 					}
 					else if (60<=num && num<72){
-						that.recordList[13].isActive=true
+						this.recordList[13].isActive=true
 					}
 					else if (72<=num){
-						that.recordList[14].isActive=true      
+						this.recordList[14].isActive=true      
 					}       
 				}    
 			},
@@ -587,25 +624,24 @@
 					bookId:''
 				}).then( res =>{
 					console.log(res)
-					this.userName=res.dtData.dtUserInfo[0]?res.dtData.dtUserInfo[0].WomanName:'未填姓名'
-					this.period==res.dtData.dtUserInfo[0]?res.dtData.dtUserInfo[0].Period:'1'
+					this.userName=res.dtData.dtUserInfo[0]?res.dtData.dtUserInfo[0].WomanName ||'':'未填姓名'
+					this.period=res.dtData.dtUserInfo[0]?res.dtData.dtUserInfo[0].Period ||'1':'1'
 					this.yyqList=res.dtData.dtKnowledge||[];
-					console.log(this)
 					this.period!='1'?this.recordList=this.List[parseInt(this.period)-2][0]:''
 					this.topName=this.topNameList[parseInt(this.period)-1];
 					this.periodName=this.periodNameList[parseInt(this.period)];
-					this.BOOK_ID=res.dtData.dtUserInfo[0].BookId;
-					this.BOOK_NO=res.dtData.dtUserInfo[0].BookNo;
+					this.BOOK_ID=res.dtData.dtUserInfo[0]?res.dtData.dtUserInfo[0].BookId ||'':'';
+					this.BOOK_NO=res.dtData.dtUserInfo[0]?res.dtData.dtUserInfo[0].BookNo ||'':'';
 					this.WomanStatus=this.period;
-					this.ChildName=res.dtData.dtUserInfo[0].ChildName||''
-					this.PreExpectedDate=res.dtData.dtUserInfo[0].PreExpectedDate||''
-					this.ChildBirthday=res.dtData.dtUserInfo[0].ChildBirthday||''
-					this.TimeSpan=res.dtData.dtUserInfo[0].TimeSpan||''
-					this.PeriodDays=res.dtData.dtUserInfo[0].PeriodDays||''
-					this.realName=res.dtData.dtUserInfo[0].WomanName||''
-					this.childName=res.dtData.dtUserInfo[0].ChildName||''
-					this.childSex=res.dtData.dtUserInfo[0].ChildSex||''
-					this.LastMensesDate=res.dtData.dtUserInfo[0].LastMensesDate||''
+					this.ChildName=res.dtData.dtUserInfo[0]?res.dtData.dtUserInfo[0].ChildName ||'':''
+					this.PreExpectedDate=res.dtData.dtUserInfo[0]?res.dtData.dtUserInfo[0].PreExpectedDate ||'':''
+					this.ChildBirthday=res.dtData.dtUserInfo[0]?res.dtData.dtUserInfo[0].ChildBirthday||'':''
+					this.TimeSpan=res.dtData.dtUserInfo[0]?res.dtData.dtUserInfo[0].TimeSpan||'':''
+					this.PeriodDays=res.dtData.dtUserInfo[0]?res.dtData.dtUserInfo[0].PeriodDays||'':''
+					this.realName=res.dtData.dtUserInfo[0]?res.dtData.dtUserInfo[0].WomanName||'':''
+					this.childName=res.dtData.dtUserInfo[0]?res.dtData.dtUserInfo[0].ChildName||'':''
+					this.childSex=res.dtData.dtUserInfo[0]?res.dtData.dtUserInfo[0].ChildSex||'':''
+					this.LastMensesDate=res.dtData.dtUserInfo[0]?res.dtData.dtUserInfo[0].LastMensesDate||'':''
 					this.topList.map(item =>{
 						item.isActive=false
 					})
@@ -623,8 +659,8 @@
 
 <style>
 	.home_wrapper{overflow-y:scroll;background-color:#F4F4F4;-webkit-overflow-scrolling : touch;}
-	.hea-top-bg{position: relative;}
-	.hea-top-bgimg{height: 394rpx;width: 100%;}
+	.hea-top-bg{position: relative;background: #FFFFFF;}
+	.hea-top-bgimg{height: 394rpx;width: 100%;display: block;}
     .hea-top{display:flex;-webkit-display:flex;justify-content: flex-start;-webkit-justify-content: flex-start;padding:22.5rpx 30rpx;position: absolute;top: 0rpx;left: 0;right: 0;}
     .hea-top .image1{width: 42rpx;height: 40rpx;}
     .hea-top .image2{width: 28rpx;height: 16.5rpx;margin-left: 7.5rpx;}
@@ -636,7 +672,7 @@
     .hea-top-center .n_ul view:nth-child(3){border:none;}
     .mockZ{position:absolute;top:0;left: 0;right: 0;bottom: 0;background: #777;opacity: 0.3;}
     .hea-next-center{ display: flex;-webkit-display:flex;justify-content: center;background: #fff;}
-    .hea-next-center image{width: 225rpx;height: 116rpx;margin:0 60rpx 33rpx 60rpx;}
+    .hea-next-center image{width: 221rpx;height: 116rpx;margin:12rpx 60rpx 6rpx 60rpx;}
 	.hea-center{position: absolute;top: 72rpx;}
     .hea-center .hea-center-left{width: 237rpx;height: 237rpx;}
     .hea-center{padding:18rpx 0;display: flex;-webkit-display:flex;}
@@ -647,8 +683,8 @@
     .yq-view1 .yq-ul  .image1{width: 55rpx;height: 55rpx;margin-right: 24rpx;}
     .yq-view1 .yq-ul .yq-li view{color: #333;font-size: 32rpx;}
     .yq-view1 .yq-ul  .image2{width: 20rpx;height: 34rpx;margin-left: auto;}
-    .born-question{margin:26rpx 52rpx;}
-    .born-question image{width: 100%;height: 88rpx;}
+    .born-question{padding:26rpx 52rpx;}
+    .born-question image{width: 100%;height: 88rpx;margin-bottom: 10rpx;}
     .born-question .born-view1{background: #fff;height: 75rpx;line-height: 75rpx;border-top-left-radius: 37rpx;border-bottom-left-radius: 37rpx;border-top-right-radius: 37rpx;border-bottom-right-radius: 37rpx;}
     .born-question .born-view1 p {text-align: center;color: #FF70B5;font-size: 32rpx;}
     .yyzd-list{background: #fff;}
@@ -664,7 +700,7 @@
     .yyzd-list .yyzd-center .content .p2{font-size: 24rpx;color: #999999;overflow: hidden;word-break:break-all; text-overflow:ellipsis;display: -webkit-box; -webkit-line-clamp:2;-webkit-box-orient: vertical;}
 
     .yc-view1 .yc-top{height: 90rpx;display: flex;-webkit-display:flex;justify-content: center;padding:0 37rpx;border-bottom:1rpx solid #EBEBEB;background: #fff;margin-top: 30rpx;}
-    .yc-view1 .yc-top text{flex: 2;text-align: center;padding-top: 30rpx;position: relative;cursor: pointer;}
+    .yc-view1 .yc-top text{flex: 2;text-align: center;padding-top: 30rpx;position: relative;cursor: pointer;font-size: 32rpx;}
     .yc-view1 .yc-top text.active{color: #FF9FCD;}
     .yc-view1 .yc-top text.active::before{content: '';position: absolute;bottom: 0;left: 50%;width: 90rpx;height: 2rpx;background: #FF9FCD;margin-left: -40rpx;}
     .yc-view1 .yc-center{overflow-x: auto;white-space:nowrap;width: 100%;-webkit-overflow-scrolling : touch;background: #fff;;}
@@ -687,11 +723,14 @@
     .ycjc-view1 .ul-n .li-n .image2{width: 20.25rpx;height: 33.75rpx;margin-left: auto;}
     .ycjc-view1 .ul-n .li-n .p1{color: #999;font-size: 30rpx;padding-bottom: 6rpx;}
 
-    .chiild-view1{background: #fff;margin:26.25rpx 0px;}
+    .chiild-view1{background: #fff;}
     .chiild-view1 .li-n{float: left;display: flex;-webkit-display:flex;-webkit-display:flex;width: 46%;border-radius:16.5rpx;margin:26.25rpx 2%;border:1rpx solid #EEEEEE;box-sizing: border-box;height: 113rpx;align-items: center;}
     .chiild-view1 .li-n image{width:56rpx;height: 56rpx;margin-left:auto;padding:0 30rpx;}
     .chiild-view1 .li-n view{font-size:32rpx;color: #666;padding-left:18.75rpx;}
-	.img_n1{width: 33rpx;height: 30rpx;margin-right: 10rpx;}
-	.img_n2{width: 32rpx;height: 32rpx;margin-right: 10rpx;}
-	.img_n3{width: 28rpx;height: 29rpx;margin-right: 10rpx;}
+	.img_n1{width: 33rpx;height: 30rpx;margin-right: 10rpx;vertical-align: -2rpx;}
+	.img_n2{width: 32rpx;height: 32rpx;margin-right: 10rpx;vertical-align: -2rpx;}
+	.img_n3{width: 28rpx;height: 29rpx;margin-right: 10rpx;vertical-align: -2rpx;}
+	.adviceName{margin-top: 10rpx;}
+	.clearfix::after { visibility: hidden; display: block; font-size: 0; content: " ";clear: both; height: 0; }
+	.myxs-view{background: #fff;margin:10rpx 0rpx;}
 </style>

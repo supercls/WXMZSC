@@ -1,7 +1,7 @@
 <template>
 	<view>
 		<view class="home-index">
-			<button type="primary" open-type="getUserInfo" @getuserinfo="getuserinfo">手机号注册</button>
+			<button type="primary" open-type="getUserInfo" @getuserinfo="getuserinfo">手机号登录</button>
 			<button type=""  @tap="jumpOther">游客访问</button>
 		</view>
 		
@@ -35,7 +35,7 @@
 						     url: '/pages/Home/Home'
 						 });
 					 }).catch(err =>{
-						 console.log("获取用户信息失败")  //不作跳转，用户手动点击
+						 console.log("获取用户信息失败"+JSON.stringify(err))  //不作跳转，用户手动点击
 					 })
 				  }).catch(err =>{
 					  console.log(err)
@@ -59,7 +59,7 @@
 					this.$store.commit('setUserInfo',JSON.stringify(isAu))
 				}
 				uni.navigateTo({
-					url:'/pages/User/rejister'
+					url:'/pages/User/index'
 				})
 			},
 			jumpOther(){

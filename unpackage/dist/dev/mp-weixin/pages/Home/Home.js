@@ -336,15 +336,42 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 var _api = __webpack_require__(/*! ../../utils/api.js */ 27);
 var _vuex = __webpack_require__(/*! vuex */ 16);function _objectSpread(target) {for (var i = 1; i < arguments.length; i++) {var source = arguments[i] != null ? arguments[i] : {};var ownKeys = Object.keys(source);if (typeof Object.getOwnPropertySymbols === 'function') {ownKeys = ownKeys.concat(Object.getOwnPropertySymbols(source).filter(function (sym) {return Object.getOwnPropertyDescriptor(source, sym).enumerable;}));}ownKeys.forEach(function (key) {_defineProperty(target, key, source[key]);});}return target;}function _defineProperty(obj, key, value) {if (key in obj) {Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true });} else {obj[key] = value;}return obj;}var _default =
 {
   data: function data() {
     return {
+      background: ['color1', 'color2', 'color3'],
+      indicatorDots: true,
+      autoplay: true,
+      interval: 2000,
+      duration: 500,
+      circular: true,
       show: false,
       topList: [{ name: '孕前篇', isActive: true }, { name: '孕产期篇', isActive: false }, { name: '儿童篇', isActive: false }],
       showToplist: false,
-      period: '1',
+      period: '2',
       Mathlist: ['保持最佳的体重', '孕前开始吃叶酸', '坚持健康的生活方式', '口腔健康不容忽视', '适龄生育有利母婴健康'],
       periodName: '',
       periodNameList: ['', '孕前篇', '孕产期篇', '儿童篇'],
@@ -369,11 +396,9 @@ var _vuex = __webpack_require__(/*! vuex */ 16);function _objectSpread(target) {
       '<text>晚孕阶段:</text>胎儿发育增快，腹部明显增大', '<text>足月分娩:</text>早计划，早住院'],
       solo: '<text>早孕阶段:</text>出现停经，恶心呕吐，食欲不振，乳房胀痛',
       userName: '',
-      imageList: [['baike_image_yunqian_1.png', 'baike_image_yunqian_2.png', 'baike_image_yunqian_3.png'],
-      ['baike_image_yunchanqi_3.png', 'baike_image_yunchanqi_4.png', 'baike_image_yunchanqi_5.png'],
-      ['baike_image_ertong_2.png', 'baike_image_ertong_3.png', 'baike_image_ertong_5.png']],
+      imageList: [['yq1.png', 'yq2.png', 'yq3.png'], ['yc1.png', 'yc2.png', 'yc3.png'], ['ye1.png', 'ye2.png', 'ye3.png']],
       topNameList: ['备孕指导', '孕育指导', '养育指导'],
-      tabRecord: [{ name: '自我记录', isActive: true }],
+      tabRecord: [{ name: '自我记录', isActive: true }, { name: '检查记录', isActive: false }],
       version: '',
       List: [//自我检查记录(包括孕前和孕产期的不tong)
       [
@@ -482,86 +507,86 @@ var _vuex = __webpack_require__(/*! vuex */ 16);function _objectSpread(target) {
         }
       }
       if (this.period == '3' && this.PeriodDays) {
-        var num = Math.floor(this.PeriodDays / 30);
+        var _num = Math.floor(this.PeriodDays / 30);
         if (index == 0) {
-          if (num < 1 && num > 0) {
+          if (_num < 1 && _num > 0) {
             that.recordList[2].isActive = true;
           } else
-          if (1 <= num && num < 3) {
+          if (1 <= _num && _num < 3) {
             that.recordList[3].isActive = true;
           } else
-          if (3 <= num && num < 6) {
+          if (3 <= _num && _num < 6) {
             that.recordList[4].isActive = true;
           } else
-          if (6 <= num && num < 8) {
+          if (6 <= _num && _num < 8) {
             that.recordList[5].isActive = true;
           } else
-          if (8 <= num && num < 12) {
+          if (8 <= _num && _num < 12) {
             that.recordList[6].isActive = true;
           } else
-          if (12 <= num && num < 18) {
+          if (12 <= _num && _num < 18) {
             that.recordList[7].isActive = true;
           } else
-          if (18 <= num && num < 24) {
+          if (18 <= _num && _num < 24) {
             that.recordList[8].isActive = true;
           } else
-          if (24 <= num && num < 30) {
+          if (24 <= _num && _num < 30) {
             that.recordList[9].isActive = true;
           } else
-          if (30 <= num && num < 36) {
+          if (30 <= _num && _num < 36) {
             that.recordList[10].isActive = true;
           } else
-          if (36 <= num && num < 48) {
+          if (36 <= _num && _num < 48) {
             that.recordList[11].isActive = true;
           } else
-          if (48 <= num && num < 60) {
+          if (48 <= _num && _num < 60) {
             that.recordList[12].isActive = true;
           } else
-          if (60 <= num && num < 72) {
+          if (60 <= _num && _num < 72) {
             that.recordList[13].isActive = true;
           } else
-          if (72 <= num) {
+          if (72 <= _num) {
             that.recordList[14].isActive = true;
           }
         } else
         {
-          if (num < 1) {
+          if (_num < 1) {
             that.recordList[0].isActive = true;
           } else
-          if (1 <= num && num < 3) {
+          if (1 <= _num && _num < 3) {
             that.recordList[1].isActive = true;
           } else
-          if (3 <= num && num < 6) {
+          if (3 <= _num && _num < 6) {
             that.recordList[2].isActive = true;
           } else
-          if (6 <= num && num < 8) {
+          if (6 <= _num && _num < 8) {
             that.recordList[3].isActive = true;
           } else
-          if (8 <= num && num < 12) {
+          if (8 <= _num && _num < 12) {
             that.recordList[4].isActive = true;
           } else
-          if (12 <= num && num < 18) {
+          if (12 <= _num && _num < 18) {
             that.recordList[5].isActive = true;
           } else
-          if (18 <= num && num < 24) {
+          if (18 <= _num && _num < 24) {
             that.recordList[6].isActive = true;
           } else
-          if (24 <= num && num < 30) {
+          if (24 <= _num && _num < 30) {
             that.recordList[7].isActive = true;
           } else
-          if (30 <= num && num < 36) {
+          if (30 <= _num && _num < 36) {
             that.recordList[8].isActive = true;
           } else
-          if (36 <= num && num < 48) {
+          if (36 <= _num && _num < 48) {
             that.recordList[9].isActive = true;
           } else
-          if (48 <= num && num < 60) {
+          if (48 <= _num && _num < 60) {
             that.recordList[10].isActive = true;
           } else
-          if (60 <= num && num < 72) {
+          if (60 <= _num && _num < 72) {
             that.recordList[11].isActive = true;
           } else
-          if (72 <= num) {
+          if (72 <= _num) {
             that.recordList[12].isActive = true;
           }
         }
@@ -572,7 +597,6 @@ var _vuex = __webpack_require__(/*! vuex */ 16);function _objectSpread(target) {
       this.showToplist = true;
     },
     handleClick: function handleClick(index) {//选择时期
-      nativeCacheObj.showLoading();
       this.period = index + 1 + '';
       this.periodName = this.topList[index].name;
       this.show = false;
@@ -590,25 +614,26 @@ var _vuex = __webpack_require__(/*! vuex */ 16);function _objectSpread(target) {
         title: '切换中' });
 
       (0, _api.updateBookPeriod)({
-        bookId: '',
+        bookId: this.BOOK_ID,
         period: index }).
       then(function (res) {
-        _this.yyqList = dataList.dtData.dtKnowledge || [];
+
+        _this.yyqList = res.dtData.dtKnowledge || [];
         _this.period != '1' ? _this.recordList = _this.List[parseInt(_this.period) - 2][0] : '';
         _this.topName = _this.topNameList[parseInt(_this.period) - 1];
         _this.periodName = _this.periodNameList[parseInt(_this.period)];
-        _this.BOOK_ID = dataList.dtData.dtUserInfo[0].BookId;
-        _this.BOOK_NO = dataList.dtData.dtUserInfo[0].BookNo;
+        _this.BOOK_ID = res.dtData.dtUserInfo[0] ? res.dtData.dtUserInfo[0].BookId || '' : '';
+        _this.BOOK_NO = res.dtData.dtUserInfo[0] ? res.dtData.dtUserInfo[0].BookNo || '' : '';
         _this.WomanStatus = _this.period;
-        _this.ChildName = dataList.dtData.dtUserInfo[0].ChildName || '';
-        _this.PreExpectedDate = dataList.dtData.dtUserInfo[0].PreExpectedDate || '';
-        _this.ChildBirthday = dataList.dtData.dtUserInfo[0].ChildBirthday || '';
-        _this.TimeSpan = dataList.dtData.dtUserInfo[0].TimeSpan || '';
-        _this.PeriodDays = dataList.dtData.dtUserInfo[0].PeriodDays || '';
-        _this.realName = dataList.dtData.dtUserInfo[0].WomanName || '';
-        _this.childName = dataList.dtData.dtUserInfo[0].ChildName || '';
-        _this.childSex = dataList.dtData.dtUserInfo[0].ChildSex || '';
-        _this.LastMensesDate = dataList.dtData.dtUserInfo[0].LastMensesDate || '';
+        _this.ChildName = res.dtData.dtUserInfo[0] ? res.dtData.dtUserInfo[0].ChildName || '' : '';
+        _this.PreExpectedDate = res.dtData.dtUserInfo[0] ? res.dtData.dtUserInfo[0].PreExpectedDate || '' : '';
+        _this.ChildBirthday = res.dtData.dtUserInfo[0] ? res.dtData.dtUserInfo[0].ChildBirthday || '' : '';
+        _this.TimeSpan = res.dtData.dtUserInfo[0] ? res.dtData.dtUserInfo[0].TimeSpan || '' : '';
+        _this.PeriodDays = res.dtData.dtUserInfo[0] ? res.dtData.dtUserInfo[0].PeriodDays || '' : '';
+        _this.realName = res.dtData.dtUserInfo[0] ? res.dtData.dtUserInfo[0].WomanName || '' : '';
+        _this.childName = res.dtData.dtUserInfo[0] ? res.dtData.dtUserInfo[0].ChildName || '' : '';
+        _this.childSex = res.dtData.dtUserInfo[0] ? res.dtData.dtUserInfo[0].ChildSex || '' : '';
+        _this.LastMensesDate = res.dtData.dtUserInfo[0] ? res.dtData.dtUserInfo[0].LastMensesDate || '' : '';
         _this.topList.map(function (item) {
           item.isActive = false;
         });
@@ -620,7 +645,7 @@ var _vuex = __webpack_require__(/*! vuex */ 16);function _objectSpread(target) {
       });
 
     },
-    jumpUrl: function jumpUrl(url, type, item) {//跳转页面
+    jumpUrl: function jumpUrl(url, type, item) {//原生跳转H5页面
       !item ? item = '' : '';
       var womanLevel = '';
       this.recordList.map(function (val) {
@@ -628,10 +653,24 @@ var _vuex = __webpack_require__(/*! vuex */ 16);function _objectSpread(target) {
           womanLevel = val.name;
         }
       });
-      var router = window.location.protocol + '//' + window.location.host + '/' + type + '/' + url + '?' + 'deviceType=5&WX=1&WomanId=&' + 'APPType=' +
-      type + '&machineCode=' + this.machineCode + '&BOOK_ID=' + this.BOOK_ID + '&BOOK_NO=' + this.BOOK_NO + '&womanLevel=' + womanLevel +
+      console.log(item);
+      console.log(type);
+      var WxType = type == 'MZSC' ? 'xcx.mzsc/' : 'xcx.web/';
+      var httpWeb = this.$WebServer + WxType + url + '?deviceType=5&WX=1&WomanId=' + this.WomanId + '&APPType=' + type +
+      '&machineCode=' + this.machineCode + '&BOOK_ID=' + this.BOOK_ID + '&BOOK_NO=' + this.BOOK_NO + '&womanLevel=' + womanLevel +
       '&WomanStatus=' + this.WomanStatus + '&childrenMonth=' + parseInt(parseInt(this.PeriodDays || 0) / 30) +
-      '&preExpectedDate=' + this.PreExpectedDate + '&realName=' + this.realName + '&lastMensesDate=' + this.LastMensesDate + '&childName=' + this.childName + '&childSex=' + this.childSex + '&childBirthday=' + this.ChildBirthday + item || '';
+      '&preExpectedDate=' + this.PreExpectedDate + '&realName=' + this.realName + '&lastMensesDate=' +
+      this.LastMensesDate + '&childName=' + this.childName + '&childSex=' +
+      this.childSex + '&childBirthday=' + this.ChildBirthday + item || '';
+      var urlHttps = encodeURIComponent(JSON.stringify(httpWeb));
+
+      uni.navigateTo({
+        url: "/pages/Web/index?url=".concat(urlHttps) });
+
+
+
+
+
     },
     refreshYYQ: function refreshYYQ() {var _this2 = this; //孕育指导刷新
       (0, _api.refreshArticles)({
@@ -642,72 +681,70 @@ var _vuex = __webpack_require__(/*! vuex */ 16);function _objectSpread(target) {
       });
     },
     computeActive: function computeActive() {
-      var that = this;
-      if (that.period == '2' && that.PeriodDays) {
-        var num = Math.floor(that.PeriodDays / 7);
+      if (this.period == '2' && this.PeriodDays) {
+        var num = Math.floor(this.PeriodDays / 7);
         if (num < 12) {
-          that.recordList[2].isActive = true;
-          that.solo = that.soloList[0];
+          this.recordList[2].isActive = true;
+          this.solo = this.soloList[0];
         } else
         if (12 < num && num < 28) {
-          that.recordList[3].isActive = true;
-          that.solo = that.soloList[1];
+          this.recordList[3].isActive = true;
+          this.solo = this.soloList[1];
         } else
         if (28 <= num && num < 40) {
-          that.recordList[4].isActive = true;
+          this.recordList[4].isActive = true;
 
         } else
         {
-          that.recordList[5].isActive = true;
+          this.recordList[5].isActive = true;
         }
         if (28 <= num && num < 37) {
-          that.solo = that.soloList[2];
+          this.solo = this.soloList[2];
         }
         if (num > 37) {
-          that.solo = that.soloList[3];
+          this.solo = this.soloList[3];
         }
       }
-      if (that.period == '3' && that.PeriodDays) {
-
-        var num = Math.floor(that.PeriodDays / 30);
-        if (1 > num) {
-          that.recordList[2].isActive = true;
+      if (this.period == '3' && this.PeriodDays) {
+        var _num2 = Math.floor(this.PeriodDays / 30);
+        if (1 > _num2) {
+          this.recordList[2].isActive = true;
         } else
-        if (3 > num && num > 1) {
-          that.recordList[3].isActive = true;
+        if (3 > _num2 && _num2 > 1) {
+          this.recordList[3].isActive = true;
         } else
-        if (6 > num && num >= 3) {
-          that.recordList[4].isActive = true;
+        if (6 > _num2 && _num2 >= 3) {
+          this.recordList[4].isActive = true;
         } else
-        if (8 > num && num >= 6) {
-          that.recordList[5].isActive = true;
+        if (8 > _num2 && _num2 >= 6) {
+          this.recordList[5].isActive = true;
         } else
-        if (12 > num && num >= 8) {
-          that.recordList[6].isActive = true;
+        if (12 > _num2 && _num2 >= 8) {
+          this.recordList[6].isActive = true;
         } else
-        if (18 > num && num >= 12) {
-          that.recordList[7].isActive = true;
+        if (18 > _num2 && _num2 >= 12) {
+          this.recordList[7].isActive = true;
         } else
-        if (24 > num && num >= 18) {
-          that.recordList[8].isActive = true;
+        if (24 > _num2 && _num2 >= 18) {
+          this.recordList[8].isActive = true;
         } else
-        if (num >= 24 && num < 30) {
-          that.recordList[9].isActive = true;
+        if (_num2 >= 24 && _num2 < 30) {
+          this.recordList[9].isActive = true;
         } else
-        if (30 <= num && num < 36) {
-          that.recordList[10].isActive = true;
+        if (30 <= _num2 && _num2 < 36) {
+          this.recordList[10].isActive = true;
         } else
-        if (36 <= num && num < 48) {
-          that.recordList[11].isActive = true;
+        if (36 <= _num2 && _num2 < 48) {
+          this.recordList[11].isActive = true;
         } else
-        if (48 <= num && num < 60) {
-          that.recordList[12].isActive = true;
+        if (48 <= _num2 && _num2 < 60) {
+          this.recordList[12].isActive = true;
         } else
-        if (60 <= num && num < 72) {
-          that.recordList[13].isActive = true;
+        if (60 <= _num2 && _num2 < 72) {
+          this.recordList[13].isActive = true;
         } else
-        if (72 <= num) {
-          that.recordList[14].isActive = true;
+        if (72 <= _num2) {
+          this.recordList[14].isActive = true;
         }
       }
     },
@@ -720,25 +757,24 @@ var _vuex = __webpack_require__(/*! vuex */ 16);function _objectSpread(target) {
         bookId: '' }).
       then(function (res) {
         console.log(res);
-        _this3.userName = res.dtData.dtUserInfo[0] ? res.dtData.dtUserInfo[0].WomanName : '未填姓名';
-        _this3.period == res.dtData.dtUserInfo[0] ? res.dtData.dtUserInfo[0].Period : '1';
+        _this3.userName = res.dtData.dtUserInfo[0] ? res.dtData.dtUserInfo[0].WomanName || '' : '未填姓名';
+        _this3.period = res.dtData.dtUserInfo[0] ? res.dtData.dtUserInfo[0].Period || '1' : '1';
         _this3.yyqList = res.dtData.dtKnowledge || [];
-        console.log(_this3);
         _this3.period != '1' ? _this3.recordList = _this3.List[parseInt(_this3.period) - 2][0] : '';
         _this3.topName = _this3.topNameList[parseInt(_this3.period) - 1];
         _this3.periodName = _this3.periodNameList[parseInt(_this3.period)];
-        _this3.BOOK_ID = res.dtData.dtUserInfo[0].BookId;
-        _this3.BOOK_NO = res.dtData.dtUserInfo[0].BookNo;
+        _this3.BOOK_ID = res.dtData.dtUserInfo[0] ? res.dtData.dtUserInfo[0].BookId || '' : '';
+        _this3.BOOK_NO = res.dtData.dtUserInfo[0] ? res.dtData.dtUserInfo[0].BookNo || '' : '';
         _this3.WomanStatus = _this3.period;
-        _this3.ChildName = res.dtData.dtUserInfo[0].ChildName || '';
-        _this3.PreExpectedDate = res.dtData.dtUserInfo[0].PreExpectedDate || '';
-        _this3.ChildBirthday = res.dtData.dtUserInfo[0].ChildBirthday || '';
-        _this3.TimeSpan = res.dtData.dtUserInfo[0].TimeSpan || '';
-        _this3.PeriodDays = res.dtData.dtUserInfo[0].PeriodDays || '';
-        _this3.realName = res.dtData.dtUserInfo[0].WomanName || '';
-        _this3.childName = res.dtData.dtUserInfo[0].ChildName || '';
-        _this3.childSex = res.dtData.dtUserInfo[0].ChildSex || '';
-        _this3.LastMensesDate = res.dtData.dtUserInfo[0].LastMensesDate || '';
+        _this3.ChildName = res.dtData.dtUserInfo[0] ? res.dtData.dtUserInfo[0].ChildName || '' : '';
+        _this3.PreExpectedDate = res.dtData.dtUserInfo[0] ? res.dtData.dtUserInfo[0].PreExpectedDate || '' : '';
+        _this3.ChildBirthday = res.dtData.dtUserInfo[0] ? res.dtData.dtUserInfo[0].ChildBirthday || '' : '';
+        _this3.TimeSpan = res.dtData.dtUserInfo[0] ? res.dtData.dtUserInfo[0].TimeSpan || '' : '';
+        _this3.PeriodDays = res.dtData.dtUserInfo[0] ? res.dtData.dtUserInfo[0].PeriodDays || '' : '';
+        _this3.realName = res.dtData.dtUserInfo[0] ? res.dtData.dtUserInfo[0].WomanName || '' : '';
+        _this3.childName = res.dtData.dtUserInfo[0] ? res.dtData.dtUserInfo[0].ChildName || '' : '';
+        _this3.childSex = res.dtData.dtUserInfo[0] ? res.dtData.dtUserInfo[0].ChildSex || '' : '';
+        _this3.LastMensesDate = res.dtData.dtUserInfo[0] ? res.dtData.dtUserInfo[0].LastMensesDate || '' : '';
         _this3.topList.map(function (item) {
           item.isActive = false;
         });

@@ -190,7 +190,9 @@ var _md = _interopRequireDefault(__webpack_require__(/*! ../../utils/md5.js */ 3
       this.userObj.passWord = _md.default.hex_md5(this.userObj.passWord).toUpperCase(); //md5加密转大写
       this.userObj.openId = this.$store.state.openID;
       (0, _api.login)(_objectSpread({}, this.userObj)).then(function (res) {
-        console.log(res);
+        uni.switchTab({
+          url: '/pages/Home/Home' });
+
         _this.loading = false;
       }).catch(function (err) {
         _this.loading = false;

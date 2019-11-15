@@ -6,10 +6,12 @@
 	"setting": {
 		"urlCheck": false,
 		"postcss": true,
-		"minified": true
+		"minified": true,
+		"es6": true,
+		"checkSiteMap": false
 	},
 	"compileType": "miniprogram",
-	"libVersion": "2.7.0",
+	"libVersion": "",
 	"appid": "wxa24db98cadfc5870",
 	"projectname": "MZSC",
 	"simulatorType": "wechat",
