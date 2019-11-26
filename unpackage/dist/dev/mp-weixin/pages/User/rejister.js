@@ -289,7 +289,6 @@ var _md = _interopRequireDefault(__webpack_require__(/*! ../../utils/md5.js */ 3
       this.lotusAddressData.visible = true;
     },
     choseValue: function choseValue(res) {//res数据源包括已选省市区与省市区code
-      console.log(res);
       this.lotusAddressData.visible = res.visible;
       this.lotusAddressData.provinceName = res.province;
       this.lotusAddressData.cityName = res.city;

@@ -208,10 +208,10 @@ var _vuex = __webpack_require__(/*! vuex */ 16);function _objectSpread(target) {
         } });
 
     },
-    changeDis: function changeDis() {//调用地址PICKER  //缺人回调
+    changeDis: function changeDis() {//调用地址PICKER  //确认回调
       this.lotusAddressData.visible = true;
     },
-    choseValue: function choseValue(res) {//缺人回调
+    choseValue: function choseValue(res) {//确认回调
       console.log(res);
       this.lotusAddressData.visible = res.visible;
       this.lotusAddressData.provinceName = res.province;

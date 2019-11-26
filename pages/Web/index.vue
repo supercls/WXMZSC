@@ -13,6 +13,7 @@
 		},
 		onLoad(option) { 
 			const item = JSON.parse(decodeURIComponent(option.url ||'{}'));
+			console.log(item)
 			this.urlHttps=item
 		},
 		methods: {

@@ -69,7 +69,7 @@ form {
 	margin-left: 20rpx;
 }
 .page {
-	width: 750px;
+	width: 750rpx;
 	height: 100vh;
 	background-color: #f2f2f2;
 }

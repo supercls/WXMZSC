@@ -84,10 +84,10 @@
 					}
 				});
 			},
-			changeDis() { //调用地址PICKER  //缺人回调
+			changeDis() { //调用地址PICKER  //确认回调
 				this.lotusAddressData.visible = true;
 			},
-			choseValue(res){   //缺人回调
+			choseValue(res){   //确认回调
 				console.log(res);
 				this.lotusAddressData.visible = res.visible;
 				this.lotusAddressData.provinceName = res.province;

@@ -41,14 +41,14 @@
 					  </view>
 					  <view style="margin-top: 0.5em;">
 						  <image src="../../static/home/icon_rili@2x.png" alt="" class="img_n3"></image>
-						  <text>{{Timetext}}</text>
+						  <text>{{TimeSpan||'未知'}}</text>
 					  </view>
 					</view>
 					   <!--儿童期-->
 					<view  class="uli" v-else-if="period=='3'"  @click="jumpUrl('Area/Home/BasicSituation/main.html','YYQ.Web')">
 					  <view style="margin-top: 0rem;">
 						  <image src="../../static/home/icon_mom@2x.png" alt="" class="img_n1"></image>
-						  <text>{{userName}}</text>
+						  <text>{{userName||'未填姓名'}}</text>
 					  </view>
 					  <view style="margin-top: 0.5em;">
 						  <image src="../../static/home/icon_baby@2x.png" alt="" class="img_n2"></image>
@@ -56,7 +56,7 @@
 					  </view>
 					  <view style="margin-top: 0.5em;">
 						  <image src="../../static/home/icon_rili@2x.png" alt="" class="img_n3"></image>
-						  <text>{{Timetext||'未填出生日期'}}</text>
+						  <text>{{Birthday||'未填出生日期'}}</text>
 					  </view>
 					</view>
 				</view>
@@ -70,19 +70,25 @@
 		    <image src="../../static/home/btn_scan@2x.png" alt="" @click="jumpUrl('Area/View/Home/Home.html','MZSC')"></image>
 		</view>
 		<!--母婴信使-->
-		<view class="myxs-view">
+		<view class="myxs-view" v-if="dtPregnantMessager.length>0">
 			<view class="uni-padding-wrap">
 					<view class="page-section swiper">
 						<view class="page-section-spacing">
-							<swiper class="swiper" :indicator-dots="indicatorDots" :circular="circular" :autoplay="autoplay" :interval="interval" :duration="duration">
-								<swiper-item>
-									<view class="swiper-item uni-bg-red">A</view>
-								</swiper-item>
-								<swiper-item>
-									<view class="swiper-item uni-bg-green">B</view>
-								</swiper-item>
-								<swiper-item>
-									<view class="swiper-item uni-bg-blue">C</view>
+							<swiper class="swiper" :indicator-dots="indicatorDots" 
+								:indicator-active-color="indicatorActiveColor" :circular="circular" 
+								:autoplay="autoplay" :interval="interval" :duration="duration">
+								<swiper-item v-for="swiper in dtPregnantMessager" 
+									:key="swiper.MessagerId"
+									@click="jumpUrl('Area/Slidebar/MaternalMessenger/Main.html','YYQ.Web')">
+									<view class="swiper-item uni-bg-red">
+										<view class="swiper-box">
+											<image src="../../static/home/myxs.png" mode="" class="my_img"></image>
+											<text>母婴信使</text>
+										</view>
+										<view class="swiper-text">
+											<text>{{swiper.Knowledge}}</text>
+										</view>
+									</view>
 								</swiper-item>
 							</swiper>
 						</view>
@@ -208,7 +214,7 @@
 		        <image src="../../static/home/home_baike_icon_renew@2x.png" alt="" @click="refreshYYQ"></image>
 		    </view>
 		    <view class="yyzd-center" v-for="(item,index) in yyqList" :key="index" 
-		    @click="jumpUrl('Area/Information/Encyclopedias/Detail.html','YYQ.Web','&ArticleId='+item.ArticleId )">
+		    @click="jumpWx('/pages/Web/share','?articleId='+item.ArticleId)">
 		        <image :src="'../../static/home/'+imageList[parseInt(period)-1][index]"></image>
 		        <view class="content">
 		          <view class="p1">{{item.ArticleTitle}}</view>
@@ -224,6 +230,7 @@
 </template>
 
 <script>
+	//全局复制H5页面
 	import {getIndexPageData,refreshArticles,updateBookPeriod} from '../../utils/api.js'
 	import {mapGetters} from 'vuex'
 	export default {
@@ -231,7 +238,8 @@
 			return {
 				background: ['color1', 'color2', 'color3'],
 				indicatorDots: true,
-				autoplay: true,
+				autoplay: false,
+				indicatorActiveColor:'#FFA0CE',
 				interval: 2000,
 				duration: 500,
 				circular:true,
@@ -243,12 +251,14 @@
 				periodName:'',
 				periodNameList:['','孕前篇','孕产期篇','儿童篇'],
 				topName:'孕育指导',
+				dtPregnantMessager:[],   //母婴信使
 				machineCode: '',
 				BOOK_ID:'',
 				BOOK_NO:'',
 				PeriodDays:'',
 				adviceName:'',
-				Timetext:'',
+				Birthday:'',
+				TimeSpan:'',
 				PreExpectedDate:'',
 				LastMensesDate:'',
 				ChildBirthday:'',
@@ -267,7 +277,7 @@
 				topNameList:['备孕指导','孕育指导','养育指导'],
 				tabRecord:[{name:'自我记录',isActive:true},{name:'检查记录',isActive:false}],
 				version:'',
-				List:[   //自我检查记录(包括孕前和孕产期的不tong)
+				List:[   //自我检查记录(包括孕前和孕产期)
 					[
 						[
 							{name:'甜蜜的时刻',isActive:false,url:'Area/Record/Maternal/SweetTime/Record.html'},
@@ -333,17 +343,24 @@
 		},
 		onLoad() {
 			this.recordList=this.List[0];
-			this.getIndex()
 			this.adviceName=this.Mathlist[Math.floor(Math.random()*this.Mathlist.length)]
 		},
+		onShow(){     // 监听页面的显示，返回刷新页面
+			this.getIndex()
+		},
 		methods: {
+			jumpWx(pages,params){  //跳转小程序原生页面
+				uni.navigateTo({
+					url: pages+params
+				});
+			},
 			changeTabRecord(index) {
-				let that=this;
-				this.tabRecord.map(item => {item.isActive=false})
+				let that =this;
+				this.tabRecord.map( item => { item.isActive=false })
 				this.tabRecord[index].isActive=true;
 				this.recordList=this.List[parseInt(this.period)-2][index]
 				if(this.period=='2' && this.PeriodDays){
-					let num= Math.floor(this.PeriodDays/7)
+					let num = Math.floor(this.PeriodDays/7)
 					if(index==0){
 						if(num<12){
 							this.recordList[2].isActive=true
@@ -482,25 +499,15 @@
 				})
 				updateBookPeriod({
 					bookId:this.BOOK_ID,
+					openId:this.openID,
 					period:index
 				}).then(res =>{
-				
+					console.log(res)
 					this.yyqList=res.dtData.dtKnowledge||[];
-					this.period!='1'?this.recordList=this.List[parseInt(this.period)-2][0]:''
 					this.topName=this.topNameList[parseInt(this.period)-1];
 					this.periodName=this.periodNameList[parseInt(this.period)];
-					this.BOOK_ID=res.dtData.dtUserInfo[0]?res.dtData.dtUserInfo[0].BookId ||'':'';
-					this.BOOK_NO=res.dtData.dtUserInfo[0]?res.dtData.dtUserInfo[0].BookNo ||'':'';
 					this.WomanStatus=this.period;
-					this.ChildName=res.dtData.dtUserInfo[0]?res.dtData.dtUserInfo[0].ChildName ||'':''
-					this.PreExpectedDate=res.dtData.dtUserInfo[0]?res.dtData.dtUserInfo[0].PreExpectedDate ||'':''
-					this.ChildBirthday=res.dtData.dtUserInfo[0]?res.dtData.dtUserInfo[0].ChildBirthday ||'':''
-					this.TimeSpan=res.dtData.dtUserInfo[0]?res.dtData.dtUserInfo[0].TimeSpan ||'':''
-					this.PeriodDays=res.dtData.dtUserInfo[0]?res.dtData.dtUserInfo[0].PeriodDays ||'':''
-					this.realName=res.dtData.dtUserInfo[0]?res.dtData.dtUserInfo[0].WomanName ||'':''
-					this.childName=res.dtData.dtUserInfo[0]?res.dtData.dtUserInfo[0].ChildName ||'':''
-					this.childSex=res.dtData.dtUserInfo[0]?res.dtData.dtUserInfo[0].ChildSex ||'':''
-					this.LastMensesDate=res.dtData.dtUserInfo[0]?res.dtData.dtUserInfo[0].LastMensesDate ||'':''
+					this.dtPregnantMessager=res.dtData.dtPregnantMessager?res.dtData.dtPregnantMessager:[]
 					this.topList.map(item =>{
 						item.isActive=false
 					})
@@ -510,25 +517,25 @@
 				}).catch(err =>{
 					uni.hideLoading()
 				})
-				
 			},
 			jumpUrl(url,type,item) {  //原生跳转H5页面
 				!item?item='':''
 				let womanLevel='';
+				let currentChapter=''
+				this.period =='1'?currentChapter ='孕前篇' : this.period == '2'?currentChapter = '孕产期篇' : currentChapter ='儿童篇'
 				this.recordList.map( val =>{
 					if(val.isActive){
 						womanLevel=val.name
 					}
 				})
-				console.log(item)
-				console.log(type)
 				let WxType = type =='MZSC'?'xcx.mzsc/':'xcx.web/'
-				const httpWeb = this.$WebServer + WxType +url +'?deviceType=5&WX=1&WomanId='+this.WomanId+'&APPType='+type+
-				'&machineCode='+this.machineCode+'&BOOK_ID='+this.BOOK_ID+'&BOOK_NO='+this.BOOK_NO+'&womanLevel='+womanLevel
+				const httpWeb = this.$WebServer + WxType +url +'?deviceType=5'+'&APPType='+type+
+				'&machineCode='+this.machineCode+'&BOOK_ID='+this.BOOK_ID+'&BOOK_NO='+this.BOOK_NO+'&womanLevel='+womanLevel+'&WX=2'
 				+'&WomanStatus='+this.WomanStatus+'&childrenMonth='+parseInt(parseInt(this.PeriodDays||0)/30)
 				+'&preExpectedDate='+this.PreExpectedDate+'&realName='+this.realName+'&lastMensesDate='
 				+this.LastMensesDate+'&childName='+this.childName+'&childSex='
-				+this.childSex+'&childBirthday='+this.ChildBirthday+item||''
+				+this.childSex+'&childBirthday='+this.Birthday
+				+'&currentChapter='+currentChapter+'&subsidiaryParams='+this.Birthday+item
 				let urlHttps = encodeURIComponent(JSON.stringify(httpWeb))
 				//#ifdef MP-WEIXIN    
 				uni.navigateTo({
@@ -547,7 +554,7 @@
 					this.yyqList = res.dtData || []
 				})
 			},
-			computeActive:function(){
+			computeActive(){
 				if(this.period=='2' && this.PeriodDays){
 					let num= Math.floor(this.PeriodDays/7)
 					if(num<12){
@@ -560,7 +567,6 @@
 					}
 					else if(28<=num && num<40){
 						this.recordList[4].isActive=true
-						
 					}
 					else{
 						this.recordList[5].isActive=true
@@ -625,13 +631,14 @@
 				}).then( res =>{
 					console.log(res)
 					this.userName=res.dtData.dtUserInfo[0]?res.dtData.dtUserInfo[0].WomanName ||'':'未填姓名'
-					this.period=res.dtData.dtUserInfo[0]?res.dtData.dtUserInfo[0].Period ||'1':'1'
+					this.period=res.dtData.dtUserInfo[0]?res.dtData.dtUserInfo[0].WomanStatus ||'1':'1'
 					this.yyqList=res.dtData.dtKnowledge||[];
 					this.period!='1'?this.recordList=this.List[parseInt(this.period)-2][0]:''
 					this.topName=this.topNameList[parseInt(this.period)-1];
+					this.dtPregnantMessager=res.dtData.dtPregnantMessager?res.dtData.dtPregnantMessager:[]
 					this.periodName=this.periodNameList[parseInt(this.period)];
-					this.BOOK_ID=res.dtData.dtUserInfo[0]?res.dtData.dtUserInfo[0].BookId ||'':'';
-					this.BOOK_NO=res.dtData.dtUserInfo[0]?res.dtData.dtUserInfo[0].BookNo ||'':'';
+					this.BOOK_ID=res.dtData.dtUserInfo[0]?res.dtData.dtUserInfo[0].BOOK_ID ||'':'';
+					this.BOOK_NO=res.dtData.dtUserInfo[0]?res.dtData.dtUserInfo[0].BOOK_NO ||'':'';
 					this.WomanStatus=this.period;
 					this.ChildName=res.dtData.dtUserInfo[0]?res.dtData.dtUserInfo[0].ChildName ||'':''
 					this.PreExpectedDate=res.dtData.dtUserInfo[0]?res.dtData.dtUserInfo[0].PreExpectedDate ||'':''
@@ -641,7 +648,8 @@
 					this.realName=res.dtData.dtUserInfo[0]?res.dtData.dtUserInfo[0].WomanName||'':''
 					this.childName=res.dtData.dtUserInfo[0]?res.dtData.dtUserInfo[0].ChildName||'':''
 					this.childSex=res.dtData.dtUserInfo[0]?res.dtData.dtUserInfo[0].ChildSex||'':''
-					this.LastMensesDate=res.dtData.dtUserInfo[0]?res.dtData.dtUserInfo[0].LastMensesDate||'':''
+					this.LastMensesDate=res.dtData.dtUserInfo[0]?res.dtData.dtUserInfo[0].LastMensesDate||'':'',
+					this.Birthday=res.dtData.dtUserInfo[0]?res.dtData.dtUserInfo[0].Birthday||'':''
 					this.topList.map(item =>{
 						item.isActive=false
 					})
@@ -657,7 +665,7 @@
 	}
 </script>
 
-<style>
+<style lang="scss">
 	.home_wrapper{overflow-y:scroll;background-color:#F4F4F4;-webkit-overflow-scrolling : touch;}
 	.hea-top-bg{position: relative;background: #FFFFFF;}
 	.hea-top-bgimg{height: 394rpx;width: 100%;display: block;}
@@ -675,7 +683,7 @@
     .hea-next-center image{width: 221rpx;height: 116rpx;margin:12rpx 60rpx 6rpx 60rpx;}
 	.hea-center{position: absolute;top: 72rpx;}
     .hea-center .hea-center-left{width: 237rpx;height: 237rpx;}
-    .hea-center{padding:18rpx 0;display: flex;-webkit-display:flex;}
+    .hea-center{padding:18rpx 30rpx;display: flex;-webkit-display:flex;}
     .hea-center .hea-center-right{margin-left: 22.5rpx;margin-top:22.5rpx;}
     .hea-center .hea-center-right .uli {font-size: 30rpx;color: #fff;padding:7.5rpx 0px;}
     .yq-view1{background: #fff;margin:10rpx auto;}
@@ -705,13 +713,14 @@
     .yc-view1 .yc-top text.active::before{content: '';position: absolute;bottom: 0;left: 50%;width: 90rpx;height: 2rpx;background: #FF9FCD;margin-left: -40rpx;}
     .yc-view1 .yc-center{overflow-x: auto;white-space:nowrap;width: 100%;-webkit-overflow-scrolling : touch;background: #fff;;}
     .yc-view1 .yc-center .ul-n {width: 100%;padding:50rpx 0 26.5rpx 0;}
-    .yc-view1 .yc-center .ul-n view::before{content:'';position:absolute;top: 52.5rpx;right: -37.5rpx;width:30rpx;height: 1rpx;background: #FFA9D3;}
+    .yc-view1 .yc-center .ul-n view::before{content:'';position:absolute;top: 52.5rpx;right: -37.5rpx;width:30rpx;height: 2rpx;background: #FFA9D3;}
     .yc-view1 .yc-center .ul-n view::before:last-child{width: 0px}
     .yc-view1 .yc-center .ul-n view.active{border:7.5rpx solid #FF9FCD;}
     .yc-view1 .yc-center .ul-n view{list-style: none;display:inline-block;margin:0 15rpx;border:7.5rpx solid #C9EEFF;width: 120rpx;height: 120rpx;border-radius: 50%;line-height: 120rpx;position: relative;white-space:normal;}
     .yc-view1 .yc-center .ul-n view text{color: #666;word-break:break-all;font-size: 27rpx;display:inline-block;width:100%;text-align: center;position: absolute;top: 50%;left: 50%;transform: translate(-50%,-50%);line-height: 1.3;}
     .yc-view1 .yc-bottom{padding:0 0 26.5rpx 0;text-align: center;background: #fff;}
-    .yc-view1 .yc-bottom text{color: #FFA1CE;font-size: 30rpx;display: inline-block;padding: 7.5rpx 60rpx;border:1rpx solid #FFA1CE;border-top-left-radius: 37.5rpx;border-bottom-left-radius: 37.5rpx;border-top-right-radius: 37.5rpx;border-bottom-right-radius: 37.5rpx;}
+    .yc-view1 .yc-bottom text{color: #FFA1CE;font-size: 30rpx;display: inline-block;padding: 7.5rpx 60rpx;border:1rpx solid #FFA1CE;border-top-left-radius: 37.5rpx;border-bottom-left-radius: 37.5rpx;
+	border-top-right-radius: 37.5rpx;border-bottom-right-radius: 37.5rpx;}
     .yc-view1 .yc-message{display:flex;-webkit-display:flex;background: #fff;padding:0 30rpx 37.5rpx 30rpx;font-size: 27rpx;color: #999999;}
     .yc-view1 .yc-message image{width: 36rpx;height: 33.75rpx;display: inline-block;margin-right: 11.25rpx;}
     .yc-view1 .yc-message text{color: #666666;font-size: 30rpx;padding-right: 7.5rpx;}
@@ -732,5 +741,32 @@
 	.img_n3{width: 28rpx;height: 29rpx;margin-right: 10rpx;vertical-align: -2rpx;}
 	.adviceName{margin-top: 10rpx;}
 	.clearfix::after { visibility: hidden; display: block; font-size: 0; content: " ";clear: both; height: 0; }
-	.myxs-view{background: #fff;margin:10rpx 0rpx;}
+	.myxs-view{
+		background: #fff;margin:10rpx 0rpx;
+		.swiper-item{
+			padding:40rpx 30rpx;
+			.swiper-box{
+				display: flex;
+				align-items: center;
+				text{
+					font-size: 28rpx;
+					font-weight: bold;
+					color: #666;
+				}
+				.my_img{
+					width: 42rpx;
+					height: 44rpx;
+					margin-right: 10rpx;
+				}
+			}
+			.swiper-text{
+				padding-top: 10rpx;
+				text{
+					font-size: 30rpx;
+					line-height: 42rpx;
+					color: #666;
+				}
+			}
+		}
+	}
 </style>

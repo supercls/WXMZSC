@@ -132,6 +132,11 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+
+
+
+
+
 var _api = __webpack_require__(/*! ../../utils/api.js */ 27);
 var _common = __webpack_require__(/*! ../../utils/common.js */ 17);
 var _vuex = __webpack_require__(/*! vuex */ 16);function _objectSpread(target) {for (var i = 1; i < arguments.length; i++) {var source = arguments[i] != null ? arguments[i] : {};var ownKeys = Object.keys(source);if (typeof Object.getOwnPropertySymbols === 'function') {ownKeys = ownKeys.concat(Object.getOwnPropertySymbols(source).filter(function (sym) {return Object.getOwnPropertyDescriptor(source, sym).enumerable;}));}ownKeys.forEach(function (key) {_defineProperty(target, key, source[key]);});}return target;}function _defineProperty(obj, key, value) {if (key in obj) {Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true });} else {obj[key] = value;}return obj;}var _default =
@@ -147,6 +152,10 @@ var _vuex = __webpack_require__(/*! vuex */ 16);function _objectSpread(target) {
 
 
   onLoad: function onLoad() {var _this = this;
+    uni.showLoading({
+      title: '正在登录...',
+      mask: true });
+
 
     uni.login({ //等openId获取成功后再执行入口页面的请求
       provider: 'weixin',
@@ -155,17 +164,27 @@ var _vuex = __webpack_require__(/*! vuex */ 16);function _objectSpread(target) {
           _this.$store.commit('setOpenID', { openId: res.msg });
           (0, _api.getUserInfo)({ openId: _this.openID }).then(function (data) {
             console.log(data);
+            uni.getUserInfo({ //获取授权后的微信用户信息
+              provider: 'weixin',
+              success: function success(infoRes) {
+                _this.$store.commit('setUserInfo', JSON.stringify(infoRes.userInfo));
+              } });
+
+            uni.hideLoading();
             uni.switchTab({
               url: '/pages/Home/Home' });
 
           }).catch(function (err) {
-            console.log("获取用户信息失败" + JSON.stringify(err)); //不作跳转，用户手动点击
+            uni.hideLoading();
+            console.log("获取用户信息失败" + JSON.stringify(err)); //不作自动跳转，用户手动点击
           });
         }).catch(function (err) {
+          uni.hideLoading();
           console.log(err);
         });
       },
       fail: function fail(err) {
+        uni.hideLoading();
         uni.showToast({
           title: JSON.stringify(err),
           icon: 'none',
@@ -176,7 +195,7 @@ var _vuex = __webpack_require__(/*! vuex */ 16);function _objectSpread(target) {
 
   },
   methods: {
-    getuserinfo: function getuserinfo(res) {
+    getWxUser: function getWxUser(res) {
       var isAu = res.detail.userInfo;
       if (isAu) {
         _common.UserInfo.setInfo(JSON.stringify(isAu));

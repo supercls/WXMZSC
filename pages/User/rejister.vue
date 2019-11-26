@@ -90,7 +90,7 @@
 				//#endif
 				
 				//#ifndef MP-WEIXIN
-				window.open(JSON.parse(decodeURIComponent(urlHttps)))  //跳转貌似有问题，先不管
+				window.open(JSON.parse(decodeURIComponent(urlHttps))) 
 				//#endif
 			},
 			submit(){
@@ -165,7 +165,6 @@
 				this.lotusAddressData.visible = true;
 			},
 			choseValue(res){  //res数据源包括已选省市区与省市区code
-				console.log(res);
 				this.lotusAddressData.visible = res.visible;
 				this.lotusAddressData.provinceName = res.province;
 				this.lotusAddressData.cityName = res.city;

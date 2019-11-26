@@ -1,8 +1,8 @@
-import Vue from 'vue'
+import { apiServer } from '../config.js'
 
 class Configs {
 	constructor() {
-	    this.URL = Vue.prototype.$apiServer
+	    this.URL = apiServer
 		this.ConfigStr= {
 			header: {
 				'content-type': 'application/x-www-form-urlencoded' 
@@ -15,7 +15,7 @@ class RequestMn extends Configs {
 	constructor() {
 		super()
 	}
-	get(models){
+	get(models = {}){
 		return new Promise((resolve,reject) => {   //loading按需添加
 			uni.request({
 				...this.ConfigStr,

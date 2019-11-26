@@ -1,6 +1,5 @@
 <template>
 	<view class="view">
-		<!-- <button open-type= "share" type='default'>分享</button> -->
 		<web-view :src="urlHttps"></web-view>
 	</view>
 </template>

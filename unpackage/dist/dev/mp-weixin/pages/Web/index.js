@@ -135,6 +135,7 @@ var _default =
   },
   onLoad: function onLoad(option) {
     var item = JSON.parse(decodeURIComponent(option.url || '{}'));
+    console.log(item);
     this.urlHttps = item;
   },
   methods: {} };exports.default = _default;

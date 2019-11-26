@@ -1,10 +1,15 @@
 <template>
 	<view>
 		<view class="home-index">
-			<button type="primary" open-type="getUserInfo" @getuserinfo="getuserinfo">手机号登录</button>
-			<button type=""  @tap="jumpOther">游客访问</button>
+			<!--微信开发能力open-type-->
+			<image src="../../static/user/logo.png" mode="" class="img1"></image>
+			<image src="../../static/user/mzjk.png" mode="" class="img2"></image>
+			<image src="../../static/user/yxhh.png" mode="" class="img3"></image>
 		</view>
-		
+		<view class="home-bottom">
+			<button type="primary" open-type="getUserInfo" @getuserinfo="getWxUser">立即体验</button>
+			<text>国家卫生健康委员会</text>
+		</view>
 	</view>
 </template>
 <script>
@@ -23,6 +28,10 @@
 			])
 		},
 		onLoad(){
+			uni.showLoading({
+				title:'正在登录...',
+				mask:true
+			})
 			//#ifdef MP-WEIXIN
 			uni.login({                  //等openId获取成功后再执行入口页面的请求
 			  provider: 'weixin',
@@ -31,17 +40,27 @@
 					 this.$store.commit('setOpenID',{openId: res.msg})
 					 getUserInfo({openId:this.openID}).then(data =>{
 						 console.log(data)
+						 uni.getUserInfo({     //获取授权后的微信用户信息
+						    provider: 'weixin',
+						    success: (infoRes) =>{
+						 		this.$store.commit('setUserInfo',JSON.stringify(infoRes.userInfo))  
+						    }
+						 });
+						 uni.hideLoading()
 						 uni.switchTab({
 						     url: '/pages/Home/Home'
 						 });
 					 }).catch(err =>{
-						 console.log("获取用户信息失败"+JSON.stringify(err))  //不作跳转，用户手动点击
+						 uni.hideLoading()
+						 console.log("获取用户信息失败"+JSON.stringify(err))  //不作自动跳转，用户手动点击
 					 })
 				  }).catch(err =>{
+					  uni.hideLoading()
 					  console.log(err)
 				  })
 			  },
 			  fail: (err) => {
+				uni.hideLoading()
 			  	uni.showToast({
 			  	    title: JSON.stringify(err),
 			  		icon:'none',
@@ -52,7 +71,7 @@
 			//#endif
 		},
 		methods:{
-			getuserinfo(res){
+			getWxUser(res){
 				const isAu = res.detail.userInfo
 				if(isAu){
 					UserInfo.setInfo(JSON.stringify(isAu))
@@ -75,9 +94,40 @@
 </script>
 <style lang="scss">
 	.home-index{
-		margin-top: 50vh;
+		margin-top: 270rpx;
+		text-align: center;
+		.img1{
+			width: 320rpx;
+			height: 320rpx;
+		}
+		.img2{
+			width: 480rpx;
+			margin-top: -40rpx;
+			height: 78rpx;
+		}
+		.img3{
+			width: 384rpx;
+			margin-top: 42rpx;
+			height: 44rpx;
+		}
+	}
+	.home-bottom{
+		position: absolute;
+		bottom:130rpx;
+		left: 0;
+		right: 0;
+		text-align: center;
 		button{
-			margin:20rpx 50rpx;
+			width: 312rpx;
+			height: 86rpx;
+			line-height: 86rpx;
+			background: #F97AB3;
+			margin:20rpx auto;
+			border:none;
+		}
+		text{
+			font-size: 24rpx;
+			color:#F97AB3;
 		}
 	}
 </style>

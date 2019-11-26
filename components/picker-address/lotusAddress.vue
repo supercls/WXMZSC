@@ -48,20 +48,8 @@
 		methods:{
 			//取消
 			cancelPicker(){
-				const provinceCode = this.getTarId(this.provinceName);
-				const cityCode = this.getTarId(this.cityName);
-				const townCode = this.getTarId(this.townName);
-				this.visible = false;
-				this.$emit("choseVal",{
-					province:this.provinceName,
-					provinceCode,
-					city:this.cityName,
-					cityCode,
-					town:this.townName,
-					townCode,
-					isChose:0,
-					visible:false
-				});
+				this.$parent.lotusAddressData.visible = false   //暂定
+				this.visible = false
 			},
 			//获取最后选择的省市区的值
 			chosedVal() {
@@ -239,6 +227,6 @@
 	}
 </script>
 
-<style lang="less">
+<style>
 @import "lotusAddress.css";
 </style>
