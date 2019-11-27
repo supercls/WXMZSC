@@ -162,8 +162,9 @@ var _md = _interopRequireDefault(__webpack_require__(/*! ../../utils/md5.js */ 3
       userObj: {
         mobileTel: '',
         passWord: '',
-        openId: '' } };
+        openId: '' },
 
+      disabled: false };
 
   },
   onLoad: function onLoad() {
@@ -187,15 +188,22 @@ var _md = _interopRequireDefault(__webpack_require__(/*! ../../utils/md5.js */ 3
         return false;
       }
       this.loading = true;
+      this.disabled = true;
+      this.userObj.passWord = _md.default.hex_md5(this.userObj.passWord).toUpperCase();
       this.userObj.passWord = _md.default.hex_md5(this.userObj.passWord).toUpperCase(); //md5加密转大写
       this.userObj.openId = this.$store.state.openID;
       (0, _api.login)(_objectSpread({}, this.userObj)).then(function (res) {
         uni.switchTab({
           url: '/pages/Home/Home' });
 
+        _this.disabled = false;
         _this.loading = false;
+
+
+
       }).catch(function (err) {
         _this.loading = false;
+        _this.disabled = false;
       });
     } } };exports.default = _default;
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))

@@ -7,7 +7,7 @@
 			<image src="../../static/user/yxhh.png" mode="" class="img3"></image>
 		</view>
 		<view class="home-bottom">
-			<button type="primary" open-type="getUserInfo" @getuserinfo="getWxUser">立即体验</button>
+			<button type="primary"  @tap="getWxUser">立即体验</button>
 			<text>国家卫生健康委员会</text>
 		</view>
 	</view>
@@ -39,13 +39,7 @@
 				  getOpenId({code:loginRes.code}).then(res=> {
 					 this.$store.commit('setOpenID',{openId: res.msg})
 					 getUserInfo({openId:this.openID}).then(data =>{
-						 console.log(data)
-						 uni.getUserInfo({     //获取授权后的微信用户信息
-						    provider: 'weixin',
-						    success: (infoRes) =>{
-						 		this.$store.commit('setUserInfo',JSON.stringify(infoRes.userInfo))  
-						    }
-						 });
+						 this.$store.commit('setUserInfo',JSON.stringify(data.dtData[0]))  
 						 uni.hideLoading()
 						 uni.switchTab({
 						     url: '/pages/Home/Home'
@@ -72,11 +66,6 @@
 		},
 		methods:{
 			getWxUser(res){
-				const isAu = res.detail.userInfo
-				if(isAu){
-					UserInfo.setInfo(JSON.stringify(isAu))
-					this.$store.commit('setUserInfo',JSON.stringify(isAu))
-				}
 				uni.navigateTo({
 					url:'/pages/User/index'
 				})

@@ -7,7 +7,7 @@
 				<image src="../../static/mine/icon_right.png" mode="" class="item-icon"></image>
 			</view>
 			<view class="empty"></view>
-			<view class="mine-item">
+			<view class="mine-item" @click= "modifyNickname()">
 				<text class="item-left">我的昵称</text>
 				<text class="item-text">上海臻鼎健康</text>
 				<image src="../../static/mine/icon_right.png" mode="" class="item-icon"></image>
@@ -22,24 +22,54 @@
 				<text class="item-text">18399999999</text>
 				
 			</view>
-			<view class="mine-item">
+			<view class="mine-item" @tap="changeDis">
 				<text class="item-left">我的地区</text>
-				<text class="item-text" @tap="changeDis">{{USER.userDis}}</text>
+				<text class="item-text" >{{USER.userDis}}</text>
 				<image src="../../static/mine/icon_right.png" mode="" class="item-icon"></image>
 			</view>
 		</view>
 		<lotus-address v-on:choseVal="choseValue" :lotusAddressData="lotusAddressData"></lotus-address>
+		<Popup
+			title= "昵称修改"
+			:showNumber= showNumber
+		>
+			<view slot= "popup" class="popup">
+				<view class="p-input">
+					<input 
+						type="text" 
+						placeholder="请输入昵称"  
+						v-model= "nickname"
+						class="input"
+					/>
+				</view>
+				<view class="p-btn">
+					<view class= "cancel btn" @click= "calse()">
+						<text>取消</text>
+					</view>
+					<view class= "line"></view>
+					<view class= "success btn" @click="success()">
+						<text>确认</text>
+					</view>
+				</view>
+			</view>
+			
+		</Popup>
 	</view>
 </template>
 
 <script>
 	import lotusAddress from '../../components/picker-address/lotusAddress.vue'
-	import {mapGetters} from 'vuex'
+	import Popup from '../../components/propUp/index.vue'
+	import '../../common/popup.scss'
+	import { mapGetters } from 'vuex'
 	export default{
 		data(){
 			return{
+				showNumber: '0', // 0表示隐藏弹窗
+				nickname: '', // 现有的昵称
 				USER:{
-					userDis:'北京市'
+					userDis:'北京市',
+					
 				},
 				lotusAddressData:{
 					visible:false,
@@ -60,12 +90,29 @@
 			}
 		},
 		components:{
-			lotusAddress
+			lotusAddress,
+			Popup
 		},
 		onLoad() {
 			console.log(this.$store.state.openID)
 		},
 		methods:{
+			// 昵称弹窗
+			modifyNickname() {
+				this.showNumber = '1'
+			},
+			
+			//关闭弹窗
+			calse() {
+				this.showNumber = '0'
+			},
+			
+			//确认
+			success() {
+				this.showNumber = '0';
+				console.log(this.nickname)
+			},
+			
 			uploadImg(){   //修改头像
 				uni.chooseImage({
 				    count: 1, 

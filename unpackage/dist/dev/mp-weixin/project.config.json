@@ -36,7 +36,7 @@
 					"name": "swiper",
 					"query": "interval=4000&autoplay=false",
 					"id": 0,
-					"pathName": "pages/Home/Home"
+					"pathName": "pages/User/index"
 				},
 				{
 					"name": "test",

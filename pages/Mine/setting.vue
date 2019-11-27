@@ -20,15 +20,42 @@
 				退出登录
 			</button>
 		</view>
+		<Popup
+			:showNumber= showNumber
+		>
+			<view slot= "popup" class="popup">
+				<view class="p-text">
+					<text>确定要切换爸爸/妈妈的身份?</text>
+				</view>
+				<view class="p-btn">
+					<view class= "cancel btn" @click= "calse()">
+						<text >取消</text>
+					</view>
+					<view class= "line"></view>
+					<view class= "success btn" @click="success()">
+						<text>确认</text>
+					</view>
+				</view>
+			</view>
+		</Popup>
+		
 	</view>
 </template>
 
 <script>
+	import Popup from '../../components/propUp/index.vue'
+	import '../../common/popup.scss'
 	export default {
 		data() {
 			return {
-				isDad: true
+				isDad: true,
+				showNumber: '0'
 			}
+		},
+		
+		
+		components: {
+			Popup
 		},
 		
 		methods: {
@@ -47,17 +74,17 @@
 			
 			// 身份切换
 			switchDad(){
-				uni.showModal({
-				    title: '提示',
-				    content: '确定要切换爸爸/妈妈的身份?',
-					success: (res) =>{
-						if(res.confirm){
-							  this.isDad= !this.isDad
-						}else if (res.cancel) {
-							console.log('用户取消了')
-						}
-					}
-				});
+				this.showNumber = '1'
+			},
+			
+			//取消弹窗
+			calse() {
+				this.showNumber = '0'
+			},
+			
+			//确认
+			success() {
+				this.showNumber = '0' 
 			}
 		}
 	}
@@ -99,12 +126,10 @@
 		}
 		.btn {
 			width: 750rpx;
-			position: absolute;
-			left: 0;
-			bottom: 88rpx;
+			margin-top: 5rpx;
 			.b-btn{
-				width: 630rpx;
-				height: 88rpx;
+				width: 100%;
+				height: 105rpx;
 				color: #FF70B5;
 				background-color: #fff;
 			}

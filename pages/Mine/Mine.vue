@@ -34,9 +34,7 @@
 </template>
 
 <script>
-	
-	import { Ceshi } from '../../utils/ceshi'
-	const ceshi = new Ceshi()
+	import { mapGetters } from 'vuex'
 	
 	export default {
 		data() {
@@ -50,26 +48,18 @@
 					{name: '我的收藏', imgUrl: '../../static/mine/shoucang.png', id: '3'},
 					{name: '帮助与反馈', imgUrl: '../../static/mine/fankui.png', id: '4'},
 					{name: '系统与设置', imgUrl: '../../static/mine/shezhi.png', id: '5'},
-					{name: 'APP下载指南', imgUrl: '../../static/mine/zhinan.png', id: '6'}
-				], 
+					{name: 'APP下载指南', imgUrl: '../../static/mine/zhinan.png', id: '6'}				], 
 				
 			}
 		},
 		
 		onLoad() {
-			uni.login({                  //异步回调太多，全部同步，等openId获取成功后再执行入口页面的请求
-			  provider: 'weixin',
-			  success: (data)=>{
-				 let obj = {
-					code: data.code
-				 }
-				 ceshi.getOpenId(obj).then(res=>{
-					 console.log(res)
-				 })
-				 
-				 
-			  },
-			})
+			uni.getStorage({
+			    key: 'MZSC_USER_STORAGE',
+			    success: function (res) {
+			        console.log(res.data);
+			    }
+			});
 		},
 		
 		
@@ -92,10 +82,8 @@
 					    })
 						break;
 					case  '3':
-						const Collection= 'https://mzjksc.yystars.com/xcx.web/Area/Slidebar/Collection/Main.html'
-						const CollectionData = encodeURIComponent(JSON.stringify(Collection))
 					    uni.navigateTo({
-					        url: `../../pages/Web/index?url= ${CollectionData}`
+					        url: '../../pages/Mine/collect?womanId=2000363'
 					    })
 						break;
 					case  '4':

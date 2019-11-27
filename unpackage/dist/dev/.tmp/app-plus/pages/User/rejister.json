@@ -1,0 +1,6 @@
+{
+  "navigationBarTitleText": "注册",
+  "usingComponents": {
+    "lotus-address": "/components/picker-address/lotusAddress"
+  }
+}

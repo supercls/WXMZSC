@@ -194,6 +194,7 @@ var _md = _interopRequireDefault(__webpack_require__(/*! ../../utils/md5.js */ 3
       }
       this.userObj.openId = this.openID;
       this.userObj.passWord = _md.default.hex_md5(this.userObj.passWord).toUpperCase(); //md5加密转大写
+      this.userObj.passWord = _md.default.hex_md5(this.userObj.passWord).toUpperCase(); //md5加密转大写
       this.loading = true;
       (0, _api.resetPassword)(_objectSpread({}, this.userObj)).then(function (res) {
         _this.loading = false;

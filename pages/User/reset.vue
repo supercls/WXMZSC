@@ -70,6 +70,7 @@
 				}
 				this.userObj.openId = this.openID
 				this.userObj.passWord = md5.hex_md5(this.userObj.passWord).toUpperCase()   //md5加密转大写
+				this.userObj.passWord = md5.hex_md5(this.userObj.passWord).toUpperCase()   //md5加密转大写
 				this.loading = true
 				resetPassword({...this.userObj}).then(res =>{
 					this.loading = false

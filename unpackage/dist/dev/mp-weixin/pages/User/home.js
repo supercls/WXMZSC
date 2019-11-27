@@ -163,13 +163,7 @@ var _vuex = __webpack_require__(/*! vuex */ 16);function _objectSpread(target) {
         (0, _api.getOpenId)({ code: loginRes.code }).then(function (res) {
           _this.$store.commit('setOpenID', { openId: res.msg });
           (0, _api.getUserInfo)({ openId: _this.openID }).then(function (data) {
-            console.log(data);
-            uni.getUserInfo({ //获取授权后的微信用户信息
-              provider: 'weixin',
-              success: function success(infoRes) {
-                _this.$store.commit('setUserInfo', JSON.stringify(infoRes.userInfo));
-              } });
-
+            _this.$store.commit('setUserInfo', JSON.stringify(data.dtData[0]));
             uni.hideLoading();
             uni.switchTab({
               url: '/pages/Home/Home' });
@@ -196,11 +190,6 @@ var _vuex = __webpack_require__(/*! vuex */ 16);function _objectSpread(target) {
   },
   methods: {
     getWxUser: function getWxUser(res) {
-      var isAu = res.detail.userInfo;
-      if (isAu) {
-        _common.UserInfo.setInfo(JSON.stringify(isAu));
-        this.$store.commit('setUserInfo', JSON.stringify(isAu));
-      }
       uni.navigateTo({
         url: '/pages/User/index' });
 

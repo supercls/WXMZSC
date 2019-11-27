@@ -5,15 +5,15 @@
 			<view class="r-box">
 				<text class="r-text">在线登记</text>
 				<view class="r-options">
-					<view class="o-box">
+					<view class="o-box"  @click= "pageJump('1')">
 						<img src=".../../static/find/yf.png" alt="" class= "o-img">
 						<text class="o-text o-text1">孕妇建卡</text>
 					</view>
-					<view class="o-box">
+					<view class="o-box"  @click= "pageJump('2')">
 						<img src="../../static/find/hj.png" alt="" class= "o-img">
 						<text class="o-text o-text2">婚检登记</text>
 					</view>
-					<view class="o-box">
+					<view class="o-box"  @click= "pageJump('3')">
 						<img src="../../static/find/yj.png" alt="" class= "o-img">
 						<text class="o-text o-text3">孕检登记</text>
 					</view>
@@ -21,34 +21,118 @@
 			</view>
 		</view>
 		<view class= "img-box">
-			<view class="f-img">
+			<view class="f-img"  @click= "pageJump('4')">
 				<img src="../../static/find/baogao.png" alt="" class= "img">
 			</view>
-			<view class="f-img f-img1">
+			<view class="f-img f-img1"  @click= "pageJump('5')">
 				<img src="../../static/find/zixun.png" alt="" class= "img">
 			</view>
 		</view>
+	<!-- 	<view class="xx">
+			
+		</view> -->
+		<Popup
+			title= "温馨提示"
+			:showNumber= showNumber
+		>
+			<view slot= "popup" class="popup">
+				<view class="p-text">
+					<text>您所在的地区暂未开通服务</text>
+				</view>
+				<view class="p-btn">
+					<view class= "cancel btn" @click= "success()">
+						<text class= "p-text">知道了</text>
+					</view>
+				</view>
+			</view>
+		</Popup>
+		
 	</view>
 </template>
 
 <script>
+	import Popup from '../../components/propUp/index.vue'
+	import '../../common/popup.scss'
 	export default {
 		data() {
 			return {
-				
+				showNumber: '0', // 0表示隐藏弹窗
 			}
 		},
 		onShow() {
-			console.log('-------------------------')
-			console.log(uni.getStorageSync('openId'))
+			// console.log(uni.getStorageSync('openId'))
 		},
-		methods: {
-			
+		
+		components: {
+			Popup
+		},
+		
+		methods: {	
+			pageJump(num){
+				// console.log(data)
+				
+				switch (num){
+					case '1':
+						const PregnantRegister= 'https://mzjksc.yystars.com/xcx.web/Area/Demo/PregnantRegister/Main.html?deviceType=3&womanId=2000274&machineCode=a0f96e871e854f528423ccc5289e89b8&WomanId=2000274&APPType=mzsc'
+						const PregnantRegisterData = encodeURIComponent(JSON.stringify(PregnantRegister))
+						uni.navigateTo({
+						    url: `../../pages/Web/index?url= ${PregnantRegisterData}`
+						})
+						break;
+					case '2':
+						uni.showModal({
+						    title: '温馨提示',
+						    content: '您所在的地区暂未开通服务',
+							showCancel: false,
+							confirmColor: '#FF70B5',
+							success: (res) =>{
+								if(res.confirm){
+									  this.isDad= !this.isDad
+								}else if (res.cancel) {
+									console.log('用户取消了')
+								}
+							}
+						});
+						break;
+					case '3':
+						uni.showModal({
+						    title: '温馨提示',
+						    content: '您所在的地区暂未开通服务',
+							showCancel: false,
+							confirmColor: '#FF70B5',
+							success: (res) =>{
+								if(res.confirm){
+									  this.isDad= !this.isDad
+								}else if (res.cancel) {
+									console.log('用户取消了')
+								}
+							}
+						});
+						break;
+					case '4':
+						const SCBG= 'https://mzjksc.yystars.com/xcx.web/Area/Demo/Report/SCBG/index.html?deviceType=5&womanId=2000274&machineCode=a0f96e871e854f528423ccc5289e89b8&userCode=17051026667&WomanId=2000274&APPType=mzsc'
+						const SCBGData = encodeURIComponent(JSON.stringify(SCBG))
+						uni.navigateTo({
+						    url: `../../pages/Web/index?url= ${SCBGData}`
+						})
+						break;
+					case '5':
+						const weChat= 'https://mzjksc.yystars.com/xcx.web/Area/Demo/weChat/chat.html?WomanId=2000274&deviceType=5&districtNo=410101&machineCode=a0f96e871e854f528423ccc5289e89b8&WomanId=2000274&APPType=mzsc'
+						const weChatData = encodeURIComponent(JSON.stringify(weChat))
+						uni.navigateTo({
+						    url: `../../pages/Web/index?url= ${weChatData}`
+						})
+						break;
+				}
+				
+			}
 		}
 	}
 </script>
 
 <style lang="scss">
+
+
 	.page {
 		position: relative;
 		background-color: #fff;

@@ -3,7 +3,7 @@
 		<view class="hea-top-bg">
 			<image src="../../static/home/banner.png" mode="" class="hea-top-bgimg"></image>
 			<view class="hea-top">
-				<image class="image1" @click="jumpUrl('Area/MyHandbook/ChangeHandbook.html','MZSC')" src="../../static/home/navbar_switch@2x.png" alt=""></image>
+				<image class="image1" @click="jumpUrl('Area/MyHandbook/ManageHandbooks.html','MZSC')" src="../../static/home/navbar_switch@2x.png" alt=""></image>
 				<view class="hea-top-center">
 				  <view>
 					<text @click="changePeriod">{{periodName}}</text>
@@ -18,7 +18,7 @@
 			</view>
 		  <!--头部中间部分-->
 			<view class="hea-center">
-				<image class="hea-center-left" src="../../static/home/img_yuanqian_default@2x.png" alt=""></image>
+				<image class="hea-center-left"  :src="'../../static/home/img'+period+'@2x.png'" alt=""></image>
 				<view class="hea-center-right">
 				  <!--孕前期-->
 					<view class="uli" v-if="period=='1'"  @click="jumpUrl('Area/Record/Pregnancy/BasicInfo/Record.html','MZSC')">
@@ -56,7 +56,7 @@
 					  </view>
 					  <view style="margin-top: 0.5em;">
 						  <image src="../../static/home/icon_rili@2x.png" alt="" class="img_n3"></image>
-						  <text>{{Birthday||'未填出生日期'}}</text>
+						  <text>{{TimeSpan||'未填出生日期'}}</text>
 					  </view>
 					</view>
 				</view>
@@ -252,7 +252,6 @@
 				periodNameList:['','孕前篇','孕产期篇','儿童篇'],
 				topName:'孕育指导',
 				dtPregnantMessager:[],   //母婴信使
-				machineCode: '',
 				BOOK_ID:'',
 				BOOK_NO:'',
 				PeriodDays:'',
@@ -338,7 +337,8 @@
 		},
 		computed:{
 			...mapGetters([
-				'openID'
+				'openID',
+				'userInfo'
 			])
 		},
 		onLoad() {
@@ -351,7 +351,7 @@
 		methods: {
 			jumpWx(pages,params){  //跳转小程序原生页面
 				uni.navigateTo({
-					url: pages+params
+					url: pages+params+'&WomanId='+JSON.parse(this.userInfo).WomanId
 				});
 			},
 			changeTabRecord(index) {
@@ -477,8 +477,8 @@
 				}
 			},
 			changePeriod() {    //改变时期
-				this.show=true
-				this.showToplist=true;
+				this.show=!this.show
+				this.showToplist=!this.showToplist;
 			},
 			handleClick(index) {  //选择时期
 				this.period=index+1+'';
@@ -502,12 +502,22 @@
 					openId:this.openID,
 					period:index
 				}).then(res =>{
-					console.log(res)
+					console.log(res)	
 					this.yyqList=res.dtData.dtKnowledge||[];
 					this.topName=this.topNameList[parseInt(this.period)-1];
 					this.periodName=this.periodNameList[parseInt(this.period)];
 					this.WomanStatus=this.period;
 					this.dtPregnantMessager=res.dtData.dtPregnantMessager?res.dtData.dtPregnantMessager:[]
+					this.ChildName=res.dtData.dtUserInfo[0]?res.dtData.dtUserInfo[0].ChildName ||'':''
+					this.PreExpectedDate=res.dtData.dtUserInfo[0]?res.dtData.dtUserInfo[0].PreExpectedDate ||'':''
+					this.ChildBirthday=res.dtData.dtUserInfo[0]?res.dtData.dtUserInfo[0].ChildBirthday||'':''
+					this.TimeSpan=res.dtData.dtUserInfo[0]?res.dtData.dtUserInfo[0].TimeSpan||'':''
+					this.PeriodDays=res.dtData.dtUserInfo[0]?res.dtData.dtUserInfo[0].PeriodDays||'':''
+					this.realName=res.dtData.dtUserInfo[0]?res.dtData.dtUserInfo[0].WomanName||'':''
+					this.childName=res.dtData.dtUserInfo[0]?res.dtData.dtUserInfo[0].ChildName||'':''
+					this.childSex=res.dtData.dtUserInfo[0]?res.dtData.dtUserInfo[0].ChildSex||'':''
+					this.LastMensesDate=res.dtData.dtUserInfo[0]?res.dtData.dtUserInfo[0].LastMensesDate||'':'',
+					this.Birthday=res.dtData.dtUserInfo[0]?res.dtData.dtUserInfo[0].Birthday||'':''
 					this.topList.map(item =>{
 						item.isActive=false
 					})
@@ -528,23 +538,27 @@
 						womanLevel=val.name
 					}
 				})
-				let WxType = type =='MZSC'?'xcx.mzsc/':'xcx.web/'
-				const httpWeb = this.$WebServer + WxType +url +'?deviceType=5'+'&APPType='+type+
-				'&machineCode='+this.machineCode+'&BOOK_ID='+this.BOOK_ID+'&BOOK_NO='+this.BOOK_NO+'&womanLevel='+womanLevel+'&WX=2'
+				let WxType = type =='MZSC'?'xcx.mzsc/':'xcx.web/'  //分包
+				// #ifndef MP-WEIXIN  
+				try{
+					if(JSON.parse(this.userInfo)){
+						console.log('onload')
+					}
+				}catch(e){
+					this.$store.commit('setUserInfo',JSON.stringify({}))  
+				}
+				// #endif
+				const httpWeb = this.$WebServer + WxType +url +'?deviceType=5'+'&APPType='+type+'&WomanId='+JSON.parse(this.userInfo).WomanId+
+				'&machineCode='+this.openID+'&BOOK_ID='+this.BOOK_ID+'&BOOK_NO='+this.BOOK_NO+'&womanLevel='+womanLevel+'&WX=2'
 				+'&WomanStatus='+this.WomanStatus+'&childrenMonth='+parseInt(parseInt(this.PeriodDays||0)/30)
 				+'&preExpectedDate='+this.PreExpectedDate+'&realName='+this.realName+'&lastMensesDate='
 				+this.LastMensesDate+'&childName='+this.childName+'&childSex='
-				+this.childSex+'&childBirthday='+this.Birthday
-				+'&currentChapter='+currentChapter+'&subsidiaryParams='+this.Birthday+item
+				+this.childSex+'&childBirthday='+this.Birthday+'&districtNo='+JSON.parse(this.userInfo).DistrictNo+'&districtName='
+				+JSON.parse(this.userInfo).DistrictFullName+'&currentChapter='+currentChapter+'&subsidiaryParams='+this.Birthday+item
 				let urlHttps = encodeURIComponent(JSON.stringify(httpWeb))
-				//#ifdef MP-WEIXIN    
 				uni.navigateTo({
-				    url: `/pages/Web/index?url=${urlHttps}`,
+				    url: `../../pages/Web/index?url=${urlHttps}`,
 				});
-				//#endif    
-				//#ifndef MP-WEIXIN
-				window.open(JSON.parse(decodeURIComponent(urlHttps)))  //H5端跳转
-				//#endif
 			},
 			refreshYYQ(){  //孕育指导刷新
 				refreshArticles({

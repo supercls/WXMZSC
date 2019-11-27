@@ -14,7 +14,7 @@
 			</view>
 		</view>
 		<view class="user-bottom">
-			<button type="primary" :loading="loading" class="but" @tap="submit">登录</button>
+			<button type="primary" :loading="loading" :disabled="disabled" class="but" @tap="submit">登录</button>
 			 <view class="bot">
 				 <navigator hover-class="none" url="/pages/User/rejister"><text>用户注册</text></navigator>
 				 <navigator hover-class="none" url="/pages/User/reset"><text>忘记密码</text></navigator>
@@ -40,6 +40,7 @@
 					passWord:'',
 					openId:''
 				},
+				disabled:false
 			}
 		},
 		onLoad() {
@@ -63,15 +64,22 @@
 					return false
 				}
 				this.loading = true
+				this.disabled = true
+				this.userObj.passWord = md5.hex_md5(this.userObj.passWord).toUpperCase()
 				this.userObj.passWord = md5.hex_md5(this.userObj.passWord).toUpperCase()   //md5加密转大写
 				this.userObj.openId = this.$store.state.openID;
 				login({...this.userObj}).then(res =>{
 					uni.switchTab({
 						url: '/pages/Home/Home'
 					})
+					this.disabled = false
 					this.loading = false
+					// #ifndef MP-WEIXIN  
+						this.$store.commit('setOpenID',{openId: res.dtData[0].MachineCode})
+					// #endif
 				}).catch(err =>{
 					this.loading = false
+					this.disabled = false
 				})
 			}
 		}

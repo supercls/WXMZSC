@@ -1,0 +1,68 @@
+{
+  "pages": [
+    "pages/User/home",
+    "pages/User/index",
+    "pages/User/rejister",
+    "pages/User/reset",
+    "pages/User/visitor",
+    "pages/Home/Home",
+    "pages/Find/Find",
+    "pages/Mine/Mine",
+    "pages/Mine/collect",
+    "pages/Mine/setting",
+    "pages/Web/index",
+    "pages/Web/share",
+    "pages/brief/brief",
+    "pages/Mine/userInfo"
+  ],
+  "window": {
+    "navigationBarTextStyle": "black",
+    "navigationBarTitleText": "母子手册",
+    "navigationBarBackgroundColor": "#f2f2f2"
+  },
+  "tabBar": {
+    "color": "#999999",
+    "selectedColor": "#FF70B5",
+    "backgroundColor": "#fff",
+    "list": [
+      {
+        "pagePath": "pages/Home/Home",
+        "iconPath": "static/tab/Home.png",
+        "selectedIconPath": "static/tab/Home@highlight.png",
+        "text": "首页"
+      },
+      {
+        "pagePath": "pages/Find/Find",
+        "iconPath": "static/tab/Find.png",
+        "selectedIconPath": "static/tab/Find@highlight.png",
+        "text": "发现"
+      },
+      {
+        "pagePath": "pages/Mine/Mine",
+        "iconPath": "static/tab/Mine.png",
+        "selectedIconPath": "static/tab/Mine@highlight.png",
+        "text": "我的"
+      }
+    ]
+  },
+  "nvue": {
+    "pages": {
+      "pages/User/aboutUs.html": {
+        "window": {
+          "usingComponents": {},
+          "navigationBarTitleText": "关于我们"
+        },
+        "nvue": true
+      }
+    }
+  },
+  "nvueCompiler": "uni-app",
+  "renderer": "auto",
+  "splashscreen": {
+    "alwaysShowBeforeRender": true,
+    "autoclose": false
+  },
+  "appname": "MZSC",
+  "compilerVersion": "2.4.2",
+  "usingComponents": {}
+}

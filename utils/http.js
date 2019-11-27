@@ -1,8 +1,12 @@
-import  apiServer from '../config.js'
+import  { apiServer } from '../config.js'
 
 class HTTP {
 	// 对请求进行封装
 	request({ url, data, method = 'GET' }) {
+		uni.showLoading({
+			title:'加载中...',
+			mask: true
+		})
 		return  new Promise((resolve, reject)=>{
 			 this._request( url, resolve, reject, data, method )
 		})  
@@ -18,6 +22,7 @@ class HTTP {
 			method: method,
 			data: data,
 			success:(res)=> {
+					uni.hideLoading()
 				let data = JSON.parse(res.data)
 				if(data.isSuccess) {
 					resolve(JSON.parse(res.data))
@@ -27,6 +32,7 @@ class HTTP {
 				}
 			},
 			fail: (err) => {
+				uni.hideLoading()
 				console.log(err)
 				this._show_error(err)
 				reject(err)

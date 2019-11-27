@@ -1,0 +1,1 @@
+<view class="{{[isShow?'show':'hide','popUp']}}"><view class="{{[showNumber==='1'?'showA':'hideA','content']}}"><view class="title"><text class="t-title">{{title}}</text></view><view class="slot"><slot name="popup"></slot></view></view></view>

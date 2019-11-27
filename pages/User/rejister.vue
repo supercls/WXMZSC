@@ -26,7 +26,7 @@
 			<view  @tap="aggreeBt" class="user-tc-v">
 				<image :src="imgSrc" mode=""></image>已阅读并同意
 			</view>
-			<text class="user-tc-t1" @tap="junmpUrl('Area/agreement/agreement.html')">《用户协议及隐私条款》</text>
+			<text class="user-tc-t1" @tap="junmpUrl('xcx.web/Area/agreement/agreement.html')">《用户协议及隐私条款》</text>
 		</view>
 		<view class="user-bottom">
 			<button type="primary" :loading="loading" class="but" @tap="submit" 
@@ -83,15 +83,9 @@
 			},
 			junmpUrl(url){
 				let urlHttps = encodeURIComponent(JSON.stringify(this.$WebServer + url + '?name=llllll'))
-				//#ifdef MP-WEIXIN
 				uni.navigateTo({
 				    url: `/pages/Web/index?url=${urlHttps}`,
 				});
-				//#endif
-				
-				//#ifndef MP-WEIXIN
-				window.open(JSON.parse(decodeURIComponent(urlHttps))) 
-				//#endif
 			},
 			submit(){
 				if(this.userObj.mobileTel == '' || this.userObj.mobileTel.length!=11){
@@ -127,6 +121,7 @@
 					return false
 				}
 				this.userObj.openId = this.openID
+				this.userObj.passWord = md5.hex_md5(this.userObj.passWord).toUpperCase()   //md5加密转大写
 				this.userObj.passWord = md5.hex_md5(this.userObj.passWord).toUpperCase()   //md5加密转大写
 				this.loading = true
 				register({...this.userObj}).then(res =>{

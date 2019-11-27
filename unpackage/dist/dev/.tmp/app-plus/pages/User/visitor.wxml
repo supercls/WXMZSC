@@ -1,0 +1,1 @@
+<view class="visitor"><image class="i-img _img" src="{{$root.m0}}" alt></image><view data-event-opts="{{[['tap',[['jumpLogin',['$event']]]]]}}" class="b-login btn" bindtap="__e">用户登录</view><view data-event-opts="{{[['tap',[['jumpBrowse',['$event']]]]]}}" class="b-browse btn" bindtap="__e">浏览手册</view></view>

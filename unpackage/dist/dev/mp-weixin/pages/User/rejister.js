@@ -164,7 +164,7 @@ __webpack_require__.r(__webpack_exports__);
 var _api = __webpack_require__(/*! ../../utils/api.js */ 27);
 
 var _vuex = __webpack_require__(/*! vuex */ 16);
-var _md = _interopRequireDefault(__webpack_require__(/*! ../../utils/md5.js */ 37));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function _objectSpread(target) {for (var i = 1; i < arguments.length; i++) {var source = arguments[i] != null ? arguments[i] : {};var ownKeys = Object.keys(source);if (typeof Object.getOwnPropertySymbols === 'function') {ownKeys = ownKeys.concat(Object.getOwnPropertySymbols(source).filter(function (sym) {return Object.getOwnPropertyDescriptor(source, sym).enumerable;}));}ownKeys.forEach(function (key) {_defineProperty(target, key, source[key]);});}return target;}function _defineProperty(obj, key, value) {if (key in obj) {Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true });} else {obj[key] = value;}return obj;}var lotusAddress = function lotusAddress() {return Promise.all(/*! import() | components/picker-address/lotusAddress */[__webpack_require__.e("common/vendor"), __webpack_require__.e("components/picker-address/lotusAddress")]).then(__webpack_require__.bind(null, /*! ../../components/picker-address/lotusAddress.vue */ 147));};var _default =
+var _md = _interopRequireDefault(__webpack_require__(/*! ../../utils/md5.js */ 37));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function _objectSpread(target) {for (var i = 1; i < arguments.length; i++) {var source = arguments[i] != null ? arguments[i] : {};var ownKeys = Object.keys(source);if (typeof Object.getOwnPropertySymbols === 'function') {ownKeys = ownKeys.concat(Object.getOwnPropertySymbols(source).filter(function (sym) {return Object.getOwnPropertyDescriptor(source, sym).enumerable;}));}ownKeys.forEach(function (key) {_defineProperty(target, key, source[key]);});}return target;}function _defineProperty(obj, key, value) {if (key in obj) {Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true });} else {obj[key] = value;}return obj;}var lotusAddress = function lotusAddress() {return Promise.all(/*! import() | components/picker-address/lotusAddress */[__webpack_require__.e("common/vendor"), __webpack_require__.e("components/picker-address/lotusAddress")]).then(__webpack_require__.bind(null, /*! ../../components/picker-address/lotusAddress.vue */ 159));};var _default =
 {
   data: function data() {
     return {
@@ -207,14 +207,8 @@ var _md = _interopRequireDefault(__webpack_require__(/*! ../../utils/md5.js */ 3
     },
     junmpUrl: function junmpUrl(url) {
       var urlHttps = encodeURIComponent(JSON.stringify(this.$WebServer + url + '?name=llllll'));
-
       uni.navigateTo({
         url: "/pages/Web/index?url=".concat(urlHttps) });
-
-
-
-
-
 
     },
     submit: function submit() {var _this = this;
@@ -251,6 +245,7 @@ var _md = _interopRequireDefault(__webpack_require__(/*! ../../utils/md5.js */ 3
         return false;
       }
       this.userObj.openId = this.openID;
+      this.userObj.passWord = _md.default.hex_md5(this.userObj.passWord).toUpperCase(); //md5加密转大写
       this.userObj.passWord = _md.default.hex_md5(this.userObj.passWord).toUpperCase(); //md5加密转大写
       this.loading = true;
       (0, _api.register)(_objectSpread({}, this.userObj)).then(function (res) {
