@@ -2,14 +2,16 @@
 	<view class="wrap-mine page">
 		<view class="content">
 			<view class="mine-item">
-				<image src="../../static/mine/icon-avatar.png" mode="" class="item-img"></image>
+				<image :src="imgPath !== ''? imgPath : '../../static/mine/icon-avatar.png'"mode="" class="item-img"></image>
 				<text class="item-text" @tap="uploadImg">修改头像</text>
 				<image src="../../static/mine/icon_right.png" mode="" class="item-icon"></image>
 			</view>
 			<view class="empty"></view>
 			<view class="mine-item" @click= "modifyNickname()">
 				<text class="item-left">我的昵称</text>
-				<text class="item-text">上海臻鼎健康</text>
+				<text class="item-text">
+					{{ nicknameData? nicknameData : '您暂时还没有' }}
+				</text>
 				<image src="../../static/mine/icon_right.png" mode="" class="item-icon"></image>
 			</view>
 			<view class="mine-item">
@@ -19,7 +21,9 @@
 			</view>
 			<view class="mine-item">
 				<text class="item-left">手机号</text>
-				<text class="item-text">18399999999</text>
+				<text class="item-text">
+					{{ getMobileTel() }}
+				</text>
 				
 			</view>
 			<view class="mine-item" @tap="changeDis">
@@ -62,14 +66,19 @@
 	import Popup from '../../components/propUp/index.vue'
 	import '../../common/popup.scss'
 	import { mapGetters } from 'vuex'
+	import { CF } from '../../utils/cfApi.js'
+	import { getUserInfo } from '../../utils/api.js'
+	const cf = new CF();
 	export default{
 		data(){
 			return{
 				showNumber: '0', // 0表示隐藏弹窗
 				nickname: '', // 现有的昵称
+				nicknameData: '', // 渲染需要的数据
+				userInfoData: {}, // 填充数据
+				imgPath:'', // 图片地址 
 				USER:{
 					userDis:'北京市',
-					
 				},
 				lotusAddressData:{
 					visible:false,
@@ -79,49 +88,114 @@
 				},
 			}
 		},
-		computed:{
-			...mapGetters([
-				'openID'
-			])
-		},
-		watch:{
-			openID(val){
-				console.log(val)
-			}
-		},
+
 		components:{
 			lotusAddress,
 			Popup
 		},
-		onLoad() {
-			console.log(this.$store.state.openID)
+		
+		computed:{
+			...mapGetters([
+				'userInfo'
+			])
 		},
+		
+		onLoad() {
+			this.getData()
+			this.pressAdd()
+		},
+		
 		methods:{
-			// 昵称弹窗
+			//数据处理
+			getData() {
+				this.userInfoData = JSON.parse(this.userInfo)
+				this.nicknameData = this.userInfoData.NickName? this.userInfoData.NickName: ''
+				this.nickname = this.userInfoData.NickName? this.userInfoData.NickName: ''
+				this.imgPath = this.userInfoData.ImagePath? 'https://mzjksc.yystars.com/' + this.userInfoData.ImagePath: ''
+				
+				
+			},
+			//处理地区默认选项
+			pressAdd() {
+				this.USER.userDis = this.userInfoData.DistrictFullName;
+				let arr = this.USER.userDis.split(' ')
+				this.lotusAddressData= {
+					visible:false,
+					provinceName: arr[0],
+					cityName: arr[1],
+					townName: arr[2]
+				}
+			},
+			
+			// 图片编辑
+			// iconImage(){
+			// 	return 	this.userInfoData.ImagePath?'https://mzjksc.yystars.com/' + this.userInfoData.ImagePath : this.imagePath
+			// },
+			
+			//电话号码处理
+			getMobileTel() {
+				if(this.userInfoData.MobileTel){
+					return this.userInfoData.MobileTel.replace(/(\d{3})\d{4}(\d{4})/, "$1****$2")
+				}
+			},
+			
+			// 打开弹窗
 			modifyNickname() {
 				this.showNumber = '1'
 			},
 			
-			//关闭弹窗
+			//关系修改昵称弹窗
 			calse() {
 				this.showNumber = '0'
 			},
 			
-			//确认
+			//确认修改昵称
 			success() {
-				this.showNumber = '0';
-				console.log(this.nickname)
+				this.showNumber = '0'
+				this.nicknameData = this.nickname
+				const data= {
+					nickName: this.nickname,
+					machineCode: this.userInfoData.MachineCode,
+				}
+				
+				cf.UpdateBaskInfo(data).then((res)=>{
+					if(res.isSuccess){
+						 this.getUserInfo()
+					}
+				}).catch(err=>{
+					console.log(err)
+				})
 			},
 			
-			uploadImg(){   //修改头像
+			
+			// 图像上传和base64转码
+			uploadImg(){  
 				uni.chooseImage({
 				    count: 1, 
 				    sizeType: ['compressed'], //可以指定是原图还是压缩图，默认二者都有
 				    sourceType: ['album','camera'], //从相册选择
-				    success: function (res) {
-						console.log(res)
-				        console.log(JSON.stringify(res.tempFilePaths));
-				    },
+				    success: response =>{
+						uni.getFileSystemManager().readFile({
+						    filePath: response.tempFilePaths[0], //选择图片返回的相对路径
+						    encoding: 'base64', //编码格式
+						    success: res => { //成功的回调	
+								const arr = response.tempFilePaths[0].split('.');
+								let data= {
+									womanId: this.userInfoData.WomanId,
+									imageData: res.data,
+									suffix: `${arr[arr.length - 1]}`
+								}
+								console.log(data)
+								cf.UploadImage(data).then(res=>{
+									this.imgPath= 'https://mzjksc.yystars.com/' + res.dtData[0].ImagePath
+									this.$store.commit('setUserInfo',JSON.stringify(res.dtData[0]))
+								}).catch(err=>{
+									console.log(err)
+								})
+						    }
+						
+						})
+					},
 					fail: function (err) {
 						uni.showToast({
 						    title: JSON.stringify(err),
@@ -131,17 +205,53 @@
 					}
 				});
 			},
+			
+	
+			
 			changeDis() { //调用地址PICKER  //确认回调
-				this.lotusAddressData.visible = true;
+				this.lotusAddressData.visible = true
 			},
-			choseValue(res){   //确认回调
+			
+			//地址选中确认回调
+			choseValue(res){  
 				console.log(res);
-				this.lotusAddressData.visible = res.visible;
-				this.lotusAddressData.provinceName = res.province;
-				this.lotusAddressData.cityName = res.city;
-				this.lotusAddressData.townName = res.town;
-				this.USER.userDis = `${res.province} ${res.city} ${res.town}`; 
+				this.lotusAddressData.visible = res.visible
+				this.lotusAddressData.provinceName = res.province
+				this.lotusAddressData.cityName = res.city
+				this.lotusAddressData.townName = res.town
+				this.USER.userDis = `${res.province} ${res.city} ${res.town}`;
+				
+				const data = {
+					machineCode: this.userInfoData.MachineCode,
+					districtFullName: this.USER.userDis,
+					districtNo: res.cityCode
+					// nickName: '123'
+				}
+				
+				cf.UpdateBaskInfo(data).then((res)=>{
+					if(res.isSuccess){
+						 this.getUserInfo()
+					}
+				}).catch(err=>{
+					console.log(err)
+				})
+				
+			},
+			
+			// 拉取信息
+			getUserInfo() {
+				const data = {
+					openId: this.userInfoData.MachineCode
+				}
+				uni.showLoading()
+				getUserInfo(data).then(data=>{
+					this.$store.commit('setUserInfo',JSON.stringify(data.dtData[0]))
+					uni.hideLoading()
+				}).catch(err=>{
+					console.log(err)
+				})
 			}
+			
 		}
 	}
 </script>

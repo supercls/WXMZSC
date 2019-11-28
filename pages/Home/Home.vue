@@ -545,7 +545,7 @@
 						console.log('onload')
 					}
 				}catch(e){
-					this.$store.commit('setUserInfo',JSON.stringify({}))  
+					this.$store.commit('setUserInfo',JSON.stringify({}))
 				}
 				// #endif
 				const httpWeb = this.$WebServer + WxType +url +'?deviceType=5'+'&APPType='+type+'&WomanId='+JSON.parse(this.userInfo).WomanId+

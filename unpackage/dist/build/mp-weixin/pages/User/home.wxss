@@ -1,1 +1,1 @@
-.home-index{margin-top:50vh}.home-index button{margin:20rpx 50rpx}
+.home-index{margin-top:270rpx;text-align:center}.home-index .img1{width:320rpx;height:320rpx}.home-index .img2{width:480rpx;margin-top:-40rpx;height:78rpx}.home-index .img3{width:384rpx;margin-top:42rpx;height:44rpx}.home-bottom{position:absolute;bottom:130rpx;left:0;right:0;text-align:center}.home-bottom button{width:312rpx;height:86rpx;line-height:86rpx;background:#f97ab3;margin:20rpx auto;border:none}.home-bottom text{font-size:24rpx;color:#f97ab3}

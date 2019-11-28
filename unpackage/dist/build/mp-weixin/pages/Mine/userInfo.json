@@ -1,6 +1,7 @@
 {
   "navigationBarTitleText": "修改个人资料",
   "usingComponents": {
-    "lotus-address": "/components/picker-address/lotusAddress"
+    "lotus-address": "/components/picker-address/lotusAddress",
+    "popup": "/components/propUp/index"
   }
 }

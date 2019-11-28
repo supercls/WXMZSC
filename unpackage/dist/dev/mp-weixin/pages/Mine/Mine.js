@@ -73,6 +73,17 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
+  var m0 = _vm.iconImage()
+  var m1 = _vm.getMobileTel()
+  _vm.$mp.data = Object.assign(
+    {},
+    {
+      $root: {
+        m0: m0,
+        m1: m1
+      }
+    }
+  )
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -141,47 +152,73 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-var _vuex = __webpack_require__(/*! vuex */ 16); //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-var _default = { data: function data() {return { nickname: '您还没有昵称', //昵称
-      iphone: '17021026667', // 手机号
+
+
+
+
+
+
+
+
+
+
+var _vuex = __webpack_require__(/*! vuex */ 16);function _objectSpread(target) {for (var i = 1; i < arguments.length; i++) {var source = arguments[i] != null ? arguments[i] : {};var ownKeys = Object.keys(source);if (typeof Object.getOwnPropertySymbols === 'function') {ownKeys = ownKeys.concat(Object.getOwnPropertySymbols(source).filter(function (sym) {return Object.getOwnPropertyDescriptor(source, sym).enumerable;}));}ownKeys.forEach(function (key) {_defineProperty(target, key, source[key]);});}return target;}function _defineProperty(obj, key, value) {if (key in obj) {Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true });} else {obj[key] = value;}return obj;}var _default =
+
+{
+  data: function data() {
+    return {
+      userInfoData: {}, // 
+      nickname: '您还没有昵称', //昵称
+      imagePath: '../../static/mine/icon-avatar.png', // 手机号
       add: '江苏省苏州市吴中区', // 地址
+
       listData: [// 列表信息
-      { name: '我的手册', imgUrl: '../../static/mine/shouce.png', id: '1' }, { name: '母婴信使', imgUrl: '../../static/mine/xinshi.png', id: '2' }, { name: '我的收藏', imgUrl: '../../static/mine/shoucang.png', id: '3' }, { name: '帮助与反馈', imgUrl: '../../static/mine/fankui.png', id: '4' }, { name: '系统与设置', imgUrl: '../../static/mine/shezhi.png', id: '5' }, { name: 'APP下载指南', imgUrl: '../../static/mine/zhinan.png', id: '6' }] };}, onLoad: function onLoad() {uni.getStorage({ key: 'MZSC_USER_STORAGE', success: function success(res) {console.log(res.data);} });}, methods: { pageJump: function pageJump(num) {// console.log(num)
-      switch (num) {case '1':var ManageHandbooks = 'https://mzjksc.yystars.com/xcx.mzsc/Area/MyHandbook/ManageHandbooks.html?deviceType=5&name=&idCard=&districtNo=410101&districtName=%E6%B2%B3%E5%8D%97%E7%9C%81%20%E9%83%91%E5%B7%9E%E5%B8%82%20%E5%B8%82%E8%BE%96%E5%8C%BA&machineCode=50f99df5730a4335ba3e951d4f7bbb49&WomanId=2000363&APPType=mzsc';var ManageHandbooksData = encodeURIComponent(JSON.stringify(ManageHandbooks));uni.navigateTo({ url: "../../pages/Web/index?url= ".concat(ManageHandbooksData) });break;case '2':
+      { name: '我的手册', imgUrl: '../../static/mine/shouce.png', id: '1' },
+      { name: '母婴信使', imgUrl: '../../static/mine/xinshi.png', id: '2' },
+      { name: '我的收藏', imgUrl: '../../static/mine/shoucang.png', id: '3' },
+      { name: '帮助与反馈', imgUrl: '../../static/mine/fankui.png', id: '4' },
+      { name: '系统与设置', imgUrl: '../../static/mine/shezhi.png', id: '5' },
+      { name: 'APP下载指南', imgUrl: '../../static/mine/zhinan.png', id: '6' }] };
+
+
+
+  },
+  computed: _objectSpread({},
+  (0, _vuex.mapGetters)([
+  'userInfo'])),
+
+
+
+  onShow: function onShow() {
+    this.userInfoData = JSON.parse(this.userInfo);
+  },
+
+
+  methods: {
+
+    // 图片编辑
+    iconImage: function iconImage() {
+      return this.userInfoData.ImagePath ? 'https://mzjksc.yystars.com/' + this.userInfoData.ImagePath : this.imagePath;
+    },
+
+    //电话号码处理
+    getMobileTel: function getMobileTel() {
+      if (this.userInfoData.MobileTel) {
+        return this.userInfoData.MobileTel.replace(/(\d{3})\d{4}(\d{4})/, "$1****$2");
+      }
+    },
+    // 页面跳转
+    pageJump: function pageJump(num) {
+      // console.log(num)
+      switch (num) {
+        case '1':
+          var ManageHandbooks = 'https://mzjksc.yystars.com/xcx.mzsc/Area/MyHandbook/ManageHandbooks.html?deviceType=5&name=&idCard=&districtNo=410101&districtName=%E6%B2%B3%E5%8D%97%E7%9C%81%20%E9%83%91%E5%B7%9E%E5%B8%82%20%E5%B8%82%E8%BE%96%E5%8C%BA&machineCode=50f99df5730a4335ba3e951d4f7bbb49&WomanId=2000363&APPType=mzsc';
+          var ManageHandbooksData = encodeURIComponent(JSON.stringify(ManageHandbooks));
+          uni.navigateTo({
+            url: "../../pages/Web/index?url= ".concat(ManageHandbooksData) });
+
+          break;
+        case '2':
           var MaternalMessenger = 'https://mzjksc.yystars.com/xcx.web/Area/Slidebar/MaternalMessenger/Main.html?deviceType=5&currentChapter=%E5%AD%95%E4%BA%A7%E6%9C%9F%E7%AF%87&subsidiaryParams=&machineCode=50f99df5730a4335ba3e951d4f7bbb49&WomanId=2000363';
           var MaternalMessengerData = encodeURIComponent(JSON.stringify(MaternalMessenger));
           uni.navigateTo({

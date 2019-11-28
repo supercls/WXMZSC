@@ -9,6 +9,7 @@
     "pages/Home/Home",
     "pages/Find/Find",
     "pages/Mine/Mine",
+    "pages/Mine/collect",
     "pages/Mine/setting",
     "pages/Web/index",
     "pages/Web/share",
@@ -46,5 +47,6 @@
       }
     ]
   },
+  "permission": {},
   "usingComponents": {}
 }

@@ -86,12 +86,14 @@
 		margin-top: 270rpx;
 		text-align: center;
 		.img1{
-			width: 320rpx;
-			height: 320rpx;
+			width: 190rpx;
+			height: 190rpx;
+			display: block;
+			margin: 10rpx auto 40rpx auto;
 		}
 		.img2{
 			width: 480rpx;
-			margin-top: -40rpx;
+			
 			height: 78rpx;
 		}
 		.img3{

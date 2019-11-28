@@ -4,17 +4,27 @@
 			<image src="../../static/mine/background.png" class= "bgImg"></image>
 			<view class= "header" @click= "pageJump('7')">
 				<view class= "flex avatar">
-					<image src="../../static/mine/icon-avatar.png" class= "avatarImg"></image>
+					<!-- ../../static/mine/icon-avatar.png -->
+					<image :src="iconImage()" class= "avatarImg"></image>
 				</view>	
 				<view class= "nickname flex">
-					<text class="nicknameText">{{ nickname }}</text>
-					<image src="../../static/mine/nickname.png" class="nicknameImg"></image>
+					<text class="nicknameText">
+						{{ userInfoData.NickName? userInfoData.NickName : nickname }}
+						</text>
+					<image 
+						v-if= "!userInfoData.NickName" 
+						src="../../static/mine/nickname.png" 
+						class="nicknameImg">
+					</image>
 				</view>
 				<view class="current flex">
-					<text class="currentText">{{ iphone }}</text>
+					<text class="currentText">
+						<!-- userInfoData.MobileTel != ''? userInfoData.MobileTel.replace(/(\d{3})\d{4}(\d{4})/, "$1****$2"): '' -->
+						{{ getMobileTel() }}
+					</text>
 				</view>
 				<view class="current flex">
-					<text class="currentText">{{ add }}</text>
+					<text class="currentText">{{ userInfoData.DistrictFullName }}</text>
 				</view>
 			</view>
 		</view>
@@ -39,31 +49,47 @@
 	export default {
 		data() {
 			return {
+				userInfoData: {}, // 
 				nickname: '您还没有昵称', //昵称
-				iphone: '17021026667', // 手机号
+				imagePath: '../../static/mine/icon-avatar.png', // 手机号
 				add: '江苏省苏州市吴中区' ,// 地址
+				
 				listData: [ // 列表信息
 					{name: '我的手册', imgUrl: '../../static/mine/shouce.png', id: '1'},
 					{name: '母婴信使', imgUrl: '../../static/mine/xinshi.png', id: '2'},
 					{name: '我的收藏', imgUrl: '../../static/mine/shoucang.png', id: '3'},
 					{name: '帮助与反馈', imgUrl: '../../static/mine/fankui.png', id: '4'},
 					{name: '系统与设置', imgUrl: '../../static/mine/shezhi.png', id: '5'},
-					{name: 'APP下载指南', imgUrl: '../../static/mine/zhinan.png', id: '6'}				], 
+					{name: 'APP下载指南', imgUrl: '../../static/mine/zhinan.png', id: '6'}
+				], 
 				
 			}
 		},
+		computed:{
+			...mapGetters([
+				'userInfo'
+			])
+		},	
 		
-		onLoad() {
-			uni.getStorage({
-			    key: 'MZSC_USER_STORAGE',
-			    success: function (res) {
-			        console.log(res.data);
-			    }
-			});
+		onShow() {
+			this.userInfoData = JSON.parse(this.userInfo)
 		},
 		
 		
 		methods: {
+			
+			// 图片编辑
+			iconImage(){
+				return 	this.userInfoData.ImagePath?'https://mzjksc.yystars.com/' + this.userInfoData.ImagePath : this.imagePath
+			},
+			
+			//电话号码处理
+			getMobileTel() {
+				if(this.userInfoData.MobileTel){
+					return this.userInfoData.MobileTel.replace(/(\d{3})\d{4}(\d{4})/, "$1****$2")
+				}
+			},	
+			// 页面跳转
 			pageJump( num ){
 				// console.log(num)
 				switch(num){
@@ -138,6 +164,7 @@
 					.avatarImg {
 						width:160rpx;
 						height: 160rpx;
+						border-radius: 50% 50%;
 					}
 				}
 

@@ -51,6 +51,24 @@ class CF extends HTTP {
 		})
 	}
 	
+	// 修改个人信息
+	UpdateBaskInfo(data){
+		return this.request({
+			url: 'Woman/UpdateBaskInfo',
+			data,
+			method:'POST'
+		})
+	}
+	
+	// 头像上传
+	UploadImage(data) {
+		return this.request({
+			url: 'Woman/UploadImage',
+			data,
+			method:'POST'
+		})
+	}
+	
 }
 
 export {

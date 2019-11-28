@@ -1,6 +1,6 @@
 {
   "pages": [
-    "pages/User/home",
+    "pages/User/index",
     "pages/User/index",
     "pages/User/rejister",
     "pages/User/reset",

@@ -1590,6 +1590,24 @@ CF = /*#__PURE__*/function (_HTTP) {_inherits(CF, _HTTP);function CF() {_classCa
         data: data,
         method: 'POST' });
 
+    }
+
+    // 修改个人信息
+  }, { key: "UpdateBaskInfo", value: function UpdateBaskInfo(data) {
+      return this.request({
+        url: 'Woman/UpdateBaskInfo',
+        data: data,
+        method: 'POST' });
+
+    }
+
+    // 头像上传
+  }, { key: "UploadImage", value: function UploadImage(data) {
+      return this.request({
+        url: 'Woman/UploadImage',
+        data: data,
+        method: 'POST' });
+
     } }]);return CF;}(_http.default);exports.CF = CF;
 
 /***/ }),

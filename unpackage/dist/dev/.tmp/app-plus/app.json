@@ -5,6 +5,7 @@
     "pages/User/rejister",
     "pages/User/reset",
     "pages/User/visitor",
+    "pages/User/aboutUs",
     "pages/Home/Home",
     "pages/Find/Find",
     "pages/Mine/Mine",
@@ -44,17 +45,6 @@
         "text": "我的"
       }
     ]
-  },
-  "nvue": {
-    "pages": {
-      "pages/User/aboutUs.html": {
-        "window": {
-          "usingComponents": {},
-          "navigationBarTitleText": "关于我们"
-        },
-        "nvue": true
-      }
-    }
   },
   "nvueCompiler": "uni-app",
   "renderer": "auto",

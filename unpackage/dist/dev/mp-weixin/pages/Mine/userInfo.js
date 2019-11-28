@@ -90,6 +90,15 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
+  var m0 = _vm.getMobileTel()
+  _vm.$mp.data = Object.assign(
+    {},
+    {
+      $root: {
+        m0: m0
+      }
+    }
+  )
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -184,16 +193,25 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+
+
+
+
 __webpack_require__(/*! ../../common/popup.scss */ 96);
-var _vuex = __webpack_require__(/*! vuex */ 16);function _objectSpread(target) {for (var i = 1; i < arguments.length; i++) {var source = arguments[i] != null ? arguments[i] : {};var ownKeys = Object.keys(source);if (typeof Object.getOwnPropertySymbols === 'function') {ownKeys = ownKeys.concat(Object.getOwnPropertySymbols(source).filter(function (sym) {return Object.getOwnPropertyDescriptor(source, sym).enumerable;}));}ownKeys.forEach(function (key) {_defineProperty(target, key, source[key]);});}return target;}function _defineProperty(obj, key, value) {if (key in obj) {Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true });} else {obj[key] = value;}return obj;}var lotusAddress = function lotusAddress() {return Promise.all(/*! import() | components/picker-address/lotusAddress */[__webpack_require__.e("common/vendor"), __webpack_require__.e("components/picker-address/lotusAddress")]).then(__webpack_require__.bind(null, /*! ../../components/picker-address/lotusAddress.vue */ 159));};var Popup = function Popup() {return __webpack_require__.e(/*! import() | components/propUp/index */ "components/propUp/index").then(__webpack_require__.bind(null, /*! ../../components/propUp/index.vue */ 167));};var _default =
+var _vuex = __webpack_require__(/*! vuex */ 16);
+var _cfApi = __webpack_require__(/*! ../../utils/cfApi.js */ 115);
+var _api = __webpack_require__(/*! ../../utils/api.js */ 27);function _objectSpread(target) {for (var i = 1; i < arguments.length; i++) {var source = arguments[i] != null ? arguments[i] : {};var ownKeys = Object.keys(source);if (typeof Object.getOwnPropertySymbols === 'function') {ownKeys = ownKeys.concat(Object.getOwnPropertySymbols(source).filter(function (sym) {return Object.getOwnPropertyDescriptor(source, sym).enumerable;}));}ownKeys.forEach(function (key) {_defineProperty(target, key, source[key]);});}return target;}function _defineProperty(obj, key, value) {if (key in obj) {Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true });} else {obj[key] = value;}return obj;}var lotusAddress = function lotusAddress() {return Promise.all(/*! import() | components/picker-address/lotusAddress */[__webpack_require__.e("common/vendor"), __webpack_require__.e("components/picker-address/lotusAddress")]).then(__webpack_require__.bind(null, /*! ../../components/picker-address/lotusAddress.vue */ 159));};var Popup = function Popup() {return __webpack_require__.e(/*! import() | components/propUp/index */ "components/propUp/index").then(__webpack_require__.bind(null, /*! ../../components/propUp/index.vue */ 167));};
+var cf = new _cfApi.CF();var _default =
 {
   data: function data() {
     return {
       showNumber: '0', // 0表示隐藏弹窗
       nickname: '', // 现有的昵称
+      nicknameData: '', // 渲染需要的数据
+      userInfoData: {}, // 填充数据
+      imgPath: '', // 图片地址 
       USER: {
         userDis: '北京市' },
-
 
       lotusAddressData: {
         visible: false,
@@ -203,48 +221,113 @@ var _vuex = __webpack_require__(/*! vuex */ 16);function _objectSpread(target) {
 
 
   },
-  computed: _objectSpread({},
-  (0, _vuex.mapGetters)([
-  'openID'])),
-
-
-  watch: {
-    openID: function openID(val) {
-      console.log(val);
-    } },
 
   components: {
     lotusAddress: lotusAddress,
     Popup: Popup },
 
+
+  computed: _objectSpread({},
+  (0, _vuex.mapGetters)([
+  'userInfo'])),
+
+
+
   onLoad: function onLoad() {
-    console.log(this.$store.state.openID);
+    this.getData();
+    this.pressAdd();
   },
+
   methods: {
-    // 昵称弹窗
+    //数据处理
+    getData: function getData() {
+      this.userInfoData = JSON.parse(this.userInfo);
+      this.nicknameData = this.userInfoData.NickName ? this.userInfoData.NickName : '';
+      this.nickname = this.userInfoData.NickName ? this.userInfoData.NickName : '';
+      this.imgPath = this.userInfoData.ImagePath ? 'https://mzjksc.yystars.com/' + this.userInfoData.ImagePath : '';
+
+
+    },
+    //处理地区默认选项
+    pressAdd: function pressAdd() {
+      this.USER.userDis = this.userInfoData.DistrictFullName;
+      var arr = this.USER.userDis.split(' ');
+      this.lotusAddressData = {
+        visible: false,
+        provinceName: arr[0],
+        cityName: arr[1],
+        townName: arr[2] };
+
+    },
+
+    // 图片编辑
+    // iconImage(){
+    // 	return 	this.userInfoData.ImagePath?'https://mzjksc.yystars.com/' + this.userInfoData.ImagePath : this.imagePath
+    // },
+
+    //电话号码处理
+    getMobileTel: function getMobileTel() {
+      if (this.userInfoData.MobileTel) {
+        return this.userInfoData.MobileTel.replace(/(\d{3})\d{4}(\d{4})/, "$1****$2");
+      }
+    },
+
+    // 打开弹窗
     modifyNickname: function modifyNickname() {
       this.showNumber = '1';
     },
 
-    //关闭弹窗
+    //关系修改昵称弹窗
     calse: function calse() {
       this.showNumber = '0';
     },
 
-    //确认
-    success: function success() {
+    //确认修改昵称
+    success: function success() {var _this = this;
       this.showNumber = '0';
-      console.log(this.nickname);
+      this.nicknameData = this.nickname;
+      var data = {
+        nickName: this.nickname,
+        machineCode: this.userInfoData.MachineCode };
+
+
+      cf.UpdateBaskInfo(data).then(function (res) {
+        if (res.isSuccess) {
+          _this.getUserInfo();
+        }
+      }).catch(function (err) {
+        console.log(err);
+      });
     },
 
-    uploadImg: function uploadImg() {//修改头像
+
+    // 图像上传和base64转码
+    uploadImg: function uploadImg() {var _this2 = this;
       uni.chooseImage({
         count: 1,
         sizeType: ['compressed'], //可以指定是原图还是压缩图，默认二者都有
         sourceType: ['album', 'camera'], //从相册选择
-        success: function success(res) {
-          console.log(res);
-          console.log(JSON.stringify(res.tempFilePaths));
+        success: function success(response) {
+          uni.getFileSystemManager().readFile({
+            filePath: response.tempFilePaths[0], //选择图片返回的相对路径
+            encoding: 'base64', //编码格式
+            success: function success(res) {//成功的回调	
+              var arr = response.tempFilePaths[0].split('.');
+              var data = {
+                womanId: _this2.userInfoData.WomanId,
+                imageData: res.data,
+                suffix: "".concat(arr[arr.length - 1]) };
+
+              console.log(data);
+              cf.UploadImage(data).then(function (res) {
+                _this2.imgPath = 'https://mzjksc.yystars.com/' + res.dtData[0].ImagePath;
+                _this2.$store.commit('setUserInfo', JSON.stringify(res.dtData[0]));
+              }).catch(function (err) {
+                console.log(err);
+              });
+            } });
+
+
         },
         fail: function fail(err) {
           uni.showToast({
@@ -255,16 +338,51 @@ var _vuex = __webpack_require__(/*! vuex */ 16);function _objectSpread(target) {
         } });
 
     },
+
+
+
     changeDis: function changeDis() {//调用地址PICKER  //确认回调
       this.lotusAddressData.visible = true;
     },
-    choseValue: function choseValue(res) {//确认回调
+
+    //地址选中确认回调
+    choseValue: function choseValue(res) {var _this3 = this;
       console.log(res);
       this.lotusAddressData.visible = res.visible;
       this.lotusAddressData.provinceName = res.province;
       this.lotusAddressData.cityName = res.city;
       this.lotusAddressData.townName = res.town;
       this.USER.userDis = "".concat(res.province, " ").concat(res.city, " ").concat(res.town);
+
+      var data = {
+        machineCode: this.userInfoData.MachineCode,
+        districtFullName: this.USER.userDis,
+        districtNo: res.cityCode
+        // nickName: '123'
+      };
+
+      cf.UpdateBaskInfo(data).then(function (res) {
+        if (res.isSuccess) {
+          _this3.getUserInfo();
+        }
+      }).catch(function (err) {
+        console.log(err);
+      });
+
+    },
+
+    // 拉取信息
+    getUserInfo: function getUserInfo() {var _this4 = this;
+      var data = {
+        openId: this.userInfoData.MachineCode };
+
+      uni.showLoading();
+      (0, _api.getUserInfo)(data).then(function (data) {
+        _this4.$store.commit('setUserInfo', JSON.stringify(data.dtData[0]));
+        uni.hideLoading();
+      }).catch(function (err) {
+        console.log(err);
+      });
     } } };exports.default = _default;
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))
 

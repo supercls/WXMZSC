@@ -49,6 +49,7 @@
 .page .top .header .avatar .avatarImg {
       width: 160rpx;
       height: 160rpx;
+      border-radius: 50% 50%;
 }
 .page .top .header .nickname .nicknameText {
       color: #333;
