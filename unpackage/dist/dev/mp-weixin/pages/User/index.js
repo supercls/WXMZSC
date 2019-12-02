@@ -154,6 +154,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 var _api = __webpack_require__(/*! ../../utils/api.js */ 27);
+var _vuex = __webpack_require__(/*! vuex */ 16);
 var _md = _interopRequireDefault(__webpack_require__(/*! ../../utils/md5.js */ 37));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function _objectSpread(target) {for (var i = 1; i < arguments.length; i++) {var source = arguments[i] != null ? arguments[i] : {};var ownKeys = Object.keys(source);if (typeof Object.getOwnPropertySymbols === 'function') {ownKeys = ownKeys.concat(Object.getOwnPropertySymbols(source).filter(function (sym) {return Object.getOwnPropertyDescriptor(source, sym).enumerable;}));}ownKeys.forEach(function (key) {_defineProperty(target, key, source[key]);});}return target;}function _defineProperty(obj, key, value) {if (key in obj) {Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true });} else {obj[key] = value;}return obj;}var _default =
 {
   data: function data() {
@@ -167,6 +168,12 @@ var _md = _interopRequireDefault(__webpack_require__(/*! ../../utils/md5.js */ 3
       disabled: false };
 
   },
+  computed: _objectSpread({},
+  (0, _vuex.mapGetters)([
+  'openID'])),
+
+
+
   onLoad: function onLoad() {
   },
   methods: {
@@ -191,8 +198,9 @@ var _md = _interopRequireDefault(__webpack_require__(/*! ../../utils/md5.js */ 3
       this.disabled = true;
       this.userObj.passWord = _md.default.hex_md5(this.userObj.passWord).toUpperCase();
       this.userObj.passWord = _md.default.hex_md5(this.userObj.passWord).toUpperCase(); //md5加密转大写
-      this.userObj.openId = this.$store.state.openID;
+      this.userObj.openId = this.openID;
       (0, _api.login)(_objectSpread({}, this.userObj)).then(function (res) {
+        _this.$store.commit('setUserInfo', JSON.stringify(res.dtData[0]));
         uni.switchTab({
           url: '/pages/Home/Home' });
 

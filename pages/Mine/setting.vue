@@ -1,11 +1,11 @@
 <template>
 	<view class="page">
 		<view class= "option">
-			<view class="o-list" @click="switchDad">
+		<!-- 	<view class="o-list" @click="switchDad">
 				<text class="o-text1">切换爸爸/妈妈身份</text>
 				<text class="o-text2">{{ isDad? '我是准爸/宝爸':'我是准妈/宝妈' }}</text>
 				<img class="o-img" src="../../static/mine/jiantou.png" alt="">
-			</view>
+			</view> -->
 			<view class="o-list">
 				<text class="o-text1"  @click= "jumpPage(1)">用户协议及隐私条款</text>
 				<img class="o-img" src="../../static/mine/jiantou.png" alt="">
@@ -15,11 +15,11 @@
 				<img class="o-img" src="../../static/mine/jiantou.png" alt="">
 			</view>
 		</view>
-		<view class="btn">
+	<!-- 	<view class="loginbtn">
 			<button type="primary" class= "b-btn">
 				退出登录
 			</button>
-		</view>
+		</view> -->
 		<Popup
 			:showNumber= showNumber
 		>
@@ -45,6 +45,7 @@
 <script>
 	import Popup from '../../components/propUp/index.vue'
 	import '../../common/popup.scss'
+	import { webServer } from '../../config.js'
 	export default {
 		data() {
 			return {
@@ -62,6 +63,11 @@
 			// 跳转页面
 			jumpPage(num){
 				if(num == 1) {
+					const agreement= webServer + 'xcx.web/Area/agreement/agreement.html'
+					const agreementData = encodeURIComponent(JSON.stringify(agreement))
+					    uni.navigateTo({
+					       url: `../../pages/Web/index?url= ${agreementData}`
+					    })
 					uni.navigateTo({
 						url:'../../pages/Web/index'
 					})
@@ -124,12 +130,24 @@
 			}
 			
 		}
-		.btn {
+		// .btn {
+		// 	width: 750rpx;
+		// 	margin-top: 5rpx;
+		// 	.b-btn{
+		// 		width: 100%;
+		// 		height: 105rpx;
+		// 		color: #FF70B5;
+		// 		background-color: #fff;
+		// 	}
+		// }
+		.loginbtn {
 			width: 750rpx;
-			margin-top: 5rpx;
+			position: absolute;
+			left: 0;
+			bottom: 88rpx;
 			.b-btn{
-				width: 100%;
-				height: 105rpx;
+				width: 630rpx;
+				height: 88rpx;
 				color: #FF70B5;
 				background-color: #fff;
 			}

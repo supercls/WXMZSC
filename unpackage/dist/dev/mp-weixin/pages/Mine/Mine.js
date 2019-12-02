@@ -161,8 +161,8 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-
-var _vuex = __webpack_require__(/*! vuex */ 16);function _objectSpread(target) {for (var i = 1; i < arguments.length; i++) {var source = arguments[i] != null ? arguments[i] : {};var ownKeys = Object.keys(source);if (typeof Object.getOwnPropertySymbols === 'function') {ownKeys = ownKeys.concat(Object.getOwnPropertySymbols(source).filter(function (sym) {return Object.getOwnPropertyDescriptor(source, sym).enumerable;}));}ownKeys.forEach(function (key) {_defineProperty(target, key, source[key]);});}return target;}function _defineProperty(obj, key, value) {if (key in obj) {Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true });} else {obj[key] = value;}return obj;}var _default =
+var _vuex = __webpack_require__(/*! vuex */ 16);
+var _config = __webpack_require__(/*! ../../config.js */ 20);function _objectSpread(target) {for (var i = 1; i < arguments.length; i++) {var source = arguments[i] != null ? arguments[i] : {};var ownKeys = Object.keys(source);if (typeof Object.getOwnPropertySymbols === 'function') {ownKeys = ownKeys.concat(Object.getOwnPropertySymbols(source).filter(function (sym) {return Object.getOwnPropertyDescriptor(source, sym).enumerable;}));}ownKeys.forEach(function (key) {_defineProperty(target, key, source[key]);});}return target;}function _defineProperty(obj, key, value) {if (key in obj) {Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true });} else {obj[key] = value;}return obj;}var _default =
 
 {
   data: function data() {
@@ -171,7 +171,8 @@ var _vuex = __webpack_require__(/*! vuex */ 16);function _objectSpread(target) {
       nickname: '您还没有昵称', //昵称
       imagePath: '../../static/mine/icon-avatar.png', // 手机号
       add: '江苏省苏州市吴中区', // 地址
-
+      currentChapter: '', //判断用户是在神马时期
+      subsidiaryParams: '', //出生日期
       listData: [// 列表信息
       { name: '我的手册', imgUrl: '../../static/mine/shouce.png', id: '1' },
       { name: '母婴信使', imgUrl: '../../static/mine/xinshi.png', id: '2' },
@@ -190,11 +191,31 @@ var _vuex = __webpack_require__(/*! vuex */ 16);function _objectSpread(target) {
 
 
   onShow: function onShow() {
-    this.userInfoData = JSON.parse(this.userInfo);
+    this.getData();
+
   },
 
 
+
   methods: {
+    //获取数据
+    getData: function getData() {
+      this.userInfoData = JSON.parse(this.userInfo);
+      this.subsidiaryParams = this.userInfoData.subsidiaryParams;
+      console.log(this.userInfoData);
+      switch (this.userInfoData.WomanStatus) {
+        case '1':
+          this.currentChapter = '孕前篇';
+          break;
+        case '2':
+          this.currentChapter = '孕产期篇';
+          break;
+        case '3':
+          this.currentChapter = '儿童篇';
+          break;}
+
+    },
+
 
     // 图片编辑
     iconImage: function iconImage() {
@@ -207,19 +228,36 @@ var _vuex = __webpack_require__(/*! vuex */ 16);function _objectSpread(target) {
         return this.userInfoData.MobileTel.replace(/(\d{3})\d{4}(\d{4})/, "$1****$2");
       }
     },
+
+    //页面跳转地址
+    jump: function jump(data) {
+      var path = "".concat(data, "?\n\t\t\tdeviceType=5\n\t\t\t&districtNo=").concat(
+
+      this.userInfoData.DistrictNo, "\n\t\t\t&districtName=\n\t\t\t").concat(
+
+      this.userInfoData.DistrictFullName, "\n\t\t\t&machineCode=").concat(
+      this.userInfoData.WeChatOpenId, "\n\t\t\t&WomanId=").concat(
+      this.userInfoData.WomanId, "\n\t\t\t&currentChapter=").concat(
+      this.currentChapter, "\n\t\t\t&subsidiaryParams=").concat(
+      this.subsidiaryParams);
+      return path;
+    },
+
     // 页面跳转
     pageJump: function pageJump(num) {
       // console.log(num)
       switch (num) {
         case '1':
-          var ManageHandbooks = 'https://mzjksc.yystars.com/xcx.mzsc/Area/MyHandbook/ManageHandbooks.html?deviceType=5&name=&idCard=&districtNo=410101&districtName=%E6%B2%B3%E5%8D%97%E7%9C%81%20%E9%83%91%E5%B7%9E%E5%B8%82%20%E5%B8%82%E8%BE%96%E5%8C%BA&machineCode=50f99df5730a4335ba3e951d4f7bbb49&WomanId=2000363&APPType=mzsc';
+          // const ManageHandbooks= 'https://mzjksc.yystars.com/xcx.mzsc/Area/MyHandbook/ManageHandbooks.html?deviceType=5&name=&idCard=&districtNo=410101&districtName=%E6%B2%B3%E5%8D%97%E7%9C%81%20%E9%83%91%E5%B7%9E%E5%B8%82%20%E5%B8%82%E8%BE%96%E5%8C%BA&machineCode=50f99df5730a4335ba3e951d4f7bbb49&WomanId=2000363&APPType=mzsc'
+          var ManageHandbooks = _config.webServer + this.jump('xcx.mzsc/Area/MyHandbook/ManageHandbooks.html');
           var ManageHandbooksData = encodeURIComponent(JSON.stringify(ManageHandbooks));
           uni.navigateTo({
             url: "../../pages/Web/index?url= ".concat(ManageHandbooksData) });
 
           break;
         case '2':
-          var MaternalMessenger = 'https://mzjksc.yystars.com/xcx.web/Area/Slidebar/MaternalMessenger/Main.html?deviceType=5&currentChapter=%E5%AD%95%E4%BA%A7%E6%9C%9F%E7%AF%87&subsidiaryParams=&machineCode=50f99df5730a4335ba3e951d4f7bbb49&WomanId=2000363';
+          // const MaternalMessenger= 'https://mzjksc.yystars.com/xcx.web/Area/Slidebar/MaternalMessenger/Main.html?deviceType=5&currentChapter=%E5%AD%95%E4%BA%A7%E6%9C%9F%E7%AF%87&subsidiaryParams=&machineCode=50f99df5730a4335ba3e951d4f7bbb49&WomanId=2000363'
+          var MaternalMessenger = _config.webServer + this.jump('xcx.web/Area/Slidebar/MaternalMessenger/Main.html');
           var MaternalMessengerData = encodeURIComponent(JSON.stringify(MaternalMessenger));
           uni.navigateTo({
             url: "../../pages/Web/index?url= ".concat(MaternalMessengerData) });
@@ -231,7 +269,8 @@ var _vuex = __webpack_require__(/*! vuex */ 16);function _objectSpread(target) {
 
           break;
         case '4':
-          var HelpAndFeedback = 'https://mzjksc.yystars.com/xcx.web/Area/Slidebar/HelpAndFeedback/FeedBack.html?deviceType=5&machineCode=50f99df5730a4335ba3e951d4f7bbb49&WomanId=2000363&APPType=mzsc';
+          // const HelpAndFeedback = 'https://mzjksc.yystars.com/xcx.web/Area/Slidebar/HelpAndFeedback/FeedBack.html?deviceType=5&machineCode=50f99df5730a4335ba3e951d4f7bbb49&WomanId=2000363&APPType=mzsc'
+          var HelpAndFeedback = _config.webServer + this.jump('xcx.web/Area/Slidebar/HelpAndFeedback/FeedBack.html');
           var HelpAndFeedbackData = encodeURIComponent(JSON.stringify(HelpAndFeedback));
           uni.navigateTo({
             url: "../../pages/Web/index?url= ".concat(HelpAndFeedbackData) });

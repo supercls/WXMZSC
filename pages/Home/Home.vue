@@ -63,11 +63,23 @@
 			</view>
 		</view>	
 		<!--基本信息-->
-		<view class="hea-next-center">  
-		    <image src="../../static/home/btn_basic@2x.png" v-if="period=='1'" alt="" @click="jumpUrl('Area/Record/Pregnancy/BasicInfo/Record.html','MZSC')"></image>
-		    <image src="../../static/home/btn_basic@2x.png" v-else-if="period=='2'" alt=""  @click="jumpUrl('Area/Home/BasicSituation/main.html','YYQ.Web')"></image>
-		    <image src="../../static/home/btn_basic@2x.png"  v-else-if="period=='3'" alt=""  @click="jumpUrl('Area/Home/BasicSituation/main.html','YYQ.Web')"></image>
-		    <image src="../../static/home/btn_scan@2x.png" alt="" @click="jumpUrl('Area/View/Home/Home.html','MZSC')"></image>
+		<view class="hea-next-center-new">  
+			<view class="view1" v-if="period=='1'" @click="jumpUrl('Area/Record/Pregnancy/BasicInfo/Record.html','MZSC')">
+				<image src="../../static/home/home_left.png" mode=""></image>
+				<text>基本情况</text>
+			</view>
+			<view class="view1" v-else-if="period=='2'"   @click="jumpUrl('Area/Home/BasicSituation/main.html','YYQ.Web')">
+				<image src="../../static/home/home_left.png" mode=""></image>
+				<text>基本情况</text>
+			</view>
+			<view class="view1" v-if="period=='3'" @click="jumpUrl('Area/Home/BasicSituation/main.html','YYQ.Web')">
+				<image src="../../static/home/home_left.png" mode=""></image>
+				<text>基本情况</text>
+			</view>
+			<view class="view2" @click="jumpUrl('Area/View/Home/Home.html','MZSC')">
+				<image src="../../static/home/home_right.png" mode=""></image>
+				<text>浏览手册</text>
+			</view>
 		</view>
 		<!--母婴信使-->
 		<view class="myxs-view" v-if="dtPregnantMessager.length>0">
@@ -492,6 +504,15 @@
 				this.period!='1'?this.recordList=this.List[parseInt(this.period)-2][0]:''
 				this.topName=this.topNameList[index]
 				this.changePz(this.period)
+				try{
+					if(JSON.parse(this.userInfo)){
+						let userObj = JSON.parse(this.userInfo)
+						userObj.WomanStatus = this.period
+						this.$store.commit('setUserInfo',JSON.stringify(userObj))
+					}
+				}catch(e){
+					console.log(e)
+				}
 			},
 			changePz(index){  //切换篇章ajax
 				uni.showLoading({
@@ -502,7 +523,6 @@
 					openId:this.openID,
 					period:index
 				}).then(res =>{
-					console.log(res)	
 					this.yyqList=res.dtData.dtKnowledge||[];
 					this.topName=this.topNameList[parseInt(this.period)-1];
 					this.periodName=this.periodNameList[parseInt(this.period)];
@@ -554,7 +574,7 @@
 				+'&preExpectedDate='+this.PreExpectedDate+'&realName='+this.realName+'&lastMensesDate='
 				+this.LastMensesDate+'&childName='+this.childName+'&childSex='
 				+this.childSex+'&childBirthday='+this.Birthday+'&districtNo='+JSON.parse(this.userInfo).DistrictNo+'&districtName='
-				+JSON.parse(this.userInfo).DistrictFullName+'&currentChapter='+currentChapter+'&subsidiaryParams='+this.Birthday+item
+				+JSON.parse(this.userInfo).DistrictFullName+'&currentChapter='+currentChapter+'&subsidiaryParams='+(this.Birthday ||this.preExpectedDate)+item
 				let urlHttps = encodeURIComponent(JSON.stringify(httpWeb))
 				uni.navigateTo({
 				    url: `../../pages/Web/index?url=${urlHttps}`,
@@ -643,7 +663,6 @@
 					openId:this.openID,
 					bookId:''
 				}).then( res =>{
-					console.log(res)
 					this.userName=res.dtData.dtUserInfo[0]?res.dtData.dtUserInfo[0].WomanName ||'':'未填姓名'
 					this.period=res.dtData.dtUserInfo[0]?res.dtData.dtUserInfo[0].WomanStatus ||'1':'1'
 					this.yyqList=res.dtData.dtKnowledge||[];
@@ -662,8 +681,17 @@
 					this.realName=res.dtData.dtUserInfo[0]?res.dtData.dtUserInfo[0].WomanName||'':''
 					this.childName=res.dtData.dtUserInfo[0]?res.dtData.dtUserInfo[0].ChildName||'':''
 					this.childSex=res.dtData.dtUserInfo[0]?res.dtData.dtUserInfo[0].ChildSex||'':''
-					this.LastMensesDate=res.dtData.dtUserInfo[0]?res.dtData.dtUserInfo[0].LastMensesDate||'':'',
+					this.LastMensesDate=res.dtData.dtUserInfo[0]?res.dtData.dtUserInfo[0].LastMensesDate||'':''
 					this.Birthday=res.dtData.dtUserInfo[0]?res.dtData.dtUserInfo[0].Birthday||'':''
+					try{
+						if(JSON.parse(this.userInfo)){
+							let userObj = JSON.parse(this.userInfo)
+							userObj.subsidiaryParams = this.Birthday || this.PreExpectedDate
+							this.$store.commit('setUserInfo',JSON.stringify(userObj))
+						}
+					}catch(e){
+						console.log(e)
+					}
 					this.topList.map(item =>{
 						item.isActive=false
 					})
@@ -681,6 +709,31 @@
 
 <style lang="scss">
 	.home_wrapper{overflow-y:scroll;background-color:#F4F4F4;-webkit-overflow-scrolling : touch;}
+	.hea-next-center-new{
+		padding:10rpx 80rpx;
+		background: #fff;
+		display: flex;
+		view{
+			flex: 1;
+			display: flex;
+			align-items: center;
+			image{
+				width: 121rpx;
+				height: 122rpx;
+			}
+			text{
+				font-size: 26rpx;
+				margin-top: -10rpx;
+				color: #666;
+			}
+		}
+		.view1{
+			justify-content: flex-start;
+		}
+		.view2{
+			justify-content: flex-end;
+		}
+	}
 	.hea-top-bg{position: relative;background: #FFFFFF;}
 	.hea-top-bgimg{height: 394rpx;width: 100%;display: block;}
     .hea-top{display:flex;-webkit-display:flex;justify-content: flex-start;-webkit-justify-content: flex-start;padding:22.5rpx 30rpx;position: absolute;top: 0rpx;left: 0;right: 0;}
@@ -728,7 +781,7 @@
     .yc-view1 .yc-center{overflow-x: auto;white-space:nowrap;width: 100%;-webkit-overflow-scrolling : touch;background: #fff;;}
     .yc-view1 .yc-center .ul-n {width: 100%;padding:50rpx 0 26.5rpx 0;}
     .yc-view1 .yc-center .ul-n view::before{content:'';position:absolute;top: 52.5rpx;right: -37.5rpx;width:30rpx;height: 2rpx;background: #FFA9D3;}
-    .yc-view1 .yc-center .ul-n view::before:last-child{width: 0px}
+    .yc-view1 .yc-center .ul-n view:last-child::before{width: 0px;}
     .yc-view1 .yc-center .ul-n view.active{border:7.5rpx solid #FF9FCD;}
     .yc-view1 .yc-center .ul-n view{list-style: none;display:inline-block;margin:0 15rpx;border:7.5rpx solid #C9EEFF;width: 120rpx;height: 120rpx;border-radius: 50%;line-height: 120rpx;position: relative;white-space:normal;}
     .yc-view1 .yc-center .ul-n view text{color: #666;word-break:break-all;font-size: 27rpx;display:inline-block;width:100%;text-align: center;position: absolute;top: 50%;left: 50%;transform: translate(-50%,-50%);line-height: 1.3;}
@@ -754,7 +807,7 @@
 	.img_n2{width: 32rpx;height: 32rpx;margin-right: 10rpx;vertical-align: -2rpx;}
 	.img_n3{width: 28rpx;height: 29rpx;margin-right: 10rpx;vertical-align: -2rpx;}
 	.adviceName{margin-top: 10rpx;}
-	.clearfix::after { visibility: hidden; display: block; font-size: 0; content: " ";clear: both; height: 0; }
+	.clearfix::after { visibility: hidden; display: block; font-size: 0; content: " ";clear: both; height: 0;}
 	.myxs-view{
 		background: #fff;margin:10rpx 0rpx;
 		.swiper-item{
@@ -770,7 +823,7 @@
 				.my_img{
 					width: 42rpx;
 					height: 44rpx;
-					margin-right: 10rpx;
+					margin-right: 10rpx; 
 				}
 			}
 			.swiper-text{

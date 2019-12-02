@@ -37,7 +37,7 @@
 </template>
 
 <script>
-	import {register} from '../../utils/api.js'
+	import {register,GetMobileVerifyCode} from '../../utils/api.js'
 	import lotusAddress from '../../components/picker-address/lotusAddress.vue'
 	import {mapGetters} from 'vuex'
 	import md5 from '../../utils/md5.js'
@@ -75,14 +75,13 @@
 			])
 		},
 		onLoad() {
-			console.log(this.userInfo)
 		},
 		methods: {
 			aggreeBt(){
 				this.imgSrc=='../../static/user/Cicon.png'? this.imgSrc='../../static/user/Cicon1.png': this.imgSrc='../../static/user/Cicon.png'
 			},
 			junmpUrl(url){
-				let urlHttps = encodeURIComponent(JSON.stringify(this.$WebServer + url + '?name=llllll'))
+				let urlHttps = encodeURIComponent(JSON.stringify(this.$WebServer + url))
 				uni.navigateTo({
 				    url: `/pages/Web/index?url=${urlHttps}`,
 				});
@@ -145,16 +144,30 @@
 				}
 				if(this.isSend) return false
 				this.seconds = 60
-				let timeOut = setInterval(() =>{
-					this.isSend=true
-					this.seconds--;
-					this.times=`${this.seconds}s后重新发送`
-					if(this.seconds==0){
-						clearInterval(timeOut)
-						this.isSend=false
-						this.times="发送验证码"  
-					}
-				},1000)
+				this.isSend=true
+				uni.showLoading()
+				GetMobileVerifyCode({
+					mobileTel:this.userObj.mobileTel,
+					type:'1'
+				}).then(res=>{
+					uni.hideLoading()
+					let timeOut = setInterval(() =>{
+						this.seconds--;
+						this.times=`${this.seconds}s后重新发送`
+						if(this.seconds==0){
+							clearInterval(timeOut)
+							this.isSend=false
+							this.times="发送验证码"  
+						}
+					},1000)
+					console.log(res)
+				}).catch(err=>{
+					console.log(err)
+					this.isSend=false
+					this.times="发送验证码" 
+					uni.hideLoading()
+				})
+				
 			},
 			openPicker() {
 				this.lotusAddressData.visible = true;

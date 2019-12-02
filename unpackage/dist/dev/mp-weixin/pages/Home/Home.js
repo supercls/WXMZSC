@@ -364,6 +364,18 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
 var _api = __webpack_require__(/*! ../../utils/api.js */ 27);
 var _vuex = __webpack_require__(/*! vuex */ 16);function _objectSpread(target) {for (var i = 1; i < arguments.length; i++) {var source = arguments[i] != null ? arguments[i] : {};var ownKeys = Object.keys(source);if (typeof Object.getOwnPropertySymbols === 'function') {ownKeys = ownKeys.concat(Object.getOwnPropertySymbols(source).filter(function (sym) {return Object.getOwnPropertyDescriptor(source, sym).enumerable;}));}ownKeys.forEach(function (key) {_defineProperty(target, key, source[key]);});}return target;}function _defineProperty(obj, key, value) {if (key in obj) {Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true });} else {obj[key] = value;}return obj;}var _default =
 {
@@ -625,6 +637,15 @@ var _vuex = __webpack_require__(/*! vuex */ 16);function _objectSpread(target) {
       this.period != '1' ? this.recordList = this.List[parseInt(this.period) - 2][0] : '';
       this.topName = this.topNameList[index];
       this.changePz(this.period);
+      try {
+        if (JSON.parse(this.userInfo)) {
+          var userObj = JSON.parse(this.userInfo);
+          userObj.WomanStatus = this.period;
+          this.$store.commit('setUserInfo', JSON.stringify(userObj));
+        }
+      } catch (e) {
+        console.log(e);
+      }
     },
     changePz: function changePz(index) {var _this = this; //切换篇章ajax
       uni.showLoading({
@@ -635,7 +656,6 @@ var _vuex = __webpack_require__(/*! vuex */ 16);function _objectSpread(target) {
         openId: this.openID,
         period: index }).
       then(function (res) {
-        console.log(res);
         _this.yyqList = res.dtData.dtKnowledge || [];
         _this.topName = _this.topNameList[parseInt(_this.period) - 1];
         _this.periodName = _this.periodNameList[parseInt(_this.period)];
@@ -687,7 +707,7 @@ var _vuex = __webpack_require__(/*! vuex */ 16);function _objectSpread(target) {
       '&preExpectedDate=' + this.PreExpectedDate + '&realName=' + this.realName + '&lastMensesDate=' +
       this.LastMensesDate + '&childName=' + this.childName + '&childSex=' +
       this.childSex + '&childBirthday=' + this.Birthday + '&districtNo=' + JSON.parse(this.userInfo).DistrictNo + '&districtName=' +
-      JSON.parse(this.userInfo).DistrictFullName + '&currentChapter=' + currentChapter + '&subsidiaryParams=' + this.Birthday + item;
+      JSON.parse(this.userInfo).DistrictFullName + '&currentChapter=' + currentChapter + '&subsidiaryParams=' + (this.Birthday || this.preExpectedDate) + item;
       var urlHttps = encodeURIComponent(JSON.stringify(httpWeb));
       uni.navigateTo({
         url: "../../pages/Web/index?url=".concat(urlHttps) });
@@ -776,7 +796,6 @@ var _vuex = __webpack_require__(/*! vuex */ 16);function _objectSpread(target) {
         openId: this.openID,
         bookId: '' }).
       then(function (res) {
-        console.log(res);
         _this3.userName = res.dtData.dtUserInfo[0] ? res.dtData.dtUserInfo[0].WomanName || '' : '未填姓名';
         _this3.period = res.dtData.dtUserInfo[0] ? res.dtData.dtUserInfo[0].WomanStatus || '1' : '1';
         _this3.yyqList = res.dtData.dtKnowledge || [];
@@ -795,8 +814,17 @@ var _vuex = __webpack_require__(/*! vuex */ 16);function _objectSpread(target) {
         _this3.realName = res.dtData.dtUserInfo[0] ? res.dtData.dtUserInfo[0].WomanName || '' : '';
         _this3.childName = res.dtData.dtUserInfo[0] ? res.dtData.dtUserInfo[0].ChildName || '' : '';
         _this3.childSex = res.dtData.dtUserInfo[0] ? res.dtData.dtUserInfo[0].ChildSex || '' : '';
-        _this3.LastMensesDate = res.dtData.dtUserInfo[0] ? res.dtData.dtUserInfo[0].LastMensesDate || '' : '',
+        _this3.LastMensesDate = res.dtData.dtUserInfo[0] ? res.dtData.dtUserInfo[0].LastMensesDate || '' : '';
         _this3.Birthday = res.dtData.dtUserInfo[0] ? res.dtData.dtUserInfo[0].Birthday || '' : '';
+        try {
+          if (JSON.parse(_this3.userInfo)) {
+            var userObj = JSON.parse(_this3.userInfo);
+            userObj.subsidiaryParams = _this3.Birthday || _this3.PreExpectedDate;
+            _this3.$store.commit('setUserInfo', JSON.stringify(userObj));
+          }
+        } catch (e) {
+          console.log(e);
+        }
         _this3.topList.map(function (item) {
           item.isActive = false;
         });

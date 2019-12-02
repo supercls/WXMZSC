@@ -63,3 +63,11 @@ export function updateBookPeriod(data){   //切换篇章
 		data:data
 	})
 }
+
+export function GetMobileVerifyCode(data){   //获取短信验证码
+	return new RequestMn().get({
+		url:'Woman/GetMobileVerifyCode',
+		method:'GET',
+		data:data
+	})
+}

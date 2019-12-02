@@ -30,6 +30,7 @@
 
 <script>
 	import {login} from '../../utils/api.js'
+	import {mapGetters} from 'vuex'
 	import md5 from '../../utils/md5.js'
 	export default {
 		data() {
@@ -42,6 +43,12 @@
 				},
 				disabled:false
 			}
+		},
+		computed:{
+			...mapGetters([
+				'openID'
+			])
+				
 		},
 		onLoad() {
 		},
@@ -67,8 +74,9 @@
 				this.disabled = true
 				this.userObj.passWord = md5.hex_md5(this.userObj.passWord).toUpperCase()
 				this.userObj.passWord = md5.hex_md5(this.userObj.passWord).toUpperCase()   //md5加密转大写
-				this.userObj.openId = this.$store.state.openID;
+				this.userObj.openId = this.openID;
 				login({...this.userObj}).then(res =>{
+					this.$store.commit('setUserInfo',JSON.stringify(res.dtData[0]))
 					uni.switchTab({
 						url: '/pages/Home/Home'
 					})

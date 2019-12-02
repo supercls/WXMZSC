@@ -29,6 +29,49 @@
   background-color: #F4F4F4;
   -webkit-overflow-scrolling: touch;
 }
+.hea-next-center-new {
+  padding: 10rpx 80rpx;
+  background: #fff;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+}
+.hea-next-center-new view {
+    -webkit-box-flex: 1;
+    -webkit-flex: 1;
+        -ms-flex: 1;
+            flex: 1;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+    -webkit-align-items: center;
+        -ms-flex-align: center;
+            align-items: center;
+}
+.hea-next-center-new view image {
+      width: 121rpx;
+      height: 122rpx;
+}
+.hea-next-center-new view text {
+      font-size: 26rpx;
+      margin-top: -10rpx;
+      color: #666;
+}
+.hea-next-center-new .view1 {
+    -webkit-box-pack: start;
+    -webkit-justify-content: flex-start;
+        -ms-flex-pack: start;
+            justify-content: flex-start;
+}
+.hea-next-center-new .view2 {
+    -webkit-box-pack: end;
+    -webkit-justify-content: flex-end;
+        -ms-flex-pack: end;
+            justify-content: flex-end;
+}
 .hea-top-bg {
   position: relative;
   background: #FFFFFF;
@@ -344,7 +387,7 @@
   height: 2rpx;
   background: #FFA9D3;
 }
-.yc-view1 .yc-center .ul-n view::before:last-child {
+.yc-view1 .yc-center .ul-n view:last-child::before {
   width: 0px;
 }
 .yc-view1 .yc-center .ul-n view.active {

@@ -164,7 +164,7 @@ __webpack_require__.r(__webpack_exports__);
 var _api = __webpack_require__(/*! ../../utils/api.js */ 27);
 
 var _vuex = __webpack_require__(/*! vuex */ 16);
-var _md = _interopRequireDefault(__webpack_require__(/*! ../../utils/md5.js */ 37));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function _objectSpread(target) {for (var i = 1; i < arguments.length; i++) {var source = arguments[i] != null ? arguments[i] : {};var ownKeys = Object.keys(source);if (typeof Object.getOwnPropertySymbols === 'function') {ownKeys = ownKeys.concat(Object.getOwnPropertySymbols(source).filter(function (sym) {return Object.getOwnPropertyDescriptor(source, sym).enumerable;}));}ownKeys.forEach(function (key) {_defineProperty(target, key, source[key]);});}return target;}function _defineProperty(obj, key, value) {if (key in obj) {Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true });} else {obj[key] = value;}return obj;}var lotusAddress = function lotusAddress() {return Promise.all(/*! import() | components/picker-address/lotusAddress */[__webpack_require__.e("common/vendor"), __webpack_require__.e("components/picker-address/lotusAddress")]).then(__webpack_require__.bind(null, /*! ../../components/picker-address/lotusAddress.vue */ 159));};var _default =
+var _md = _interopRequireDefault(__webpack_require__(/*! ../../utils/md5.js */ 37));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function _objectSpread(target) {for (var i = 1; i < arguments.length; i++) {var source = arguments[i] != null ? arguments[i] : {};var ownKeys = Object.keys(source);if (typeof Object.getOwnPropertySymbols === 'function') {ownKeys = ownKeys.concat(Object.getOwnPropertySymbols(source).filter(function (sym) {return Object.getOwnPropertyDescriptor(source, sym).enumerable;}));}ownKeys.forEach(function (key) {_defineProperty(target, key, source[key]);});}return target;}function _defineProperty(obj, key, value) {if (key in obj) {Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true });} else {obj[key] = value;}return obj;}var lotusAddress = function lotusAddress() {return __webpack_require__.e(/*! import() | components/picker-address/lotusAddress */ "components/picker-address/lotusAddress").then(__webpack_require__.bind(null, /*! ../../components/picker-address/lotusAddress.vue */ 159));};var _default =
 {
   data: function data() {
     return {
@@ -199,14 +199,13 @@ var _md = _interopRequireDefault(__webpack_require__(/*! ../../utils/md5.js */ 3
 
 
   onLoad: function onLoad() {
-    console.log(this.userInfo);
   },
   methods: {
     aggreeBt: function aggreeBt() {
       this.imgSrc == '../../static/user/Cicon.png' ? this.imgSrc = '../../static/user/Cicon1.png' : this.imgSrc = '../../static/user/Cicon.png';
     },
     junmpUrl: function junmpUrl(url) {
-      var urlHttps = encodeURIComponent(JSON.stringify(this.$WebServer + url + '?name=llllll'));
+      var urlHttps = encodeURIComponent(JSON.stringify(this.$WebServer + url));
       uni.navigateTo({
         url: "/pages/Web/index?url=".concat(urlHttps) });
 
@@ -269,16 +268,30 @@ var _md = _interopRequireDefault(__webpack_require__(/*! ../../utils/md5.js */ 3
       }
       if (this.isSend) return false;
       this.seconds = 60;
-      var timeOut = setInterval(function () {
-        _this2.isSend = true;
-        _this2.seconds--;
-        _this2.times = "".concat(_this2.seconds, "s\u540E\u91CD\u65B0\u53D1\u9001");
-        if (_this2.seconds == 0) {
-          clearInterval(timeOut);
-          _this2.isSend = false;
-          _this2.times = "发送验证码";
-        }
-      }, 1000);
+      this.isSend = true;
+      uni.showLoading();
+      (0, _api.GetMobileVerifyCode)({
+        mobileTel: this.userObj.mobileTel,
+        type: '1' }).
+      then(function (res) {
+        uni.hideLoading();
+        var timeOut = setInterval(function () {
+          _this2.seconds--;
+          _this2.times = "".concat(_this2.seconds, "s\u540E\u91CD\u65B0\u53D1\u9001");
+          if (_this2.seconds == 0) {
+            clearInterval(timeOut);
+            _this2.isSend = false;
+            _this2.times = "发送验证码";
+          }
+        }, 1000);
+        console.log(res);
+      }).catch(function (err) {
+        console.log(err);
+        _this2.isSend = false;
+        _this2.times = "发送验证码";
+        uni.hideLoading();
+      });
+
     },
     openPicker: function openPicker() {
       this.lotusAddressData.visible = true;

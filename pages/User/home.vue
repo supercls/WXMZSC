@@ -84,6 +84,7 @@
 <style lang="scss">
 	.home-index{
 		margin-top: 270rpx;
+		background: $uni-text-color-inverse;
 		text-align: center;
 		.img1{
 			width: 190rpx;

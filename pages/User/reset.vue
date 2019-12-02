@@ -22,7 +22,7 @@
 </template>
 
 <script>
-	import {resetPassword} from '../../utils/api.js'
+	import {resetPassword,GetMobileVerifyCode} from '../../utils/api.js'
 	import md5 from '../../utils/md5.js'
 	export default {
 		data() {
@@ -68,6 +68,12 @@
 					})
 					return false
 				}
+				if(this.useroBJ.USERcOde.length == 10){
+					uni.setEnableDebug({
+						title:'正在加载肿...',
+						icon:'success'
+					})
+				}
 				this.userObj.openId = this.openID
 				this.userObj.passWord = md5.hex_md5(this.userObj.passWord).toUpperCase()   //md5加密转大写
 				this.userObj.passWord = md5.hex_md5(this.userObj.passWord).toUpperCase()   //md5加密转大写
@@ -78,24 +84,48 @@
 					    title: '修改成功',
 					    duration: 2000
 					});
+					uni.navigateTo({
+						url:'/pages/User/index'
+					})
 				}).catch(err =>{
 					this.loading = false
 					console.log(err)
 				})
 			},
 			sendCode(){
+				if(this.userObj.userCode == '' || this.userObj.userCode.length!=11){
+					uni.showToast({
+						title: '请输入正确的手机号',
+						icon:'none',
+						duration: 2000
+					})
+					return false
+				}
 				if(this.isSend) return false
 				this.seconds = 60
-				let timeOut = setInterval(() =>{
-					this.isSend=true
-					this.seconds--;
-					this.times=`${this.seconds}s后重新发送`
-					if(this.seconds==0){
-						clearInterval(timeOut)
-						this.isSend=false
-						this.times="发送验证码"  
-					}
-				},1000)
+				this.isSend=true
+				uni.showLoading()
+				GetMobileVerifyCode({
+					mobileTel:this.userObj.userCode,
+					type:'2'
+				}).then(res=>{
+					uni.hideLoading()
+					let timeOut = setInterval(() =>{
+						this.seconds--;
+						this.times=`${this.seconds}s后重新发送`
+						if(this.seconds==0){
+							clearInterval(timeOut)
+							this.isSend=false
+							this.times="发送验证码"  
+						}
+					},1000)
+					console.log(res)
+				}).catch(err=>{
+					console.log(err)
+					this.isSend=false
+					this.times="发送验证码" 
+					uni.hideLoading()
+				})
 			},
 		},
 		

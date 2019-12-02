@@ -11,7 +11,7 @@
 		"checkSiteMap": false
 	},
 	"compileType": "miniprogram",
-	"libVersion": "2.9.2",
+	"libVersion": "2.9.4",
 	"appid": "wxa24db98cadfc5870",
 	"projectname": "MZSC",
 	"simulatorType": "wechat",

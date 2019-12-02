@@ -192,6 +192,12 @@ var _md = _interopRequireDefault(__webpack_require__(/*! ../../utils/md5.js */ 3
 
         return false;
       }
+      if (this.useroBJ.USERcOde.length == 10) {
+        uni.setEnableDebug({
+          title: '正在加载肿...',
+          icon: 'success' });
+
+      }
       this.userObj.openId = this.openID;
       this.userObj.passWord = _md.default.hex_md5(this.userObj.passWord).toUpperCase(); //md5加密转大写
       this.userObj.passWord = _md.default.hex_md5(this.userObj.passWord).toUpperCase(); //md5加密转大写
@@ -202,24 +208,48 @@ var _md = _interopRequireDefault(__webpack_require__(/*! ../../utils/md5.js */ 3
           title: '修改成功',
           duration: 2000 });
 
+        uni.navigateTo({
+          url: '/pages/User/index' });
+
       }).catch(function (err) {
         _this.loading = false;
         console.log(err);
       });
     },
     sendCode: function sendCode() {var _this2 = this;
+      if (this.userObj.userCode == '' || this.userObj.userCode.length != 11) {
+        uni.showToast({
+          title: '请输入正确的手机号',
+          icon: 'none',
+          duration: 2000 });
+
+        return false;
+      }
       if (this.isSend) return false;
       this.seconds = 60;
-      var timeOut = setInterval(function () {
-        _this2.isSend = true;
-        _this2.seconds--;
-        _this2.times = "".concat(_this2.seconds, "s\u540E\u91CD\u65B0\u53D1\u9001");
-        if (_this2.seconds == 0) {
-          clearInterval(timeOut);
-          _this2.isSend = false;
-          _this2.times = "发送验证码";
-        }
-      }, 1000);
+      this.isSend = true;
+      uni.showLoading();
+      (0, _api.GetMobileVerifyCode)({
+        mobileTel: this.userObj.userCode,
+        type: '2' }).
+      then(function (res) {
+        uni.hideLoading();
+        var timeOut = setInterval(function () {
+          _this2.seconds--;
+          _this2.times = "".concat(_this2.seconds, "s\u540E\u91CD\u65B0\u53D1\u9001");
+          if (_this2.seconds == 0) {
+            clearInterval(timeOut);
+            _this2.isSend = false;
+            _this2.times = "发送验证码";
+          }
+        }, 1000);
+        console.log(res);
+      }).catch(function (err) {
+        console.log(err);
+        _this2.isSend = false;
+        _this2.times = "发送验证码";
+        uni.hideLoading();
+      });
     } } };exports.default = _default;
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))
 

@@ -3,10 +3,10 @@
 		<view class= "version">
 			<image class= "v-img" src="../../static/user/Bitmap.png" mode=""></image>
 			<text class= "v-text v-text1">母子健康</text>
-			<text class= "v-text">V5.3.1</text>
+			<text class= "v-text">V2.0.0</text>
 		</view>
 		<view class="contact">
-			<view class="list">
+			<view class="list" @click= "makePhoneCall">
 				<img class= "l-img" src="../../static/user/dh.png" alt="">
 				<text class="l-text1">联系电话</text>
 				<text class="l-text2">4009699611</text>
@@ -33,7 +33,11 @@
 			}
 		},
 		methods: {
-
+			makePhoneCall() {
+				uni.makePhoneCall({
+				    phoneNumber: '4009699611' //
+				});
+			}
 		}
 	}
 </script>
@@ -41,7 +45,7 @@
 <style lang="scss">
 	.page {
 		.version {
-			margin-top: 100rpx;
+			padding-top: 100rpx;
 			width: 750rpx;
 			display: flex;
 			flex-direction: column;

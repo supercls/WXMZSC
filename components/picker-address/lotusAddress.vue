@@ -27,7 +27,15 @@
 </template>
 
 <script>
-	import {lotusAddressJson} from  "./lotusAddress.js";
+	import {webServer} from '../../config.js'
+	let lotusAddressJson
+	uni.request({
+		url: `${webServer}xcx.web/Resources/Js/XCX/lotusAddress.js`,
+		method:'GET',
+		success: (res) => {
+			lotusAddressJson =res.data 
+		}
+	})
 	export default {
 		props:['lotusAddressData'],
 		data() {

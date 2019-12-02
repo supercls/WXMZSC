@@ -25,7 +25,7 @@
 /* 透明度 */
 /* 文章场景相关 */
 .page .version {
-  margin-top: 100rpx;
+  padding-top: 100rpx;
   width: 750rpx;
   display: -webkit-box;
   display: -webkit-flex;

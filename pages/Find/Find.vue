@@ -53,10 +53,14 @@
 <script>
 	import Popup from '../../components/propUp/index.vue'
 	import '../../common/popup.scss'
+	import { mapGetters } from 'vuex'
+	import { webServer } from '../../config.js'
+	
 	export default {
 		data() {
 			return {
-				showNumber: '0', // 0表示隐藏弹窗
+				showNumber: '0', // 0表示隐藏弹窗,
+				userInfoData: {} //数据填充
 			}
 		},
 		onShow() {
@@ -67,57 +71,82 @@
 			Popup
 		},
 		
+		computed:{
+			...mapGetters([
+				'userInfo'
+			])
+		},
+		
+		onShow(){
+			this.userInfoData = JSON.parse(this.userInfo)
+		},
+		
 		methods: {	
+			
+			// 弹窗提示
+			
+			showModal() {
+				uni.showModal({
+				    title: '温馨提示',
+				    content: '您所在的地区暂未开通服务',
+					showCancel: false,
+					confirmColor: '#FF70B5',
+					success: (res) =>{
+						if(res.confirm){
+							  this.isDad= !this.isDad
+						}else if (res.cancel) {
+							console.log('用户取消了')
+						}
+					}
+				});
+			},
+			
+			
+			//页面跳转
+			jump(data) {
+			 	const path = `xcx.web/Area/${data}?deviceType=5&womanId=${this.userInfoData.WomanId}&machineCode=${this.userInfoData.WeChatOpenId}&districtNo=${this.userInfoData.DistrictNo}`
+				return path
+			},
+			
+			// 页面跳转
 			pageJump(num){
 				// console.log(data)
-				
 				switch (num){
 					case '1':
-						const PregnantRegister= 'https://mzjksc.yystars.com/xcx.web/Area/Demo/PregnantRegister/Main.html?deviceType=3&womanId=2000274&machineCode=a0f96e871e854f528423ccc5289e89b8&WomanId=2000274&APPType=mzsc'
-						const PregnantRegisterData = encodeURIComponent(JSON.stringify(PregnantRegister))
-						uni.navigateTo({
-						    url: `../../pages/Web/index?url= ${PregnantRegisterData}`
-						})
+						if(this.userInfoData.DistrictNo.substr(0,2)=='41'){
+							const PregnantRegister= webServer + this.jump('Demo/PregnantRegister/Main.html')
+							// const PregnantRegister= 'https://mzjksc.yystars.com/xcx.web/Area/Demo/PregnantRegister/Main.html?deviceType=3&womanId=2000274&machineCode=a0f96e871e854f528423ccc5289e89b8&WomanId=2000274&APPType=mzsc'
+							const PregnantRegisterData = encodeURIComponent(JSON.stringify(PregnantRegister))
+							uni.navigateTo({
+							    url: `../../pages/Web/index?url= ${PregnantRegisterData}`
+							})
+						}else {
+							this.showModal()
+						}
+						
 						break;
 					case '2':
-						uni.showModal({
-						    title: '温馨提示',
-						    content: '您所在的地区暂未开通服务',
-							showCancel: false,
-							confirmColor: '#FF70B5',
-							success: (res) =>{
-								if(res.confirm){
-									  this.isDad= !this.isDad
-								}else if (res.cancel) {
-									console.log('用户取消了')
-								}
-							}
-						});
+						this.showModal()
 						break;
 					case '3':
-						uni.showModal({
-						    title: '温馨提示',
-						    content: '您所在的地区暂未开通服务',
-							showCancel: false,
-							confirmColor: '#FF70B5',
-							success: (res) =>{
-								if(res.confirm){
-									  this.isDad= !this.isDad
-								}else if (res.cancel) {
-									console.log('用户取消了')
-								}
-							}
-						});
+						this.showModal()
 						break;
 					case '4':
-						const SCBG= 'https://mzjksc.yystars.com/xcx.web/Area/Demo/Report/SCBG/index.html?deviceType=5&womanId=2000274&machineCode=a0f96e871e854f528423ccc5289e89b8&userCode=17051026667&WomanId=2000274&APPType=mzsc'
-						const SCBGData = encodeURIComponent(JSON.stringify(SCBG))
-						uni.navigateTo({
-						    url: `../../pages/Web/index?url= ${SCBGData}`
-						})
+						if(this.userInfoData.DistrictNo.substr(0,2)=='41'){
+							const SCBG= webServer + this.jump('Demo/Report/SCBG/index.html')
+							// const SCBG= 'https://mzjksc.yystars.com/xcx.web/Area/Demo/Report/SCBG/index.html?deviceType=5&womanId=2000274&machineCode=a0f96e871e854f528423ccc5289e89b8&userCode=17051026667&WomanId=2000274&APPType=mzsc'
+							const SCBGData = encodeURIComponent(JSON.stringify(SCBG))
+							uni.navigateTo({
+								url: `../../pages/Web/index?url= ${SCBGData}`
+							})
+						}else {
+							this.showModal()
+						}
+						
 						break;
 					case '5':
-						const weChat= 'https://mzjksc.yystars.com/xcx.web/Area/Demo/weChat/chat.html?WomanId=2000274&deviceType=5&districtNo=410101&machineCode=a0f96e871e854f528423ccc5289e89b8&WomanId=2000274&APPType=mzsc'
+						const weChat= webServer + this.jump('Demo/weChat/chat.html')
+						// const weChat= 'https://mzjksc.yystars.com/xcx.web/Area/Demo/weChat/chat.html?WomanId=2000274&deviceType=5&districtNo=410101&machineCode=a0f96e871e854f528423ccc5289e89b8&WomanId=2000274&APPType=mzsc'
 						const weChatData = encodeURIComponent(JSON.stringify(weChat))
 						uni.navigateTo({
 						    url: `../../pages/Web/index?url= ${weChatData}`

@@ -201,11 +201,15 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-__webpack_require__(/*! ../../common/popup.scss */ 96);var Popup = function Popup() {return __webpack_require__.e(/*! import() | components/propUp/index */ "components/propUp/index").then(__webpack_require__.bind(null, /*! ../../components/propUp/index.vue */ 167));};var _default =
-{
+__webpack_require__(/*! ../../common/popup.scss */ 96);
+var _vuex = __webpack_require__(/*! vuex */ 16);
+var _config = __webpack_require__(/*! ../../config.js */ 20);var _data$onShow$componen;function _objectSpread(target) {for (var i = 1; i < arguments.length; i++) {var source = arguments[i] != null ? arguments[i] : {};var ownKeys = Object.keys(source);if (typeof Object.getOwnPropertySymbols === 'function') {ownKeys = ownKeys.concat(Object.getOwnPropertySymbols(source).filter(function (sym) {return Object.getOwnPropertyDescriptor(source, sym).enumerable;}));}ownKeys.forEach(function (key) {_defineProperty(target, key, source[key]);});}return target;}function _defineProperty(obj, key, value) {if (key in obj) {Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true });} else {obj[key] = value;}return obj;}var Popup = function Popup() {return __webpack_require__.e(/*! import() | components/propUp/index */ "components/propUp/index").then(__webpack_require__.bind(null, /*! ../../components/propUp/index.vue */ 166));};var _default = (_data$onShow$componen = {
+
+
   data: function data() {
     return {
-      showNumber: '0' // 0表示隐藏弹窗
+      showNumber: '0', // 0表示隐藏弹窗,
+      userInfoData: {} //数据填充
     };
   },
   onShow: function onShow() {
@@ -216,65 +220,90 @@ __webpack_require__(/*! ../../common/popup.scss */ 96);var Popup = function Popu
     Popup: Popup },
 
 
-  methods: {
-    pageJump: function pageJump(num) {var _this = this;
-      // console.log(data)
+  computed: _objectSpread({},
+  (0, _vuex.mapGetters)([
+  'userInfo'])) }, _defineProperty(_data$onShow$componen, "onShow", function onShow()
 
-      switch (num) {
-        case '1':
-          var PregnantRegister = 'https://mzjksc.yystars.com/xcx.web/Area/Demo/PregnantRegister/Main.html?deviceType=3&womanId=2000274&machineCode=a0f96e871e854f528423ccc5289e89b8&WomanId=2000274&APPType=mzsc';
+
+
+{
+  this.userInfoData = JSON.parse(this.userInfo);
+}), _defineProperty(_data$onShow$componen, "methods",
+
+{
+
+  // 弹窗提示
+
+  showModal: function showModal() {var _this = this;
+    uni.showModal({
+      title: '温馨提示',
+      content: '您所在的地区暂未开通服务',
+      showCancel: false,
+      confirmColor: '#FF70B5',
+      success: function success(res) {
+        if (res.confirm) {
+          _this.isDad = !_this.isDad;
+        } else if (res.cancel) {
+          console.log('用户取消了');
+        }
+      } });
+
+  },
+
+
+  //页面跳转
+  jump: function jump(data) {
+    var path = "xcx.web/Area/".concat(data, "?deviceType=5&womanId=").concat(this.userInfoData.WomanId, "&machineCode=").concat(this.userInfoData.WeChatOpenId, "&districtNo=").concat(this.userInfoData.DistrictNo);
+    return path;
+  },
+
+  // 页面跳转
+  pageJump: function pageJump(num) {
+    // console.log(data)
+    switch (num) {
+      case '1':
+        if (this.userInfoData.DistrictNo.substr(0, 2) == '41') {
+          var PregnantRegister = _config.webServer + this.jump('Demo/PregnantRegister/Main.html');
+          // const PregnantRegister= 'https://mzjksc.yystars.com/xcx.web/Area/Demo/PregnantRegister/Main.html?deviceType=3&womanId=2000274&machineCode=a0f96e871e854f528423ccc5289e89b8&WomanId=2000274&APPType=mzsc'
           var PregnantRegisterData = encodeURIComponent(JSON.stringify(PregnantRegister));
           uni.navigateTo({
             url: "../../pages/Web/index?url= ".concat(PregnantRegisterData) });
 
-          break;
-        case '2':
-          uni.showModal({
-            title: '温馨提示',
-            content: '您所在的地区暂未开通服务',
-            showCancel: false,
-            confirmColor: '#FF70B5',
-            success: function success(res) {
-              if (res.confirm) {
-                _this.isDad = !_this.isDad;
-              } else if (res.cancel) {
-                console.log('用户取消了');
-              }
-            } });
+        } else {
+          this.showModal();
+        }
 
-          break;
-        case '3':
-          uni.showModal({
-            title: '温馨提示',
-            content: '您所在的地区暂未开通服务',
-            showCancel: false,
-            confirmColor: '#FF70B5',
-            success: function success(res) {
-              if (res.confirm) {
-                _this.isDad = !_this.isDad;
-              } else if (res.cancel) {
-                console.log('用户取消了');
-              }
-            } });
-
-          break;
-        case '4':
-          var SCBG = 'https://mzjksc.yystars.com/xcx.web/Area/Demo/Report/SCBG/index.html?deviceType=5&womanId=2000274&machineCode=a0f96e871e854f528423ccc5289e89b8&userCode=17051026667&WomanId=2000274&APPType=mzsc';
+        break;
+      case '2':
+        this.showModal();
+        break;
+      case '3':
+        this.showModal();
+        break;
+      case '4':
+        if (this.userInfoData.DistrictNo.substr(0, 2) == '41') {
+          var SCBG = _config.webServer + this.jump('Demo/Report/SCBG/index.html');
+          // const SCBG= 'https://mzjksc.yystars.com/xcx.web/Area/Demo/Report/SCBG/index.html?deviceType=5&womanId=2000274&machineCode=a0f96e871e854f528423ccc5289e89b8&userCode=17051026667&WomanId=2000274&APPType=mzsc'
           var SCBGData = encodeURIComponent(JSON.stringify(SCBG));
           uni.navigateTo({
             url: "../../pages/Web/index?url= ".concat(SCBGData) });
 
-          break;
-        case '5':
-          var weChat = 'https://mzjksc.yystars.com/xcx.web/Area/Demo/weChat/chat.html?WomanId=2000274&deviceType=5&districtNo=410101&machineCode=a0f96e871e854f528423ccc5289e89b8&WomanId=2000274&APPType=mzsc';
-          var weChatData = encodeURIComponent(JSON.stringify(weChat));
-          uni.navigateTo({
-            url: "../../pages/Web/index?url= ".concat(weChatData) });
+        } else {
+          this.showModal();
+        }
 
-          break;}
+        break;
+      case '5':
+        var weChat = _config.webServer + this.jump('Demo/weChat/chat.html');
+        // const weChat= 'https://mzjksc.yystars.com/xcx.web/Area/Demo/weChat/chat.html?WomanId=2000274&deviceType=5&districtNo=410101&machineCode=a0f96e871e854f528423ccc5289e89b8&WomanId=2000274&APPType=mzsc'
+        var weChatData = encodeURIComponent(JSON.stringify(weChat));
+        uni.navigateTo({
+          url: "../../pages/Web/index?url= ".concat(weChatData) });
+
+        break;}
 
 
-    } } };exports.default = _default;
+  } }), _data$onShow$componen);exports.default = _default;
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))
 
 /***/ }),

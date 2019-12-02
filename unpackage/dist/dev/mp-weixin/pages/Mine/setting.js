@@ -94,15 +94,12 @@ var render = function() {
 
   var m1 = __webpack_require__(/*! ../../static/mine/jiantou.png */ 123)
 
-  var m2 = __webpack_require__(/*! ../../static/mine/jiantou.png */ 123)
-
   _vm.$mp.data = Object.assign(
     {},
     {
       $root: {
         m0: m0,
-        m1: m1,
-        m2: m2
+        m1: m1
       }
     }
   )
@@ -184,7 +181,8 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-__webpack_require__(/*! ../../common/popup.scss */ 96);var Popup = function Popup() {return __webpack_require__.e(/*! import() | components/propUp/index */ "components/propUp/index").then(__webpack_require__.bind(null, /*! ../../components/propUp/index.vue */ 167));};var _default =
+__webpack_require__(/*! ../../common/popup.scss */ 96);
+var _config = __webpack_require__(/*! ../../config.js */ 20);var Popup = function Popup() {return __webpack_require__.e(/*! import() | components/propUp/index */ "components/propUp/index").then(__webpack_require__.bind(null, /*! ../../components/propUp/index.vue */ 166));};var _default =
 {
   data: function data() {
     return {
@@ -202,6 +200,11 @@ __webpack_require__(/*! ../../common/popup.scss */ 96);var Popup = function Popu
     // 跳转页面
     jumpPage: function jumpPage(num) {
       if (num == 1) {
+        var agreement = _config.webServer + 'xcx.web/Area/agreement/agreement.html';
+        var agreementData = encodeURIComponent(JSON.stringify(agreement));
+        uni.navigateTo({
+          url: "../../pages/Web/index?url= ".concat(agreementData) });
+
         uni.navigateTo({
           url: '../../pages/Web/index' });
 
